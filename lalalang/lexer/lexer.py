@@ -1,0 +1,97 @@
+from .token import TokenType, Token, lookup_identifier
+
+
+class Lexer:
+    """
+    This class recieves source code as input and returns
+    the tokens that represent it
+    """
+
+    position: int = 0
+    read_position: int = 0
+    char: str = ""
+
+    def __init__(self, source: str):
+        self.source: str = source
+        self._read_char()
+
+    def next_token(self) -> Token:
+        """
+        This is the main method that is traversing the
+        source code and generating the tokens, this was
+        made for being used multiple times
+        """
+        self._skip_whitespace()
+        new_token = Token.empty_token()
+
+        if self.char == "=":
+            new_token = Token(TokenType.ASSIGN, self.char)
+        elif self.char == ";":
+            new_token = Token(TokenType.SEMICOLON, self.char)
+        elif self.char == "(":
+            new_token = Token(TokenType.LPAREN, self.char)
+        elif self.char == ")":
+            new_token = Token(TokenType.RPAREN, self.char)
+        elif self.char == ",":
+            new_token = Token(TokenType.COMMA, self.char)
+        elif self.char == "+":
+            new_token = Token(TokenType.PLUS, self.char)
+        elif self.char == "{":
+            new_token = Token(TokenType.LBRACE, self.char)
+        elif self.char == "}":
+            new_token = Token(TokenType.RBRACE, self.char)
+        elif self.char == "":
+            new_token = Token(TokenType.EOF, "")
+        else:
+            if self.char.isalpha():
+                literal = self._read_identifier()
+                new_token = Token(lookup_identifier(literal), literal)
+                return new_token
+            elif self.char.isdigit():
+                new_token = Token(TokenType.INT, self._read_number())
+                return new_token
+            else:
+                new_token = Token(TokenType.ILLEGAL, self.char)
+
+        self._read_char()
+        return new_token
+
+    def _read_char(self) -> None:
+        """
+        This method is for traversing the source code
+        character by character
+        """
+        if self.read_position >= len(self.source):
+            self.char = ""
+        else:
+            self.char = self.source[self.read_position]
+        self.position = self.read_position
+        self.read_position += 1
+
+    def _read_identifier(self) -> str:
+        """
+        This helper method extracts any indentifier from
+        the source code like variable or function names
+        """
+        position = self.position
+        while self.char.isalpha():
+            self._read_char()
+        return self.source[position : self.position]
+
+    def _read_number(self) -> str:
+        """
+        This helper method extracts integers from the
+        source code
+        """
+        position = self.position
+        while self.char.isdigit():
+            self._read_char()
+        return self.source[position : self.position]
+
+    def _skip_whitespace(self) -> None:
+        """
+        This helper method advances the position until
+        no whitespace is encountered
+        """
+        while self.char.isspace():
+            self._read_char()

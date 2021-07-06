@@ -1,0 +1,14 @@
+# enviroment
+venv/
+.vscode/
+
+# OS specific
+.DS_Store
+
+# Python
+**/__pycache__/
+**.pyc
+
+# Tests
+.coverage
+

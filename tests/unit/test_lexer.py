@@ -9,8 +9,19 @@ class TestLexer(TestCase):
         source_code = """
             let pi = 314;
             fun area(ratio) {
-                pi + ratio + ratio;
+                pi * ratio * ratio + 0;
             }
+
+            13 / 3 > 16;
+
+            if(10 - 8 < 16) {
+                return true;
+            } else {
+                return false;
+            }
+
+            10 == 10;
+            10 != 9;
         """
         expected_tokens = [
             Token(TokenType.LET, "let"),
@@ -25,12 +36,48 @@ class TestLexer(TestCase):
             Token(TokenType.RPAREN, ")"),
             Token(TokenType.LBRACE, "{"),
             Token(TokenType.IDENT, "pi"),
-            Token(TokenType.PLUS, "+"),
+            Token(TokenType.ASTERISK, "*"),
+            Token(TokenType.IDENT, "ratio"),
+            Token(TokenType.ASTERISK, "*"),
             Token(TokenType.IDENT, "ratio"),
             Token(TokenType.PLUS, "+"),
-            Token(TokenType.IDENT, "ratio"),
+            Token(TokenType.INT, "0"),
             Token(TokenType.SEMICOLON, ";"),
             Token(TokenType.RBRACE, "}"),
+            Token(TokenType.INT, "13"),
+            Token(TokenType.SLASH, "/"),
+            Token(TokenType.INT, "3"),
+            Token(TokenType.GT, ">"),
+            Token(TokenType.INT, "16"),
+            Token(TokenType.SEMICOLON, ";"),
+            Token(TokenType.IF, "if"),
+            Token(TokenType.LPAREN, "("),
+            Token(TokenType.INT, "10"),
+            Token(TokenType.MINUS, "-"),
+            Token(TokenType.INT, "8"),
+            Token(TokenType.LT, "<"),
+            Token(TokenType.INT, "16"),
+            Token(TokenType.RPAREN, ")"),
+            Token(TokenType.LBRACE, "{"),
+            Token(TokenType.RETURN, "return"),
+            Token(TokenType.TRUE, "true"),
+            Token(TokenType.SEMICOLON, ";"),
+            Token(TokenType.RBRACE, "}"),
+            Token(TokenType.ELSE, "else"),
+            Token(TokenType.LBRACE, "{"),
+            Token(TokenType.RETURN, "return"),
+            Token(TokenType.FALSE, "false"),
+            Token(TokenType.SEMICOLON, ";"),
+            Token(TokenType.RBRACE, "}"),
+            Token(TokenType.INT, "10"),
+            Token(TokenType.EQ, "=="),
+            Token(TokenType.INT, "10"),
+            Token(TokenType.SEMICOLON, ";"),
+            Token(TokenType.INT, "10"),
+            Token(TokenType.NOT_EQ, "!="),
+            Token(TokenType.INT, "9"),
+            Token(TokenType.SEMICOLON, ";"),
+            Token(TokenType.EOF, ""),
         ]
         self.compare_results(source_code, expected_tokens)
 
@@ -58,10 +105,16 @@ class TestLexer(TestCase):
         self.compare_results(source_code, expected_tokens)
 
     def test_lexer_operators(self):
-        source_code = "+="
+        source_code = "+=-!*/<>"
         expected_tokens = [
             Token(TokenType.PLUS, "+"),
             Token(TokenType.ASSIGN, "="),
+            Token(TokenType.MINUS, "-"),
+            Token(TokenType.BANG, "!"),
+            Token(TokenType.ASTERISK, "*"),
+            Token(TokenType.SLASH, "/"),
+            Token(TokenType.LT, "<"),
+            Token(TokenType.GT, ">"),
         ]
         self.compare_results(source_code, expected_tokens)
 

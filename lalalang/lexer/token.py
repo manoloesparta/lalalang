@@ -36,6 +36,14 @@ class TokenType(Enum):
     # Operators
     ASSIGN = "="
     PLUS = "+"
+    MINUS = "-"
+    BANG = "!"
+    ASTERISK = "*"
+    SLASH = "/"
+    LT = "<"
+    GT = ">"
+    EQ = "=="
+    NOT_EQ = "!="
 
     # Delimeters
     COMMA = ","
@@ -48,14 +56,27 @@ class TokenType(Enum):
     # Keywords
     FUNCTION = "FUNCTION"
     LET = "LET"
+    TRUE = "TRUE"
+    FALSE = "FALSE"
+    IF = "IF"
+    ELSE = "ELSE"
+    RETURN = "RETURN"
 
 
-KEYWORDS = {"fun": TokenType.FUNCTION, "let": TokenType.LET}
+KEYWORDS = {
+    "fun": TokenType.FUNCTION,
+    "let": TokenType.LET,
+    "true": TokenType.TRUE,
+    "false": TokenType.FALSE,
+    "if": TokenType.IF,
+    "else": TokenType.ELSE,
+    "return": TokenType.RETURN,
+}
 
 
-def lookup_identifier(key: str):
+def lookup_identifier(key: str) -> str:
     """
-    This function is for getting the token type of an alpha name,
+    This function is for getting the token type of an letters-name,
     so we can't confuse between keywords and identifiers
     """
     if key in KEYWORDS:

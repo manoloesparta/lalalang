@@ -9,9 +9,6 @@ setup:
 	virtualenv -p $(env) venv
 	$(PIP) install -r requirements.txt
 
-run:
-	$(PYTHON) 3lc.py $(file)
-
 unit:
 	$(PYTHON) -m coverage run -m unittest discover -s tests/unit
 	$(PYTHON) -m coverage report -m

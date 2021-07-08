@@ -3,7 +3,7 @@ PIP = venv/bin/pip
 
 .PHONY: install
 install:
-	# Adding the repl and interpreter to system, use setup.py, setup.cfg or pyproject.toml
+	./setup.py build install --user
 
 setup:
 	virtualenv -p $(env) venv
@@ -25,4 +25,5 @@ format:
 
 clean:
 	find . -name __pycache__ | xargs rm -rf
+	rm -rf build dist *.egg-info .eggs
 

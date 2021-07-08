@@ -1,22 +1,26 @@
-#!venv/bin/python
+#!/usr/bin/env python
 import sys
 import signal
-from lalalang.lexer import Lexer, TokenType, Token
+from .lexer import Lexer, TokenType, Token
 
 
 def main():
     print("Welcome to the city of stars!🌟")
     print("This is the La La Lang Programming Language!")
-    start_repl()
+    start_repl(lexing)
 
 
-def start_repl():
+def lexing(line):
+    lex = Lexer(line)
+    token = Token.empty_token()
+    while token.token_type != TokenType.EOF:
+        token = lex.next_token()
+        print(token)
+
+
+def start_repl(fun):
     while line := input("♪♪ > "):
-        lex = Lexer(line)
-        token = Token.empty_token()
-        while token.token_type != TokenType.EOF:
-            token = lex.next_token()
-            print(token)
+        fun(line)
 
 
 def ctrlc_handler(sig, fram):

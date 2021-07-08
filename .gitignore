@@ -12,3 +12,8 @@ venv/
 # Tests
 .coverage
 
+# Builds
+.eggs/
+dist/
+build/
+*.egg-info/

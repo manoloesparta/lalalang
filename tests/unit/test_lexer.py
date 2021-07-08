@@ -118,6 +118,16 @@ class TestLexer(TestCase):
         ]
         self.compare_results(source_code, expected_tokens)
 
+    def test_two_character_symbols(self):
+        source_code = "! == != ="
+        expected_tokens = [
+            Token(TokenType.BANG, "!"),
+            Token(TokenType.EQ, "=="),
+            Token(TokenType.NOT_EQ, "!="),
+            Token(TokenType.ASSIGN, "="),
+        ]
+        self.compare_results(source_code, expected_tokens)
+
     def test_lexer_identifiers(self):
         source_code = "someone in the crowd"
         expected_tokens = [

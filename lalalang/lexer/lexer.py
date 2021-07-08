@@ -129,6 +129,6 @@ class Lexer:
         without the increment, it's for seeing what's next,
         not to move around
         """
-        if self.next_position > len(self.source):
+        if self.next_position >= len(self.source):
             return ""
         return self.source[self.next_position]

@@ -1,4 +1,4 @@
 # LA LA LANG ♪♪
 
-This is programming language with a funny name.
+Another programming language with a silly name 
 

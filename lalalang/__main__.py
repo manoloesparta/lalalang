@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 import sys
 import signal
 from .lexer import Lexer, TokenType, Token

@@ -10,6 +10,10 @@ class Program(Node):
 
     statements: list = []
 
+    def __str__(self):
+        conversion = [str(i) for i in self.statements]
+        return "\n".join(conversion)
+
     def token_literal(self) -> str:
         if len(self.statements) > 0:
             return self.statements[0].token_literal()
@@ -24,6 +28,9 @@ class Identifier(Expression):
 
     token: Token = Token.empty_token()
     value: str = ""
+
+    def __str__(self):
+        return "Identifier(%s, %s)" % (str(self.token), self.value)
 
     def token_literal(self) -> str:
         return self.token.literal
@@ -43,6 +50,9 @@ class LetStatement(Statement):
 
     def __init__(self, token: Token):
         self.token = token
+
+    def __str__(self):
+        return "LetStatement(%s, %s)" % (str(self.token), str(self.name))
 
     @staticmethod
     def empty_let_statement():

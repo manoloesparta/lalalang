@@ -1,28 +1,20 @@
-from unittest.mock import patch
 from unittest import TestCase
 from lalalang.lexer.lexer import Lexer
 from lalalang.lexer.token import TokenType, Token
+from mocks.lexer import (
+    SOURCE_CODE,
+    DELIMETERS,
+    ILLEGAL,
+    OPERATORS,
+    TWO_CHARACTER_SYMBOLS,
+    IDENTIFIERS,
+    NUMBERS,
+    KEYWORDS,
+)
 
 
 class TestLexer(TestCase):
     def test_lexer_with_source_code(self):
-        source_code = """
-            let pi = 314;
-            fun area(ratio) {
-                pi * ratio * ratio + 0;
-            }
-
-            13 / 3 > 16;
-
-            if(10 - 8 < 16) {
-                return true;
-            } else {
-                return false;
-            }
-
-            10 == 10;
-            10 != 9;
-        """
         expected_tokens = [
             Token(TokenType.LET, "let"),
             Token(TokenType.IDENT, "pi"),
@@ -79,10 +71,9 @@ class TestLexer(TestCase):
             Token(TokenType.SEMICOLON, ";"),
             Token(TokenType.EOF, ""),
         ]
-        self.compare_results(source_code, expected_tokens)
+        self.compare_results(SOURCE_CODE, expected_tokens)
 
     def test_lexer_delimeters(self):
-        source_code = "(){},;"
         expected_tokens = [
             Token(TokenType.LPAREN, "("),
             Token(TokenType.RPAREN, ")"),
@@ -92,20 +83,18 @@ class TestLexer(TestCase):
             Token(TokenType.SEMICOLON, ";"),
             Token(TokenType.EOF, ""),
         ]
-        self.compare_results(source_code, expected_tokens)
+        self.compare_results(DELIMETERS, expected_tokens)
 
-    def test_lexer_control(self):
-        source_code = "~`^"
+    def test_lexer_illegal(self):
         expected_tokens = [
             Token(TokenType.ILLEGAL, "~"),
             Token(TokenType.ILLEGAL, "`"),
             Token(TokenType.ILLEGAL, "^"),
             Token(TokenType.EOF, ""),
         ]
-        self.compare_results(source_code, expected_tokens)
+        self.compare_results(ILLEGAL, expected_tokens)
 
     def test_lexer_operators(self):
-        source_code = "+=-!*/<>"
         expected_tokens = [
             Token(TokenType.PLUS, "+"),
             Token(TokenType.ASSIGN, "="),
@@ -116,48 +105,51 @@ class TestLexer(TestCase):
             Token(TokenType.LT, "<"),
             Token(TokenType.GT, ">"),
         ]
-        self.compare_results(source_code, expected_tokens)
+        self.compare_results(OPERATORS, expected_tokens)
 
     def test_two_character_symbols(self):
-        source_code = "! == != ="
         expected_tokens = [
             Token(TokenType.BANG, "!"),
             Token(TokenType.EQ, "=="),
             Token(TokenType.NOT_EQ, "!="),
             Token(TokenType.ASSIGN, "="),
         ]
-        self.compare_results(source_code, expected_tokens)
+        self.compare_results(TWO_CHARACTER_SYMBOLS, expected_tokens)
 
     def test_lexer_identifiers(self):
-        source_code = "someone in the crowd"
         expected_tokens = [
             Token(TokenType.IDENT, "someone"),
             Token(TokenType.IDENT, "in"),
             Token(TokenType.IDENT, "the"),
             Token(TokenType.IDENT, "crowd"),
         ]
-        self.compare_results(source_code, expected_tokens)
+        self.compare_results(IDENTIFIERS, expected_tokens)
 
     def test_lexer_numbers(self):
-        source_code = "314 217 161"
         expected_tokens = [
             Token(TokenType.INT, "314"),
             Token(TokenType.INT, "217"),
             Token(TokenType.INT, "161"),
         ]
-        self.compare_results(source_code, expected_tokens)
+        self.compare_results(NUMBERS, expected_tokens)
 
     def test_lexer_keywords(self):
-        source_code = "let fun"
         expected_tokens = [
             Token(TokenType.LET, "let"),
             Token(TokenType.FUNCTION, "fun"),
+            Token(TokenType.TRUE, "true"),
+            Token(TokenType.FALSE, "false"),
+            Token(TokenType.IF, "if"),
+            Token(TokenType.ELSE, "else"),
+            Token(TokenType.RETURN, "return"),
         ]
-        self.compare_results(source_code, expected_tokens)
+        self.compare_results(KEYWORDS, expected_tokens)
 
     def test_correct_string_format(self):
-        token = Token(TokenType.EOF, "")
-        self.assertEqual(str(token), 'Token(TokenType.EOF, "")')
+        eof_token = Token(TokenType.EOF, "")
+        int_token = Token(TokenType.INT, "314")
+        self.assertEqual(str(eof_token), 'Token(EOF, )')
+        self.assertEqual(str(int_token), 'Token(INT, 314)')
 
     def compare_results(self, source_code, expected_tokens):
         lex = Lexer(source_code)

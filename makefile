@@ -9,12 +9,10 @@ setup:
 	virtualenv -p $(env) venv
 	$(PIP) install -r requirements.txt
 
-unit:
-	$(PYTHON) -m coverage run -m unittest discover -s tests/unit
+.PHONY: tests
+tests:
+	$(PYTHON) -m coverage run -m unittest discover -s tests
 	$(PYTHON) -m coverage report -m
-
-accept:
-	# Acceptance tests: Pending on run_acceptance_tests.sh, use behave
 
 freeze:
 	$(PIP) freeze > requirements.txt

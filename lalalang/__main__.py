@@ -1,5 +1,6 @@
 import sys
 import signal
+import pretty_errors
 from .lexer import Lexer, TokenType, Token
 
 
@@ -11,7 +12,7 @@ def main():
 
 def lexing(line):
     lex = Lexer(line)
-    token = Token.empty_token()
+    token = Token.empty()
     while token.token_type != TokenType.EOF:
         token = lex.next_token()
         print(token)

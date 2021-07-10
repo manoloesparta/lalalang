@@ -54,16 +54,16 @@ class Token:
     lexer is producing
     """
 
+    @staticmethod
+    def empty():
+        return Token(None, None)
+
     def __init__(self, token_type: TokenType, literal: str):
-        self.token_type = token_type
-        self.literal = literal
+        self.token_type: TokenType = token_type
+        self.literal: str = literal
 
     def __str__(self):
         return "Token(%s, %s)" % (self.token_type, self.literal)
-
-    @staticmethod
-    def empty_token():
-        return Token(None, None)
 
 
 KEYWORDS = {

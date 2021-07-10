@@ -18,7 +18,6 @@ freeze:
 	$(PIP) freeze > requirements.txt
 
 format:
-	$(PYTHON) -m black --diff .
 	$(PYTHON) -m black .
 
 clean:

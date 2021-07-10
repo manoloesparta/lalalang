@@ -7,12 +7,12 @@ class Lexer:
     the tokens that represent it
     """
 
-    position: int = 0
-    next_position: int = 0
-    char: str = ""
-
     def __init__(self, source: str):
         self.source: str = source
+        self.position: int = 0
+        self.peek_position: int = 0
+        self.char: str = ""
+
         self._read_char()
 
     def next_token(self) -> Token:
@@ -22,7 +22,7 @@ class Lexer:
         made for being used multiple times
         """
         self._skip_whitespace()
-        new_token = Token.empty_token()
+        new_token = Token.empty()
 
         # One character symbols
         if self.char == ";":
@@ -88,12 +88,12 @@ class Lexer:
         This method is for traversing the source code
         character by character
         """
-        if self.next_position >= len(self.source):
+        if self.peek_position >= len(self.source):
             self.char = ""
         else:
-            self.char = self.source[self.next_position]
-        self.position = self.next_position
-        self.next_position += 1
+            self.char = self.source[self.peek_position]
+        self.position = self.peek_position
+        self.peek_position += 1
 
     def _read_identifier(self) -> str:
         """
@@ -129,6 +129,6 @@ class Lexer:
         without the increment, it's for seeing what's next,
         not to move around
         """
-        if self.next_position >= len(self.source):
+        if self.peek_position >= len(self.source):
             return ""
-        return self.source[self.next_position]
+        return self.source[self.peek_position]

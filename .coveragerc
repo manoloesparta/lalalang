@@ -1,2 +1,14 @@
 [run]
-omit = **/venv/**
+omit = 
+	# Dependencies
+	**/venv/**
+
+	# Project specific
+	**/__init__.py
+	tests/**
+
+	# Abstract classes
+	lalalang/parser/nodes.py
+
+	# Methods
+	exclude_lines = def __str__

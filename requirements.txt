@@ -1,11 +1,13 @@
 appdirs==1.4.4
 black==21.6b0
 click==8.0.1
+colorama==0.4.4
 coverage==5.5
 mypy-extensions==0.4.3
 parse==1.19.0
 parse-type==0.5.2
 pathspec==0.8.1
+pretty-errors==1.2.23
 regex==2021.7.1
 six==1.16.0
 toml==0.10.2

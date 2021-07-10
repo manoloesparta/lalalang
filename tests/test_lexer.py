@@ -148,8 +148,8 @@ class TestLexer(TestCase):
     def test_correct_string_format(self):
         eof_token = Token(TokenType.EOF, "")
         int_token = Token(TokenType.INT, "314")
-        self.assertEqual(str(eof_token), 'Token(EOF, )')
-        self.assertEqual(str(int_token), 'Token(INT, 314)')
+        self.assertEqual(str(eof_token), "Token(EOF, )")
+        self.assertEqual(str(int_token), "Token(INT, 314)")
 
     def compare_results(self, source_code, expected_tokens):
         lex = Lexer(source_code)

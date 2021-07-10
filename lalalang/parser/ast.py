@@ -8,7 +8,8 @@ class Program(Node):
     syntax tree
     """
 
-    statements: list = []
+    def __init__(self):
+        self.statements: list = []
 
     def __str__(self):
         conversion = [str(i) for i in self.statements]
@@ -26,8 +27,13 @@ class Identifier(Expression):
     identifier of a let expression
     """
 
-    token: Token = Token.empty_token()
-    value: str = ""
+    @staticmethod
+    def empty():
+        return Identifier(None, None)
+
+    def __init__(self, token: Token, value: str):
+        self.token: Token = token
+        self.value: str = value
 
     def __str__(self):
         return "Identifier(%s, %s)" % (str(self.token), self.value)
@@ -45,18 +51,40 @@ class LetStatement(Statement):
     identifiers to values
     """
 
-    token: Token = Token.empty_token()
-    name: Identifier = Identifier()
+    @staticmethod
+    def empty():
+        return LetStatement(None, None)
 
-    def __init__(self, token: Token):
-        self.token = token
+    def __init__(self, token: Token, name: Identifier):
+        self.token: Token = token
+        self.name: Identifier = name
 
     def __str__(self):
         return "LetStatement(%s, %s)" % (str(self.token), str(self.name))
 
+    def token_literal(self) -> str:
+        return self.token.literal
+
+    def statement_node(self) -> None:
+        pass
+
+
+class ReturnStatement(Statement):
+    """
+    This is for return statements, for reusing
+    values made inside functions
+    """
+
     @staticmethod
-    def empty_let_statement():
-        return LetStatement(None)
+    def empty():
+        return ReturnStatement(None, None)
+
+    def __str__(self):
+        return "ReturnStatement(%s, %s)" % (str(self.token), str(self.return_value))
+
+    def __init__(self, token: Token, return_value: Expression):
+        self.token: Token = token
+        self.return_value: Expression = return_value
 
     def token_literal(self) -> str:
         return self.token.literal

@@ -11,6 +11,10 @@ class Node(ABC):
     def token_literal(self) -> str:
         pass
 
+    @abstractmethod
+    def __str__(self) -> str:
+        pass
+
 
 class Statement(Node):
     """

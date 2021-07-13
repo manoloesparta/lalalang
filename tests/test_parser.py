@@ -6,14 +6,14 @@ from lalalang.parser import (
     ExpressionStatement,
     Statement,
     Identifier,
-    IntegerLiteral
+    IntegerLiteral,
 )
 from mocks.parser import (
     LET_STATEMENTS,
     RETURN_STATEMENTS,
     LET_PROGRAM,
     IDENT_EXPRESSION,
-    INT_LITERAL
+    INT_LITERAL,
 )
 
 
@@ -48,9 +48,9 @@ class TestParserStatements(TestCase):
         self.assertIsInstance(statement, ExpressionStatement)
 
         literal = statement.expression
-        self.assertIsInstance(literal, IntegerLiteral) 
-        self.assertEqual(ident.value, "5")
-        self.assertEqual(ident.token_literal(), "5")
+        self.assertIsInstance(literal, IntegerLiteral)
+        self.assertEqual(literal.value, 5)
+        self.assertEqual(literal.token_literal(), "5")
 
     def test_return_statements(self):
         program = self.create_program(RETURN_STATEMENTS)

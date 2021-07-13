@@ -14,6 +14,9 @@ tests:
 	$(PYTHON) -m coverage run -m unittest discover -s tests
 	$(PYTHON) -m coverage report -m
 
+analyze:
+	$(PYTHON) -m mypy lalalang --no-strict-optional
+
 freeze:
 	$(PIP) freeze > requirements.txt
 

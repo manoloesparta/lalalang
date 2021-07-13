@@ -1,10 +1,5 @@
 from lalalang.lexer import TokenType, Token
-from lalalang.parser import (
-    Program, 
-    LetStatement, 
-    ReturnStatement, 
-    Identifier
-)
+from lalalang.parser import Program, LetStatement, ReturnStatement, Identifier
 
 
 LET_STATEMENTS = """

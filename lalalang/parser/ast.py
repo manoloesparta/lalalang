@@ -148,19 +148,30 @@ class ExpressionStatement(Statement):
     def statement_node(self) -> None:
         pass
 
-class IntegerLiteral:
-    
+
+class IntegerLiteral(Expression):
+    """
+    This is for representing the actual numbers, it is
+    a expression so that they can return themselves as the
+    value represented.
+    """
+
     @staticmethod
-    def empyt():
+    def empty():
         return IntegerLiteral(None, None)
-    
+
     def __init__(self, token: Token, value: int):
         self.token: Token = token
         self.value: int = value
+
+    def __repr__(self):
+        return "IntegerLiteral(%s,%s)" % (str(self.token), self.value)
+
+    def __str__(self):
+        pass
 
     def expression_node(self):
         pass
 
     def token_literal(self) -> str:
         return self.token.literal
-    

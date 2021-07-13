@@ -62,11 +62,11 @@ class Token:
         self.token_type: TokenType = token_type
         self.literal: str = literal
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "Token(%s, %s)" % (self.token_type, self.literal)
 
 
-KEYWORDS = {
+KEYWORDS: dict[str, TokenType] = {
     "fun": TokenType.FUNCTION,
     "let": TokenType.LET,
     "true": TokenType.TRUE,
@@ -77,7 +77,7 @@ KEYWORDS = {
 }
 
 
-def lookup_identifier(key: str) -> str:
+def lookup_identifier(key: str) -> TokenType:
     """
     This function is for getting the token type of an letters-name,
     so we can't confuse between keywords and identifiers

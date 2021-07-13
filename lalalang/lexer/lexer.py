@@ -22,7 +22,8 @@ class Lexer:
         made for being used multiple times
         """
         self._skip_whitespace()
-        new_token = Token.empty()
+        new_token: Token = Token.empty()
+        char: str = self.char
 
         # One character symbols
         if self.char == ";":
@@ -55,14 +56,12 @@ class Lexer:
         # Two characters symbols
         elif self.char == "=":
             if self._peek_char() == "=":
-                char = self.char
                 self._read_char()
                 new_token = Token(TokenType.EQ, char + self.char)
             else:
                 new_token = Token(TokenType.ASSIGN, self.char)
         elif self.char == "!":
             if self._peek_char() == "=":
-                char = self.char
                 self._read_char()
                 new_token = Token(TokenType.NOT_EQ, char + self.char)
             else:
@@ -71,7 +70,7 @@ class Lexer:
         # Numbers and identifiers
         else:
             if self.char.isalpha():
-                literal = self._read_identifier()
+                literal: str = self._read_identifier()
                 new_token = Token(lookup_identifier(literal), literal)
                 return new_token
             elif self.char.isdigit():
@@ -100,7 +99,7 @@ class Lexer:
         This helper method extracts any indentifier from
         the source code like variable or function names
         """
-        position = self.position
+        position: int = self.position
         while self.char.isalpha():
             self._read_char()
         return self.source[position : self.position]
@@ -110,7 +109,7 @@ class Lexer:
         This helper method extracts integers from the
         source code
         """
-        position = self.position
+        position: int = self.position
         while self.char.isdigit():
             self._read_char()
         return self.source[position : self.position]

@@ -12,6 +12,9 @@ venv/
 # Tests
 .coverage
 
+# Analyzer
+.mypy_cache/
+
 # Builds
 .eggs/
 dist/

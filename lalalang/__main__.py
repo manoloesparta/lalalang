@@ -1,6 +1,5 @@
 import sys
 import signal
-import pretty_errors
 from .lexer import Lexer, TokenType, Token
 
 

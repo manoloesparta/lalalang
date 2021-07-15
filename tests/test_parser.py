@@ -6,6 +6,7 @@ from lalalang.parser import (
     ExpressionStatement,
     Statement,
     Identifier,
+    PrefixExpression,
     IntegerLiteral,
 )
 from mocks.parser import (
@@ -14,6 +15,7 @@ from mocks.parser import (
     LET_PROGRAM,
     IDENT_EXPRESSION,
     INT_LITERAL,
+    PREFIX_EXPRESSIONS,
 )
 
 
@@ -51,6 +53,12 @@ class TestParserStatements(TestCase):
         self.assertIsInstance(literal, IntegerLiteral)
         self.assertEqual(literal.value, 5)
         self.assertEqual(literal.token_literal(), "5")
+
+    def test_prefix_expressios(self):
+        pass
+
+    def test_infix_expressions(self):
+        pass
 
     def test_return_statements(self):
         program = self.create_program(RETURN_STATEMENTS)

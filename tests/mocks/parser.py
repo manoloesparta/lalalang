@@ -30,3 +30,25 @@ LET_PROGRAM = Program.with_statements(
 IDENT_EXPRESSION = "foobar;"
 
 INT_LITERAL = "5;"
+
+PREFIX_EXPRESSIONS = [
+    {
+        "input": "!5;",
+        "output": ["!", 5],
+    },
+    {
+        "input": "-10;",
+        "output": ["-", 10],
+    },
+]
+
+INFIX_EXPRESSIONS = [
+    {
+        "input": "",
+        "output": [],
+    },
+    {
+        "input": "",
+        "output": [],
+    },
+]

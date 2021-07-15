@@ -1,3 +1,4 @@
+from __future__ import annotations
 from lalalang.lexer.token import TokenType, Token
 from .nodes import Node, Statement, Expression
 
@@ -9,26 +10,29 @@ class Program(Node):
     """
 
     @staticmethod
-    def with_statements(statements: list):
-        program = Program()
+    def with_statements(statements: list[Statement]) -> Program:
+        program: Program = Program()
         program.statements = statements
         return program
 
     def __init__(self):
-        self.statements: list = []
+        self.statements: list[Statement] = []
 
     def __repr__(self):
-        conversion = [str(i) for i in self.statements]
+        conversion: list[str] = [repr(i) for i in self.statements]
         return "\n".join(conversion)
 
     def __str__(self):
-        conversion = [str(i) for i in self.statements]
+        conversion: list[str] = [str(i) for i in self.statements]
         return "".join(conversion)
 
     def token_literal(self) -> str:
         if len(self.statements) > 0:
             return self.statements[0].token_literal()
         return ""
+
+    def add_statement(self, statement: Statement):
+        self.statements.append(statement)
 
 
 class Identifier(Expression):
@@ -168,10 +172,68 @@ class IntegerLiteral(Expression):
         return "IntegerLiteral(%s,%s)" % (str(self.token), self.value)
 
     def __str__(self):
-        pass
+        return str(self.value)
+
+    def token_literal(self) -> str:
+        return self.token.literal
 
     def expression_node(self):
         pass
 
+
+class PrefixExpression(Expression):
+    @staticmethod
+    def empty():
+        return PrefixExpression(None, None, None)
+
+    def __init__(self, token: Token, operator: str, right: Expression):
+        self.token: Token = token
+        self.operator: str = operator
+        self.right: Expression = right
+
+    def __repr__(self):
+        return "PrefixExpression(%s,%s,%s)" % (
+            str(self.token),
+            self.operator,
+            str(self.right),
+        )
+
+    def __str__(self):
+        return "(%s,%s)" % (self.operator, str(self.right))
+
     def token_literal(self) -> str:
         return self.token.literal
+
+    def expression_node(self):
+        pass
+
+
+class InfixExpression(Expression):
+    @staticmethod
+    def empty():
+        return InfixExpression(None, None, None, None)
+
+    def __init__(
+        self, token: Token, left: Expression, operator: str, right: Expression
+    ):
+        self.token: Token = token
+        self.left: Expression = left
+        self.operator: str = operator
+        self.right: Expression = right
+
+    def __repr__(self):
+        return "InfixExpression(%s,%s,%s,%s)" % (
+            str(self.token),
+            str(self.left),
+            str(self.operator),
+            str(self.right),
+        )
+
+    def __str__(self):
+        return "(%s %s %s)" % (str(self.left), self.operator, str(self.right))
+
+    def token_literal(self):
+        return self.token.literal
+
+    def expression_node(self):
+        pass

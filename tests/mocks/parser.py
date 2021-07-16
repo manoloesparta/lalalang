@@ -44,11 +44,35 @@ PREFIX_EXPRESSIONS = [
 
 INFIX_EXPRESSIONS = [
     {
-        "input": "",
-        "output": [],
+        "input": "5 + 5;",
+        "output": [5, "+", 5],
     },
     {
-        "input": "",
-        "output": [],
+        "input": "5 - 5;",
+        "output": [5, "-", 5],
+    },
+    {
+        "input": "5 * 5;",
+        "output": [5, "*", 5],
+    },
+    {
+        "input": "5 / 5;",
+        "output": [5, "/", 5],
+    },
+    {
+        "input": "5 > 5;",
+        "output": [5, ">", 5],
+    },
+    {
+        "input": "5 < 5;",
+        "output": [5, "<", 5],
+    },
+    {
+        "input": "5 == 5;",
+        "output": [5, "==", 5],
+    },
+    {
+        "input": "5 != 5;",
+        "output": [5, "!=", 5],
     },
 ]

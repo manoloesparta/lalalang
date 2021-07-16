@@ -145,7 +145,7 @@ class TestLexer(TestCase):
         ]
         self.compare_results(KEYWORDS, expected_tokens)
 
-    def test_correct_string_format(self):
+    def test_correct_str_format(self):
         eof_token = Token(TokenType.EOF, "")
         int_token = Token(TokenType.INT, "314")
         self.assertEqual(str(eof_token), "Token(EOF, )")

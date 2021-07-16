@@ -7,6 +7,7 @@ from lalalang.parser import (
     Statement,
     Identifier,
     PrefixExpression,
+    InfixExpression,
     IntegerLiteral,
 )
 from mocks.parser import (
@@ -16,6 +17,7 @@ from mocks.parser import (
     IDENT_EXPRESSION,
     INT_LITERAL,
     PREFIX_EXPRESSIONS,
+    INFIX_EXPRESSIONS,
 )
 
 
@@ -55,10 +57,39 @@ class TestParserStatements(TestCase):
         self.assertEqual(literal.token_literal(), "5")
 
     def test_prefix_expressios(self):
-        pass
+        for pe in PREFIX_EXPRESSIONS:
+            source = pe.get("input")
+            program = self.create_program(source)
+
+            output = pe.get("output")
+            self.assertEqual(len(program.statements), 1)
+
+            statement = program.statements[0]
+            self.assertIsInstance(statement, ExpressionStatement)
+
+            expression = statement.expression
+            self.assertIsInstance(expression, PrefixExpression)
+            self.assertEqual(expression.operator, output[0])
+            self.assertTrue(self.validate_integer_literal(expression.right, output[1]))
 
     def test_infix_expressions(self):
-        pass
+        for ie in INFIX_EXPRESSIONS:
+            source = ie.get("input")
+            program = self.create_program(source)
+
+            output = ie.get("output")
+            self.assertEqual(len(program.statements), 1)
+
+            statement = program.statements[0]
+            self.assertIsInstance(statement, ExpressionStatement)
+
+            expression = statement.expression
+            self.assertIsInstance(expression, InfixExpression)
+            self.assertEqual(expression.operator, output[1])
+
+            self.assertTrue(self.validate_integer_literal(expression.left, output[0]))
+            self.assertEqual(expression.operator, output[1])
+            self.assertTrue(self.validate_integer_literal(expression.right, output[2]))
 
     def test_return_statements(self):
         program = self.create_program(RETURN_STATEMENTS)
@@ -68,3 +99,10 @@ class TestParserStatements(TestCase):
         lex = Lexer(source_code)
         par = Parser(lex)
         return par.parse_program()
+
+    def validate_integer_literal(self, integer, value):
+        correct_type = isinstance(integer, IntegerLiteral)
+        correct_value = integer.value == value
+        correct_literal = integer.token_literal() == "%s" % value
+
+        return correct_type and correct_value and correct_literal

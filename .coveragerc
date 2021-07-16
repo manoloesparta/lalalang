@@ -10,5 +10,9 @@ omit =
 	# Abstract classes
 	lalalang/parser/nodes.py
 
-	# Methods
-	exclude_lines = def __str__
+[report]
+exclude_lines = 
+	# Magic methods
+	def __str__
+	def __repr__
+	def __init__

@@ -76,3 +76,46 @@ INFIX_EXPRESSIONS = [
         "output": [5, "!=", 5],
     },
 ]
+
+PRECEDENCE_EXPRESSIONS = [
+    {
+        "input": "-a * b",
+        "output": "((- a) * b)",
+    },
+    {
+        "input": "!-a",
+        "output": "(! (- a))",
+    },
+    {
+        "input": "a + b + c",
+        "output": "((a + b) + c)",
+    },
+    {
+        "input": "a * b * c",
+        "output": "((a * b) * c)",
+    },
+    {
+        "input": "a * b / c",
+        "output": "((a * b) / c)",
+    },
+    {
+        "input": "a + b / c",
+        "output": "(a + (b / c))",
+    },
+    {
+        "input": "a + b * c + d / e - f",
+        "output": "(((a + (b * c)) + (d / e)) - f)",
+    },
+    {
+        "input": "3 + 4; -5 * 5",
+        "output": "(3 + 4)((- 5) * 5)",
+    },
+    {
+        "input": "5 > 4 == 3 < 4",
+        "output": "((5 > 4) == (3 < 4))",
+    },
+    {
+        "input": "5 < 4 != 3 > 4",
+        "output": "((5 < 4) != (3 > 4))",
+    },
+]

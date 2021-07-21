@@ -18,6 +18,7 @@ from mocks.parser import (
     INT_LITERAL,
     PREFIX_EXPRESSIONS,
     INFIX_EXPRESSIONS,
+    PRECEDENCE_EXPRESSIONS,
 )
 
 
@@ -91,6 +92,14 @@ class TestParserStatements(TestCase):
             self.assertEqual(expression.operator, output[1])
             self.assertTrue(self.validate_integer_literal(expression.right, output[2]))
 
+    def test_precedence(self):
+        for pe in PRECEDENCE_EXPRESSIONS:
+            source = pe.get("input")
+            program = self.create_program(source)
+
+            expected = pe.get("output")
+            self.assertEqual(str(program), expected)
+
     def test_return_statements(self):
         program = self.create_program(RETURN_STATEMENTS)
         self.assertEqual(len(program.statements), 3)
@@ -104,5 +113,4 @@ class TestParserStatements(TestCase):
         correct_type = isinstance(integer, IntegerLiteral)
         correct_value = integer.value == value
         correct_literal = integer.token_literal() == "%s" % value
-
         return correct_type and correct_value and correct_literal

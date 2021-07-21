@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 import setuptools
 
 if __name__ == "__main__":

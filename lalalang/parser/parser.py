@@ -12,7 +12,12 @@ from .ast import (
     Identifier,
     InfixExpression,
     IntegerLiteral,
+    IfExpression,
+    BlockStatement,
+    FunctionLiteral,
     LetStatement,
+    Boolean,
+    CallExpression,
 )
 
 
@@ -57,6 +62,11 @@ class Parser:
         self._register_prefix_fun(TokenType.INT, self._parse_integer_literal)
         self._register_prefix_fun(TokenType.BANG, self._parse_prefix_expression)
         self._register_prefix_fun(TokenType.MINUS, self._parse_prefix_expression)
+        self._register_prefix_fun(TokenType.TRUE, self._parse_boolean)
+        self._register_prefix_fun(TokenType.FALSE, self._parse_boolean)
+        self._register_prefix_fun(TokenType.LPAREN, self._parse_grouped_expression)
+        self._register_prefix_fun(TokenType.IF, self._parse_if_expression)
+        self._register_prefix_fun(TokenType.FUNCTION, self._parse_function_literal)
 
         self._register_infix_fun(TokenType.PLUS, self._parse_infix_expression)
         self._register_infix_fun(TokenType.MINUS, self._parse_infix_expression)
@@ -66,6 +76,7 @@ class Parser:
         self._register_infix_fun(TokenType.NOT_EQ, self._parse_infix_expression)
         self._register_infix_fun(TokenType.LT, self._parse_infix_expression)
         self._register_infix_fun(TokenType.GT, self._parse_infix_expression)
+        self._register_infix_fun(TokenType.LPAREN, self._parse_call_expression)
 
         self._next_token()
         self._next_token()
@@ -99,11 +110,17 @@ class Parser:
         statement.token = self.current_token
 
         if not self._peek_expected(TokenType.IDENT):
-            raise Exception("Could not parse let statement")
+            return None
 
         statement.name = Identifier(self.current_token, self.current_token.literal)
 
-        while not self._current_token_is(TokenType.SEMICOLON):
+        if not self._peek_expected(TokenType.ASSIGN):
+            return None
+
+        self._next_token()
+        statement.value = self._parse_expression(ExpressionPrecedence.LOWEST)
+
+        if self._peek_token_is(TokenType.SEMICOLON):
             self._next_token()
 
         return statement
@@ -117,7 +134,8 @@ class Parser:
 
         self._next_token()
 
-        while not self._current_token_is(TokenType.SEMICOLON):
+        statement.return_value = self._parse_expression(ExpressionPrecedence.LOWEST)
+        if self._peek_token_is(TokenType.SEMICOLON):
             self._next_token()
 
         return statement
@@ -127,14 +145,14 @@ class Parser:
         Here we extract expression statements from the code
         """
         statement: ExpressionStatement = ExpressionStatement.empty()
-        statement.expression = self._parse_expression(ExpressionType.LOWEST)
+        statement.expression = self._parse_expression(ExpressionPrecedence.LOWEST)
 
         if self._peek_token_is(TokenType.SEMICOLON):
             self._next_token()
 
         return statement
 
-    def _parse_expression(self, precedence: ExpressionType) -> Expression:
+    def _parse_expression(self, precedence: ExpressionPrecedence) -> Expression:
         """
         Here we ensure we are using the correct precedence
         with the corresponding function
@@ -180,7 +198,117 @@ class Parser:
         literal.value = number
         return literal
 
-    def _parse_prefix_expression(self) -> Expression:
+    def _parse_boolean(self) -> Boolean:
+        return Boolean(self.current_token, self._current_token_is(TokenType.TRUE))
+
+    def _parse_grouped_expression(self) -> Expression:
+        self._next_token()
+        expression: Expression = self._parse_expression(ExpressionPrecedence.LOWEST)
+        if self._peek_expected(TokenType.RPAREN):
+            return expression
+        return None
+
+    def _parse_if_expression(self) -> IfExpression:
+        expression: IfExpression = IfExpression.empty()
+
+        if not self._peek_expected(TokenType.LPAREN):
+            return None
+
+        self._next_token()
+        expression.condition = self._parse_expression(ExpressionPrecedence.LOWEST)
+
+        if not self._peek_expected(TokenType.RPAREN):
+            return None
+
+        if not self._peek_expected(TokenType.LBRACE):
+            return None
+
+        expression.consequence = self._parse_block_statement()
+        return expression
+
+    def _parse_block_statement(self) -> BlockStatement:
+        block: BlockStatement = BlockStatement.empty()
+        block.statements = []
+
+        self._next_token()
+
+        while not (
+            self._current_token_is(TokenType.RBRACE)
+            and self._current_token_is(TokenType.EOF)
+        ):
+            statement = self._parse_statement()
+
+            if statement:
+                block.statements.append(statement)
+
+            self._next_token()
+
+        return block
+
+    def _parse_function_literal(self) -> FunctionLiteral:
+        literal: FunctionLiteral = FunctionLiteral.empty()
+        literal.token = self.current_token
+
+        if not self._peek_expected(TokenType.LPAREN):
+            return None
+
+        literal.parameters = self._parse_function_parameters()
+
+        if not self._peek_expected(TokenType.LBRACE):
+            return None
+
+        literal.body = self._parse_block_statement()
+        return literal
+
+    def _parse_function_parameters(self) -> list[Identifier]:
+        identifiers: list[Identifier] = []
+
+        if self._peek_token_is(TokenType.RPAREN):
+            self._next_token()
+            return identifiers
+
+        self._next_token()
+
+        ident: Identifier = Identifier(self.current_token, self.current_token.literal)
+        identifiers.append(ident)
+
+        while self._peek_token_is(TokenType.COMMA):
+            self._next_token()
+            self._next_token()
+            ident = Identifier(self.current_token, self.current_token.literal)
+            identifiers.append(ident)
+
+        if not self._peek_expected(TokenType.RPAREN):
+            return None
+
+        return identifiers
+
+    def _parse_call_expression(self) -> Expression:
+        expression: Expression = CallExpression.empty()
+        expression.arguments = self._parse_call_arguments()
+        return expression
+
+    def _parse_call_arguments(self) -> list[Expression]:
+        arguments: list[Expression] = []
+
+        if self._peek_token_is(TokenType.RPAREN):
+            self._next_token()
+            return arguments
+
+        self._next_token()
+        arguments.append(self._parse_expression(ExpressionPrecedence.LOWEST))
+
+        while self._peek_token_is(TokenType.COMMA):
+            self._next_token()
+            self._next_token()
+            arguments.append(self._parse_expression(ExpressionPrecedence.LOWEST))
+
+        if not self._peek_expected(TokenType.RPAREN):
+            return None
+
+        return arguments
+
+    def _parse_prefix_expression(self) -> PrefixExpression:
         """
         We return the prefix expression of our current token
         """
@@ -189,11 +317,11 @@ class Parser:
         expression.operator = self.current_token.literal
 
         self._next_token()
-        expression.right = self._parse_expression(ExpressionType.PREFIX)
+        expression.right = self._parse_expression(ExpressionPrecedence.PREFIX)
 
         return expression
 
-    def _parse_infix_expression(self, left: Expression):
+    def _parse_infix_expression(self, left: Expression) -> InfixExpression:
         """
         We return the infix expression of our current token
         """
@@ -202,7 +330,7 @@ class Parser:
         expression.operator = self.current_token.literal
         expression.left = left
 
-        precedence = self._current_precedence()
+        precedence: ExpressionPrecedence = self._current_precedence()
         self._next_token()
         expression.right = self._parse_expression(precedence)
 
@@ -216,13 +344,15 @@ class Parser:
         message = "No prefix function to parse %s" % token_type
         self.errors.append(message)
 
-    def _current_precedence(self) -> ExpressionType:
+    def _current_precedence(self) -> ExpressionPrecedence:
         """
         Gets the precendence of the current token
         """
-        precendence: ExpressionType = PRECEDENCES.get(self.current_token.token_type)
+        precendence: ExpressionPrecedence = PRECEDENCES.get(
+            self.current_token.token_type
+        )
         if not precendence:
-            return ExpressionType.LOWEST
+            return ExpressionPrecedence.LOWEST
         return precendence
 
     def _current_token_is(self, token_type: TokenType) -> bool:
@@ -247,13 +377,13 @@ class Parser:
         )
         self.errors.append(message)
 
-    def _peek_precendence(self) -> ExpressionType:
+    def _peek_precendence(self) -> ExpressionPrecedence:
         """
         Gets the precedence of the peek token
         """
-        precedence: ExpressionType = PRECEDENCES.get(self.peek_token.token_type)
+        precedence: ExpressionPrecedence = PRECEDENCES.get(self.peek_token.token_type)
         if not precedence:
-            return ExpressionType.LOWEST
+            return ExpressionPrecedence.LOWEST
         return precedence
 
     def _peek_expected(self, token_type: TokenType) -> bool:
@@ -282,19 +412,19 @@ class Parser:
         self.infix_parse_funs[token_type] = fun
 
 
-class ExpressionType(Enum):
+class ExpressionPrecedence(Enum):
     """
     These are the operator of la la lang, we assing them to a
     value in order to denote precedence
     """
 
     def __repr__(self):
-        return "ExpressionType(%s)" % self.value
+        return "ExpressionPrecedence(%s)" % self.value
 
     def __str__(self):
         return str(self.value)
 
-    def __lt__(self, other: ExpressionType):
+    def __lt__(self, other: ExpressionPrecedence):
         return self.value - other.value < 0
 
     LOWEST = 0
@@ -306,13 +436,13 @@ class ExpressionType(Enum):
     CALL = 6
 
 
-PRECEDENCES: dict[TokenType, ExpressionType] = {
-    TokenType.EQ: ExpressionType.EQUALS,
-    TokenType.NOT_EQ: ExpressionType.EQUALS,
-    TokenType.LT: ExpressionType.LESS_GREATER,
-    TokenType.GT: ExpressionType.LESS_GREATER,
-    TokenType.PLUS: ExpressionType.SUM,
-    TokenType.MINUS: ExpressionType.SUM,
-    TokenType.SLASH: ExpressionType.PRODUCT,
-    TokenType.ASTERISK: ExpressionType.PRODUCT,
+PRECEDENCES: dict[TokenType, ExpressionPrecedence] = {
+    TokenType.EQ: ExpressionPrecedence.EQUALS,
+    TokenType.NOT_EQ: ExpressionPrecedence.EQUALS,
+    TokenType.LT: ExpressionPrecedence.LESS_GREATER,
+    TokenType.GT: ExpressionPrecedence.LESS_GREATER,
+    TokenType.PLUS: ExpressionPrecedence.SUM,
+    TokenType.MINUS: ExpressionPrecedence.SUM,
+    TokenType.SLASH: ExpressionPrecedence.PRODUCT,
+    TokenType.ASTERISK: ExpressionPrecedence.PRODUCT,
 }

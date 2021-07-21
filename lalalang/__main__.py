@@ -14,7 +14,7 @@ def lexing(line):
     token = Token.empty()
     while token.token_type != TokenType.EOF:
         token = lex.next_token()
-        print(token)
+        print(repr(token))
 
 
 def start_repl(fun):

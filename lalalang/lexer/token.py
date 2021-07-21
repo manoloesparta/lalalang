@@ -8,7 +8,7 @@ class TokenType(Enum):
     """
 
     def __repr__(self):
-        return "TokenType(%s)" % self.value
+        return str(self.name)
 
     def __str__(self):
         return str(self.value)
@@ -65,7 +65,10 @@ class Token:
         self.token_type: TokenType = token_type
         self.literal: str = literal
 
-    def __str__(self) -> str:
+    def __repr__(self):
+        return "Token(%s, %s)" % (repr(self.token_type), self.literal)
+
+    def __str__(self):
         return "Token(%s, %s)" % (self.token_type, self.literal)
 
 

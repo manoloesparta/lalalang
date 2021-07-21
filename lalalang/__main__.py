@@ -1,12 +1,19 @@
 import sys
+import click
 import signal
 from .lexer import Lexer, TokenType, Token
+from .parser import Parser
 
 
-def main():
+@click.command()
+@click.option("--mode", default="parser", help="REPL mode (lexer|parser)")
+def start_cli(mode):
     print("Welcome to the city of stars!🌟")
     print("This is the La La Lang Programming Language!")
-    start_repl(lexing)
+    if mode == "parser":
+        repl(parsing)
+    elif mode == "lexer":
+        repl(lexing)
 
 
 def lexing(line):
@@ -17,7 +24,14 @@ def lexing(line):
         print(repr(token))
 
 
-def start_repl(fun):
+def parsing(code):
+    lex = Lexer(code)
+    par = Parser(lex)
+    program = par.parse_program()
+    print(program)
+
+
+def repl(fun):
     while line := input("♪♪ > "):
         fun(line)
 
@@ -31,4 +45,4 @@ signal.signal(signal.SIGINT, ctrlc_handler)
 
 
 if __name__ == "__main__":
-    main()
+    start_cli()

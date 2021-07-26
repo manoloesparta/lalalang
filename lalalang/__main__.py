@@ -7,9 +7,9 @@ from .parser import Parser
 
 @click.command()
 @click.option("--mode", default="parser", help="REPL mode (lexer|parser)")
-def start_cli(mode):
+def cli(mode):
     print("Welcome to the city of stars!🌟")
-    print("This is the La La Lang Programming Language!")
+    print("This is the La La Lang Programming Languag v0.2!")
     if mode == "parser":
         repl(parsing)
     elif mode == "lexer":
@@ -28,7 +28,11 @@ def parsing(code):
     lex = Lexer(code)
     par = Parser(lex)
     program = par.parse_program()
-    print(program)
+
+    if len(par.errors) == 0:
+        print(program)
+    else:
+        [print("\t %s" % err) for err in par.errors]
 
 
 def repl(fun):
@@ -45,4 +49,4 @@ signal.signal(signal.SIGINT, ctrlc_handler)
 
 
 if __name__ == "__main__":
-    start_cli()
+    cli()

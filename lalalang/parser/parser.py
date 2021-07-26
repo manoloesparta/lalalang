@@ -2,7 +2,7 @@ from __future__ import annotations
 from enum import Enum
 from typing import Callable
 from lalalang.lexer import Lexer, Token, TokenType
-from .ast import (
+from lalalang.parser.ast import (
     Statement,
     Program,
     ExpressionStatement,
@@ -42,22 +42,19 @@ class Parser:
 
     def parse_program(self) -> Program:
         """
-        This is the main method that will traverse the tokens
-        and generate an abstract syntax tree
+        This is the main method that will traverse the tokens and generate
+        the respective abstract syntax tree
         """
         program: Program = Program()
         while not self._current_token_is(TokenType.EOF):
             statement: Statement = self._parse_statement()
-            if statement != None:
+            if statement:
                 program.add_statement(statement)
             self._next_token()
         return program
 
     def _setup(self) -> None:
-        """
-        Some stuff that needs to be ready at the construction of
-        this class
-        """
+        """Some stuff that needs to be ready at the construction of this class"""
         self._register_prefix_fun(TokenType.IDENT, self._parse_identifier)
         self._register_prefix_fun(TokenType.INT, self._parse_integer_literal)
         self._register_prefix_fun(TokenType.BANG, self._parse_prefix_expression)
@@ -82,18 +79,12 @@ class Parser:
         self._next_token()
 
     def _next_token(self) -> None:
-        """
-        This helps us moving arround the lexer to watch one
-        token ahead
-        """
+        """This helps us moving arround the lexer to watch one token ahead"""
         self.current_token = self.peek_token
         self.peek_token = self.lexer.next_token()
 
     def _parse_statement(self) -> Statement:
-        """
-        Here are the conditionals to handle any statements defined
-        by us
-        """
+        """Here are the conditionals to handle any statements defined by us"""
         if self._current_token_is(TokenType.LET):
             return self._parse_let_statement()
         elif self._current_token_is(TokenType.RETURN):
@@ -103,9 +94,7 @@ class Parser:
         raise Exception("Unable to parse statement")
 
     def _parse_let_statement(self) -> LetStatement:
-        """
-        Handling the specific case of a let statement
-        """
+        """Parse the let statement"""
         statement: LetStatement = LetStatement.empty()
         statement.token = self.current_token
 
@@ -126,9 +115,7 @@ class Parser:
         return statement
 
     def _parse_return_statement(self) -> ReturnStatement:
-        """
-        Handling the other case of return statement
-        """
+        """Pase the return statement"""
         statement: ReturnStatement = ReturnStatement.empty()
         statement.token = self.current_token
 
@@ -141,9 +128,7 @@ class Parser:
         return statement
 
     def _parse_expression_statement(self) -> ExpressionStatement:
-        """
-        Here we extract expression statements from the code
-        """
+        """Parse the expression statement"""
         statement: ExpressionStatement = ExpressionStatement.empty()
         statement.expression = self._parse_expression(ExpressionPrecedence.LOWEST)
 
@@ -154,10 +139,10 @@ class Parser:
 
     def _parse_expression(self, precedence: ExpressionPrecedence) -> Expression:
         """
-        Here we ensure we are using the correct precedence
-        with the corresponding function
+        TBD more complex
         """
         prefix: Callable = self.prefix_parse_funs.get(self.current_token.token_type)
+        print(prefix)
         if not prefix:
             self._no_prefix_parsing_error(self.current_token.token_type)
             return None
@@ -178,15 +163,11 @@ class Parser:
         return left_expression
 
     def _parse_identifier(self) -> Identifier:
-        """
-        We return the identifier of on our current position
-        """
+        """Parse any identifier (e.g variable and function names)"""
         return Identifier(self.current_token, self.current_token.literal)
 
     def _parse_integer_literal(self) -> IntegerLiteral:
-        """
-        Here we extract integers and convert them from str to int
-        """
+        """Parse an integer literal (the actual number)"""
         literal: IntegerLiteral = IntegerLiteral.empty()
         literal.token = self.current_token
         try:
@@ -199,9 +180,11 @@ class Parser:
         return literal
 
     def _parse_boolean(self) -> Boolean:
+        """Parse boolean expression"""
         return Boolean(self.current_token, self._current_token_is(TokenType.TRUE))
 
     def _parse_grouped_expression(self) -> Expression:
+        """Parse any grouped expression (any expression with more than one operator)"""
         self._next_token()
         expression: Expression = self._parse_expression(ExpressionPrecedence.LOWEST)
         if self._peek_expected(TokenType.RPAREN):
@@ -209,6 +192,7 @@ class Parser:
         return None
 
     def _parse_if_expression(self) -> IfExpression:
+        """Parse if expressions"""
         expression: IfExpression = IfExpression.empty()
 
         if not self._peek_expected(TokenType.LPAREN):
@@ -227,6 +211,7 @@ class Parser:
         return expression
 
     def _parse_block_statement(self) -> BlockStatement:
+        """Parse the block statements (consequent and alternatives of if expressions)"""
         block: BlockStatement = BlockStatement.empty()
         block.statements = []
 
@@ -246,6 +231,7 @@ class Parser:
         return block
 
     def _parse_function_literal(self) -> FunctionLiteral:
+        """Parse the name, parameters and body of a function"""
         literal: FunctionLiteral = FunctionLiteral.empty()
         literal.token = self.current_token
 
@@ -261,6 +247,7 @@ class Parser:
         return literal
 
     def _parse_function_parameters(self) -> list[Identifier]:
+        """Parse the function parameters"""
         identifiers: list[Identifier] = []
 
         if self._peek_token_is(TokenType.RPAREN):
@@ -283,12 +270,14 @@ class Parser:
 
         return identifiers
 
-    def _parse_call_expression(self) -> Expression:
-        expression: Expression = CallExpression.empty()
+    def _parse_call_expression(self) -> CallExpression:
+        """Parse a call expression (function call)"""
+        expression: CallExpression = CallExpression.empty()
         expression.arguments = self._parse_call_arguments()
         return expression
 
     def _parse_call_arguments(self) -> list[Expression]:
+        """Parse the call arguments"""
         arguments: list[Expression] = []
 
         if self._peek_token_is(TokenType.RPAREN):
@@ -309,9 +298,7 @@ class Parser:
         return arguments
 
     def _parse_prefix_expression(self) -> PrefixExpression:
-        """
-        We return the prefix expression of our current token
-        """
+        """We return the prefix expression of our current token"""
         expression: PrefixExpression = PrefixExpression.empty()
         expression.token = self.current_token
         expression.operator = self.current_token.literal
@@ -322,9 +309,7 @@ class Parser:
         return expression
 
     def _parse_infix_expression(self, left: Expression) -> InfixExpression:
-        """
-        We return the infix expression of our current token
-        """
+        """We return the infix expression of our current token"""
         expression: InfixExpression = InfixExpression.empty()
         expression.token = self.current_token
         expression.operator = self.current_token.literal
@@ -337,17 +322,12 @@ class Parser:
         return expression
 
     def _no_prefix_parsing_error(self, token_type: TokenType) -> None:
-        """
-        Add this error message whenever a prefix expression is
-        unrecognized
-        """
+        """Add this error message whenever a prefix expression is unrecognized"""
         message = "No prefix function to parse %s" % token_type
         self.errors.append(message)
 
     def _current_precedence(self) -> ExpressionPrecedence:
-        """
-        Gets the precendence of the current token
-        """
+        """Gets the precendence of the current token"""
         precendence: ExpressionPrecedence = PRECEDENCES.get(
             self.current_token.token_type
         )
@@ -356,21 +336,15 @@ class Parser:
         return precendence
 
     def _current_token_is(self, token_type: TokenType) -> bool:
-        """
-        Check if the current token is a specific TokenType
-        """
+        """Check if the current token is a specific TokenType"""
         return self.current_token.token_type == token_type
 
     def _peek_token_is(self, token_type: TokenType) -> bool:
-        """
-        Check if the next token is a specific TokenType
-        """
+        """Check if the next token is a specific TokenType"""
         return self.peek_token.token_type == token_type
 
     def _peek_error(self, token_type: TokenType) -> None:
-        """
-        Add error message of unexpected tokens
-        """
+        """Add error message of unexpected tokens"""
         message: str = "Expected type %s, got %s" % (
             token_type,
             self.peek_token.token_type,
@@ -378,19 +352,14 @@ class Parser:
         self.errors.append(message)
 
     def _peek_precendence(self) -> ExpressionPrecedence:
-        """
-        Gets the precedence of the peek token
-        """
+        """Gets the precedence of the peek token"""
         precedence: ExpressionPrecedence = PRECEDENCES.get(self.peek_token.token_type)
         if not precedence:
             return ExpressionPrecedence.LOWEST
         return precedence
 
     def _peek_expected(self, token_type: TokenType) -> bool:
-        """
-        This helper method is for checking if next token has the
-        expected TokenType
-        """
+        """This helper method is for checking if next token has the expected TokenType"""
         if self._peek_token_is(token_type):
             self._next_token()
             return True
@@ -398,17 +367,11 @@ class Parser:
         return False
 
     def _register_prefix_fun(self, token_type: TokenType, fun: Callable) -> None:
-        """
-        Associate a token type with a function for the
-        prefix statements
-        """
+        """Associate a token type with a function for the prefix statements"""
         self.prefix_parse_funs[token_type] = fun
 
     def _register_infix_fun(self, token_type: TokenType, fun: Callable) -> None:
-        """
-        Associate a token type with a function for the
-        infix statements
-        """
+        """Associate a token type with a function for the infix statements"""
         self.infix_parse_funs[token_type] = fun
 
 

@@ -12,7 +12,7 @@ install:
 
 .PHONY: tests
 tests:
-	$(PYTHON) -m coverage run -m unittest discover -s tests
+	$(PYTHON) -m coverage run -m pytest
 	$(PYTHON) -m coverage report -m
 
 .PHONY: analyze 
@@ -26,7 +26,7 @@ format:
 .PHONY: clean 
 clean:
 	find . -name __pycache__ | xargs rm -rf
-	rm -rf build dist *.egg-info .eggs .coverage .mypy_cache
+	rm -rf build dist *.egg-info .eggs .coverage .mypy_cache .pytest_cache
 
 .PHONY: check 
 check:

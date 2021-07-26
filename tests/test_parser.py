@@ -9,8 +9,9 @@ from lalalang.parser import (
     PrefixExpression,
     InfixExpression,
     IntegerLiteral,
+    Boolean,
 )
-from mocks.parser import (
+from tests.mocks.parser import (
     LET_STATEMENTS,
     RETURN_STATEMENTS,
     LET_PROGRAM,
@@ -19,6 +20,7 @@ from mocks.parser import (
     PREFIX_EXPRESSIONS,
     INFIX_EXPRESSIONS,
     PRECEDENCE_EXPRESSIONS,
+    BOOLEAN_EXPRESSION,
 )
 
 
@@ -62,7 +64,7 @@ class TestParserStatements(TestCase):
             source = pe.get("input")
             program = self.create_program(source)
 
-            output = pe.get("output")
+            output = pe.get("expected")
             self.assertEqual(len(program.statements), 1)
 
             statement = program.statements[0]
@@ -78,7 +80,7 @@ class TestParserStatements(TestCase):
             source = ie.get("input")
             program = self.create_program(source)
 
-            output = ie.get("output")
+            output = ie.get("expected")
             self.assertEqual(len(program.statements), 1)
 
             statement = program.statements[0]
@@ -97,12 +99,29 @@ class TestParserStatements(TestCase):
             source = pe.get("input")
             program = self.create_program(source)
 
-            expected = pe.get("output")
+            expected = pe.get("expected")
             self.assertEqual(str(program), expected)
 
-    def test_return_statements(self):
-        program = self.create_program(RETURN_STATEMENTS)
-        self.assertEqual(len(program.statements), 3)
+    def test_boolean(self):
+        for be in BOOLEAN_EXPRESSION:
+            source = be.get("input")
+            program = self.create_program(source)
+
+            expected = be.get("expected")
+            self.assertEqual(str(program), expected)
+
+            statement = program.statements[0]
+            # self.assertIsInstance(statement, Boolean)
+
+            # expression = statement.expression
+            # self.assertIsInstance(expression, PrefixExpression)
+
+            # print(program)
+
+    # def test_return_statements(self):
+    #     program = self.create_program(RETURN_STATEMENTS)
+    #     print(program)
+    #     self.assertEqual(len(program.statements), 3)
 
     def create_program(self, source_code):
         lex = Lexer(source_code)

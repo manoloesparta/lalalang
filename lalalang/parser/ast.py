@@ -1,6 +1,6 @@
 from __future__ import annotations
 from lalalang.lexer.token import TokenType, Token
-from .nodes import Node, Statement, Expression
+from lalalang.parser.nodes import Node, Statement, Expression
 
 
 class Program(Node):
@@ -50,7 +50,7 @@ class Identifier(Expression):
         self.value: str = value
 
     def __repr__(self):
-        return "Identifier(%s, %s)" % (str(self.token), self.value)
+        return "Identifier(%s, %s)" % (repr(self.token), self.value)
 
     def __str__(self):
         return self.value
@@ -79,9 +79,9 @@ class LetStatement(Statement):
 
     def __repr__(self):
         return "LetStatement(%s, %s, %s)" % (
-            str(self.token),
-            str(self.name),
-            str(self.value),
+            repr(self.token),
+            repr(self.name),
+            repr(self.value),
         )
 
     def __str__(self):
@@ -111,7 +111,7 @@ class ReturnStatement(Statement):
         self.return_value: Expression = return_value
 
     def __repr__(self):
-        return "ReturnStatement(%s, %s)" % (str(self.token), str(self.return_value))
+        return "ReturnStatement(%s, %s)" % (repr(self.token), repr(self.return_value))
 
     def __str__(self):
         return "%s %s;" % (self.token_literal(), str(self.return_value))
@@ -139,7 +139,7 @@ class ExpressionStatement(Statement):
         self.expression: Expression = expression
 
     def __repr__(self):
-        return "ExpressionStatement(%s, %s)" % (str(self.token), str(self.expression))
+        return "ExpressionStatement(%s, %s)" % (repr(self.token), repr(self.expression))
 
     def __str__(self):
         if not self.expression:
@@ -169,7 +169,7 @@ class IntegerLiteral(Expression):
         self.value: int = value
 
     def __repr__(self):
-        return "IntegerLiteral(%s,%s)" % (str(self.token), self.value)
+        return "IntegerLiteral(%s,%s)" % (repr(self.token), self.value)
 
     def __str__(self):
         return str(self.value)
@@ -182,6 +182,10 @@ class IntegerLiteral(Expression):
 
 
 class PrefixExpression(Expression):
+    """
+    tbd
+    """
+
     @staticmethod
     def empty():
         return PrefixExpression(None, None, None)
@@ -193,9 +197,9 @@ class PrefixExpression(Expression):
 
     def __repr__(self):
         return "PrefixExpression(%s,%s,%s)" % (
-            str(self.token),
+            repr(self.token),
             self.operator,
-            str(self.right),
+            repr(self.right),
         )
 
     def __str__(self):
@@ -209,6 +213,10 @@ class PrefixExpression(Expression):
 
 
 class InfixExpression(Expression):
+    """
+    tbd
+    """
+
     @staticmethod
     def empty():
         return InfixExpression(None, None, None, None)
@@ -223,10 +231,10 @@ class InfixExpression(Expression):
 
     def __repr__(self):
         return "InfixExpression(%s,%s,%s,%s)" % (
-            str(self.token),
-            str(self.left),
-            str(self.operator),
-            str(self.right),
+            repr(self.token),
+            repr(self.left),
+            repr(self.operator),
+            repr(self.right),
         )
 
     def __str__(self):
@@ -240,12 +248,16 @@ class InfixExpression(Expression):
 
 
 class Boolean(Expression):
+    """
+    tbd
+    """
+
     def __init__(self, token: Token, value: bool):
         self.token: Token = token
         self.value: bool = value
 
     def __repr__(self):
-        return "Boolean(%s, %s)" % (str(self.token), self.value)
+        return "Boolean(%s, %s)" % (repr(self.token), self.value)
 
     def __str__(self):
         return str(self.token.literal)
@@ -258,6 +270,10 @@ class Boolean(Expression):
 
 
 class IfExpression(Expression):
+    """
+    tbd
+    """
+
     @staticmethod
     def empty():
         return IfExpression(None, None, None, None)
@@ -276,10 +292,10 @@ class IfExpression(Expression):
 
     def __repr__(self):
         return "IfExpression(%s, %s, %s, %s)" % (
-            str(self.token),
-            str(self.condition),
-            str(self.consequence),
-            str(self.alternative),
+            repr(self.token),
+            repr(self.condition),
+            repr(self.consequence),
+            repr(self.alternative),
         )
 
     def __str__(self):
@@ -299,6 +315,10 @@ class IfExpression(Expression):
 
 
 class BlockStatement(Statement):
+    """
+    tbd
+    """
+
     @staticmethod
     def empty():
         return BlockStatement(None, None)
@@ -323,6 +343,10 @@ class BlockStatement(Statement):
 
 
 class FunctionLiteral(Expression):
+    """
+    tbd
+    """
+
     @staticmethod
     def empty():
         return FunctionLiteral(None, None, None)
@@ -337,9 +361,9 @@ class FunctionLiteral(Expression):
     def __repr__(self):
         convs_params = [repr(i) for i in self.parameters]
         return "FunctionLiteral(%s, %s, %s)" % (
-            str(self.token),
+            repr(self.token),
             "".join(convs_params),
-            str(self.body),
+            repr(self.body),
         )
 
     def __str__(self):
@@ -358,6 +382,10 @@ class FunctionLiteral(Expression):
 
 
 class CallExpression(Expression):
+    """
+    tbd
+    """
+
     @staticmethod
     def empty():
         return CallExpression(None, None, None)
@@ -370,8 +398,8 @@ class CallExpression(Expression):
     def __repr__(self):
         convs_args = [repr(i) for i in arguments]
         return "CallExpression(%s, %s, %s)" % (
-            str(self.token),
-            str(self.function),
+            repr(self.token),
+            repr(self.function),
             ", ".join(convs_args),
         )
 

@@ -1,4 +1,4 @@
-from .token import TokenType, Token, lookup_identifier
+from lalalang.lexer.token import TokenType, Token, lookup_identifier
 
 
 class Lexer:

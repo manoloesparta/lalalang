@@ -1,2 +1,2 @@
-from .lexer import *
-from .token import *
+from lalalang.lexer.lexer import *
+from lalalang.lexer.token import *

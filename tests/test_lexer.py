@@ -1,7 +1,7 @@
 from unittest import TestCase
 from lalalang.lexer.lexer import Lexer
 from lalalang.lexer.token import TokenType, Token
-from mocks.lexer import (
+from tests.mocks.lexer import (
     SOURCE_CODE,
     DELIMETERS,
     ILLEGAL,

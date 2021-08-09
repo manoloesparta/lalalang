@@ -1,6 +1,7 @@
 # enviroment
 venv/
 .vscode/
+.envrc
 
 # OS specific
 .DS_Store

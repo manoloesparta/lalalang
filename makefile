@@ -27,9 +27,3 @@ format:
 clean:
 	find . -name __pycache__ | xargs rm -rf
 	rm -rf build dist *.egg-info .eggs .coverage .mypy_cache .pytest_cache
-
-.PHONY: check 
-check:
-	$(MAKE) analyze --no-print-directory
-	$(MAKE) format --no-print-directory
-	$(MAKE) tests --no-print-directory

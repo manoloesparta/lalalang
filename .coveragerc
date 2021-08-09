@@ -7,8 +7,9 @@ omit =
 	**/__init__.py
 	tests/**
 
-	# Abstract classes
+	# Classes
 	lalalang/parser/nodes.py
+	lalalang/parser/ast.py
 
 [report]
 exclude_lines = 

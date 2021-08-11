@@ -1,65 +1,75 @@
 from unittest import TestCase
 from lalalang.lexer import Lexer
-from lalalang.parser import (
-    Parser,
-    Program,
-    ExpressionStatement,
-    Statement,
-    Identifier,
-    PrefixExpression,
-    InfixExpression,
-    IntegerLiteral,
-    Boolean,
-)
-from tests.mocks.parser import (
-    LET_STATEMENTS,
-    RETURN_STATEMENTS,
-    LET_PROGRAM,
-    IDENT_EXPRESSION,
-    INT_LITERAL,
-    PREFIX_EXPRESSIONS,
-    INFIX_EXPRESSIONS,
-    PRECEDENCE_EXPRESSIONS,
-    BOOLEAN_EXPRESSION,
-)
+from lalalang.parser import *
+from tests.mocks.parser import *
 
 
 class TestParserStatements(TestCase):
-    def test_let_statements(self):
-        program = self.create_program(LET_STATEMENTS)
-        expected_idents = ["x", "y", "foobar", "mia"]
-        stms = program.statements
-        for i, idents in enumerate(expected_idents):
-            current = stms[i].name.value
-            self.assertEqual(idents, current)
-
     def test_program_construction(self):
         result = "let myVar = anotherVar;"
-        self.assertEqual(str(LET_PROGRAM), result)
+        self.assertEqual(str(CONSTRUCTED_PROGRAM), result)
 
-    def test_ident_expression(self):
-        program = self.create_program(IDENT_EXPRESSION)
-        statement = program.statements[0]
-        self.assertEqual(len(program.statements), 1)
-        self.assertIsInstance(statement, ExpressionStatement)
+    def test_let_statements(self):
+        for ls in LET_STATEMENTS:
+            source = ls.get("input")
+            program = self.create_program(source)
 
-        ident = statement.expression
-        self.assertIsInstance(ident, Identifier)
-        self.assertEqual(ident.value, "foobar")
-        self.assertEqual(ident.token_literal(), "foobar")
+            output = ls.get("expected")
+            self.assertEqual(len(program.statements), 1)
+
+            statement = program.statements[0]
+            self.assertIsInstance(statement, LetStatement)
+
+            expression = statement.value
+            self.assertIsInstance(expression, Expression)
+
+            self.assertEqual(str(statement.name), output[0])
+            self.assertEqual(str(expression), output[1])
+    
+    def test_return_statements(self):
+        for rs in RETURN_STATEMENTS:
+            source = rs.get("input")
+            program = self.create_program(source)
+
+            output = rs.get("expected")
+            self.assertEqual(len(program.statements), 1)
+
+            statement = program.statements[0]
+            self.assertIsInstance(statement, ReturnStatement)
+
+            expression = statement.return_value
+            self.assertEqual(str(expression), output)
+
+    def test_identifiers_expressions(self):
+        for ie in IDENT_EXPRESSION:
+            source = ie.get("input")
+            program = self.create_program(source)
+
+            output = ie.get("expected")
+            self.assertEqual(str(program), output)
+            self.assertEqual(len(program.statements), 1)
+
+            statement = program.statements[0]
+            self.assertIsInstance(statement, ExpressionStatement)
+
+            expression = statement.expression
+            self.assertIsInstance(expression, Identifier)
 
     def test_int_literal(self):
-        program = self.create_program(INT_LITERAL)
-        statement = program.statements[0]
-        self.assertEqual(len(program.statements), 1)
-        self.assertIsInstance(statement, ExpressionStatement)
+        for il in INT_LITERALS:
+            source = il.get("input")
+            program = self.create_program(source)
 
-        literal = statement.expression
-        self.assertIsInstance(literal, IntegerLiteral)
-        self.assertEqual(literal.value, 5)
-        self.assertEqual(literal.token_literal(), "5")
+            output = il.get("expected")
+            self.assertEqual(len(program.statements), 1)
 
-    def test_prefix_expressios(self):
+            statement = program.statements[0]
+            self.assertIsInstance(statement, ExpressionStatement)
+
+            expression = statement.expression
+            self.assertTrue(self.validate_integer_literal(expression, output))
+
+    def test_prefix_expressions(self):
         for pe in PREFIX_EXPRESSIONS:
             source = pe.get("input")
             program = self.create_program(source)
@@ -102,7 +112,7 @@ class TestParserStatements(TestCase):
             expected = pe.get("expected")
             self.assertEqual(str(program), expected)
 
-    def test_boolean(self):
+    def test_boolean_expressions(self):
         for be in BOOLEAN_EXPRESSION:
             source = be.get("input")
             program = self.create_program(source)
@@ -111,17 +121,76 @@ class TestParserStatements(TestCase):
             self.assertEqual(str(program), expected)
 
             statement = program.statements[0]
-            # self.assertIsInstance(statement, Boolean)
+            self.assertIsInstance(statement, ExpressionStatement)
 
-            # expression = statement.expression
-            # self.assertIsInstance(expression, PrefixExpression)
+            expression = statement.expression
+            self.assertIsInstance(expression, Boolean)
 
-            # print(program)
+    def test_grouped_expressions(self):
+        for ge in GROUPED_EXPRESSIONS:
+            source = ge.get("input")
+            program = self.create_program(source)
 
-    # def test_return_statements(self):
-    #     program = self.create_program(RETURN_STATEMENTS)
-    #     print(program)
-    #     self.assertEqual(len(program.statements), 3)
+            expected = ge.get("expected")
+            self.assertEqual(str(program), expected)
+
+    def test_if_expressions(self):
+        for ie in IF_EXPRESSIONS:
+            source = ie.get("input")
+            program = self.create_program(source)
+
+            expected = ie.get("expected")
+            self.assertEqual(len(program.statements), 1)
+
+            statement = program.statements[0]
+            self.assertIsInstance(statement, ExpressionStatement)
+
+            expression = statement.expression
+            self.assertIsInstance(expression, IfExpression)
+
+            consequence = expression.consequence
+            self.assertIsInstance(consequence, BlockStatement)
+
+            self.assertEqual(str(expression.condition), expected[0])
+            self.assertEqual(str(expression.consequence), expected[1])
+            self.assertEqual(str(expression.alternative), expected[2])
+
+    def test_function_literals(self):
+        for fl in FUNCTION_LITERALS:
+            source = fl.get("input")
+            program = self.create_program(source)
+
+            expected = fl.get("expected")
+            self.assertEqual(len(program.statements), 1)
+
+            statement = program.statements[0]
+            self.assertIsInstance(statement, ExpressionStatement)
+
+            expression = statement.expression
+            self.assertIsInstance(expression, FunctionLiteral)
+
+            body = expression.body
+            self.assertIsInstance(body, BlockStatement)
+
+            self.assertEqual(str(expression), expected[0])
+            self.assertEqual(str(body), expected[1])
+
+    def test_call_expressions(self):
+        for ce in CALL_EXPRESSIONS:
+            source = ce.get("input")
+            program = self.create_program(source)
+
+            expected = ce.get("expected")
+            self.assertEqual(len(program.statements), 1)
+
+            statement = program.statements[0]
+            self.assertIsInstance(statement, ExpressionStatement)
+
+            expression = statement.expression
+            self.assertIsInstance(expression, CallExpression)
+
+            self.assertEqual(str(expression.function), expected[0])
+            self.assertEqual(str(expression), expected[1])
 
     def create_program(self, source_code):
         lex = Lexer(source_code)

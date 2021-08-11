@@ -183,7 +183,8 @@ class IntegerLiteral(Expression):
 
 class PrefixExpression(Expression):
     """
-    tbd
+    This is any expression that has an operator before the
+    operand for now we only have two prefix operators - and !.
     """
 
     @staticmethod
@@ -214,7 +215,8 @@ class PrefixExpression(Expression):
 
 class InfixExpression(Expression):
     """
-    tbd
+    This is any expression that has an operator sitting between
+    its operands, here are most arithmetic operations
     """
 
     @staticmethod
@@ -249,7 +251,8 @@ class InfixExpression(Expression):
 
 class Boolean(Expression):
     """
-    tbd
+    Here we only store the simplest for of data, a boolean they
+    are represented with the literals 'true' or 'false'
     """
 
     def __init__(self, token: Token, value: bool):
@@ -271,7 +274,9 @@ class Boolean(Expression):
 
 class IfExpression(Expression):
     """
-    tbd
+    This are conditionals which has an expression that evaluates to
+    a boolean (also known as predicate), a consequence or alternative
+    that executes depending the condition
     """
 
     @staticmethod
@@ -316,7 +321,8 @@ class IfExpression(Expression):
 
 class BlockStatement(Statement):
     """
-    tbd
+    This is a construct for storing various statements that for
+    example is the body of an if expression or function literal
     """
 
     @staticmethod
@@ -344,7 +350,8 @@ class BlockStatement(Statement):
 
 class FunctionLiteral(Expression):
     """
-    tbd
+    This is fore storing the a function, with its name and parameters
+    (also known as signature) and the body, which is a BlockStatement
     """
 
     @staticmethod
@@ -383,7 +390,8 @@ class FunctionLiteral(Expression):
 
 class CallExpression(Expression):
     """
-    tbd
+    Here are the expressions that are using our declared function 
+    literals, we only store a the funcion used with its arguments
     """
 
     @staticmethod
@@ -396,7 +404,7 @@ class CallExpression(Expression):
         self.arguments: list[Expression] = arguments
 
     def __repr__(self):
-        convs_args = [repr(i) for i in arguments]
+        convs_args = [repr(i) for i in self.arguments]
         return "CallExpression(%s, %s, %s)" % (
             repr(self.token),
             repr(self.function),
@@ -404,7 +412,7 @@ class CallExpression(Expression):
         )
 
     def __str__(self):
-        convs_args = [str(i) for i in arguments]
+        convs_args = [str(i) for i in self.arguments]
         return "%s(%s)" % (str(self.function), ", ".join(convs_args))
 
     def token_literal(self) -> str:

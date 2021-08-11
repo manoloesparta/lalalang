@@ -1,16 +1,7 @@
 from unittest import TestCase
 from lalalang.lexer.lexer import Lexer
 from lalalang.lexer.token import TokenType, Token
-from tests.mocks.lexer import (
-    SOURCE_CODE,
-    DELIMETERS,
-    ILLEGAL,
-    OPERATORS,
-    TWO_CHARACTER_SYMBOLS,
-    IDENTIFIERS,
-    NUMBERS,
-    KEYWORDS,
-)
+from tests.mocks.lexer import *
 
 
 class TestLexer(TestCase):
@@ -144,12 +135,6 @@ class TestLexer(TestCase):
             Token(TokenType.RETURN, "return"),
         ]
         self.compare_results(KEYWORDS, expected_tokens)
-
-    def test_correct_str_format(self):
-        eof_token = Token(TokenType.EOF, "")
-        int_token = Token(TokenType.INT, "314")
-        self.assertEqual(str(eof_token), "Token(EOF, )")
-        self.assertEqual(str(int_token), "Token(INT, 314)")
 
     def compare_results(self, source_code, expected_tokens):
         lex = Lexer(source_code)

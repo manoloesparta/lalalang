@@ -2,23 +2,7 @@ from __future__ import annotations
 from enum import Enum
 from typing import Callable
 from lalalang.lexer import Lexer, Token, TokenType
-from lalalang.parser.ast import (
-    Statement,
-    Program,
-    ExpressionStatement,
-    ReturnStatement,
-    PrefixExpression,
-    Expression,
-    Identifier,
-    InfixExpression,
-    IntegerLiteral,
-    IfExpression,
-    BlockStatement,
-    FunctionLiteral,
-    LetStatement,
-    Boolean,
-    CallExpression,
-)
+from lalalang.parser.ast import * 
 
 
 class Parser:
@@ -91,7 +75,6 @@ class Parser:
             return self._parse_return_statement()
         else:
             return self._parse_expression_statement()
-        raise Exception("Unable to parse statement")
 
     def _parse_let_statement(self) -> LetStatement:
         """Parse the let statement"""
@@ -139,10 +122,11 @@ class Parser:
 
     def _parse_expression(self, precedence: ExpressionPrecedence) -> Expression:
         """
-        TBD more complex
+        This is the main method that contains explicitly pratt 
+        parsing, it is a recursive algorithm which decides about
+        infix and prefix parsing functions.
         """
         prefix: Callable = self.prefix_parse_funs.get(self.current_token.token_type)
-        print(prefix)
         if not prefix:
             self._no_prefix_parsing_error(self.current_token.token_type)
             return None
@@ -194,6 +178,7 @@ class Parser:
     def _parse_if_expression(self) -> IfExpression:
         """Parse if expressions"""
         expression: IfExpression = IfExpression.empty()
+        expression.token = self.current_token
 
         if not self._peek_expected(TokenType.LPAREN):
             return None
@@ -208,6 +193,15 @@ class Parser:
             return None
 
         expression.consequence = self._parse_block_statement()
+
+        if self._peek_token_is(TokenType.ELSE):
+            self._next_token()
+
+            if not self._peek_expected(TokenType.LBRACE):
+                return None
+
+            expression.alternative = self._parse_block_statement()
+
         return expression
 
     def _parse_block_statement(self) -> BlockStatement:
@@ -217,10 +211,9 @@ class Parser:
 
         self._next_token()
 
-        while not (
-            self._current_token_is(TokenType.RBRACE)
-            and self._current_token_is(TokenType.EOF)
-        ):
+        while not self._current_token_is(
+            TokenType.RBRACE
+        ) and not self._current_token_is(TokenType.EOF):
             statement = self._parse_statement()
 
             if statement:
@@ -270,9 +263,11 @@ class Parser:
 
         return identifiers
 
-    def _parse_call_expression(self) -> CallExpression:
+    def _parse_call_expression(self, function: Expression) -> CallExpression:
         """Parse a call expression (function call)"""
         expression: CallExpression = CallExpression.empty()
+        expression.function = function
+        expression.token = self.current_token
         expression.arguments = self._parse_call_arguments()
         return expression
 
@@ -353,9 +348,9 @@ class Parser:
 
     def _peek_precendence(self) -> ExpressionPrecedence:
         """Gets the precedence of the peek token"""
-        precedence: ExpressionPrecedence = PRECEDENCES.get(self.peek_token.token_type)
-        if not precedence:
-            return ExpressionPrecedence.LOWEST
+        precedence: ExpressionPrecedence = PRECEDENCES.get(
+            self.peek_token.token_type, ExpressionPrecedence.LOWEST
+        )
         return precedence
 
     def _peek_expected(self, token_type: TokenType) -> bool:
@@ -408,4 +403,5 @@ PRECEDENCES: dict[TokenType, ExpressionPrecedence] = {
     TokenType.MINUS: ExpressionPrecedence.SUM,
     TokenType.SLASH: ExpressionPrecedence.PRODUCT,
     TokenType.ASTERISK: ExpressionPrecedence.PRODUCT,
+    TokenType.LPAREN: ExpressionPrecedence.CALL,
 }

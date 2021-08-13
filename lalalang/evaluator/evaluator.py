@@ -10,7 +10,7 @@ NULL = Null()
 def eval_3lang(node: Node) -> Object:
     """
     This is executing a tree walk interpreter, doing a
-    postorder traverse over the ast 
+    postorder traverse over the ast
     """
 
     # Statements
@@ -25,7 +25,7 @@ def eval_3lang(node: Node) -> Object:
     elif isinstance(node, IntegerLiteral):
         return Integer(node.value)
     elif isinstance(node, BooleanLiteral):
-        return Boolean(node.value)
+        return boolean_reference(node.value)
 
     return None
 
@@ -38,3 +38,10 @@ def eval_statements(statements: list[Statement]) -> Object:
     for statement in statements:
         result: Object = eval_3lang(statement)
     return result
+
+
+def boolean_reference(value: bool) -> Boolean:
+    """Return the Boolean reference instead of creating new value"""
+    if value:
+        return TRUE
+    return FALSE

@@ -6,6 +6,14 @@ setup:
 	virtualenv -p $(env) venv
 	$(PIP) install -r requirements.txt
 
+.PHONY: build
+build:
+	$(PYTHON) setup.py sdist bdist_wheel
+
+.PHONY: publish
+publish:
+	$(PYTHON) -m twine upload dist/*
+
 .PHONY: install
 install:
 	./setup.py build install --user

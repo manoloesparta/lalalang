@@ -165,7 +165,7 @@ class Parser:
         literal.value = number
         return literal
 
-    def _parse_boolean(self) -> Boolean:
+    def _parse_boolean(self) -> BooleanLiteral:
         """Parse boolean expression"""
         return BooleanLiteral(
             self.current_token, self._current_token_is(TokenType.TRUE)

@@ -249,7 +249,7 @@ class InfixExpression(Expression):
         pass
 
 
-class Boolean(Expression):
+class BooleanLiteral(Expression):
     """
     Here we only store the simplest for of data, a boolean they
     are represented with the literals 'true' or 'false'
@@ -260,7 +260,7 @@ class Boolean(Expression):
         self.value: bool = value
 
     def __repr__(self):
-        return "Boolean(%s, %s)" % (repr(self.token), self.value)
+        return "BooleanLiteral(%s, %s)" % (repr(self.token), self.value)
 
     def __str__(self):
         return str(self.token.literal)
@@ -390,7 +390,7 @@ class FunctionLiteral(Expression):
 
 class CallExpression(Expression):
     """
-    Here are the expressions that are using our declared function 
+    Here are the expressions that are using our declared function
     literals, we only store a the funcion used with its arguments
     """
 

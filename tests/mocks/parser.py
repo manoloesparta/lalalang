@@ -1,5 +1,5 @@
-from lalalang.lexer import TokenType, Token
-from lalalang.parser import Program, LetStatement, ReturnStatement, Identifier
+from lalalang.lexer.token import TokenType, Token
+from lalalang.parser.ast import Program, LetStatement, ReturnStatement, Identifier
 
 
 CONSTRUCTED_PROGRAM = Program.with_statements(

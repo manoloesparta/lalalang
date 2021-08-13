@@ -1,0 +1,40 @@
+from lalalang.parser.ast import *
+from lalalang.evaluator.object import Object, Integer, Boolean, Null
+
+# References
+TRUE = Boolean(True)
+FALSE = Boolean(False)
+NULL = Null()
+
+
+def eval_3lang(node: Node) -> Object:
+    """
+    This is executing a tree walk interpreter, doing a
+    postorder traverse over the ast 
+    """
+
+    # Statements
+    if isinstance(node, Program):
+        return eval_statements(node.statements)
+
+    # Expressions
+    elif isinstance(node, ExpressionStatement):
+        return eval_3lang(node.expression)
+
+    # Internal objects
+    elif isinstance(node, IntegerLiteral):
+        return Integer(node.value)
+    elif isinstance(node, BooleanLiteral):
+        return Boolean(node.value)
+
+    return None
+
+
+def eval_statements(statements: list[Statement]) -> Object:
+    """
+    The root of every program is a list of statements, not
+    the ast nodes, we need to start from the root
+    """
+    for statement in statements:
+        result: Object = eval_3lang(statement)
+    return result

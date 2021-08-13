@@ -64,7 +64,7 @@ class TestLexer(TestCase):
         ]
         self.compare_results(SOURCE_CODE, expected_tokens)
 
-    def test_lexer_delimeters(self):
+    def test_delimeters(self):
         expected_tokens = [
             Token(TokenType.LPAREN, "("),
             Token(TokenType.RPAREN, ")"),
@@ -76,7 +76,7 @@ class TestLexer(TestCase):
         ]
         self.compare_results(DELIMETERS, expected_tokens)
 
-    def test_lexer_illegal(self):
+    def test_illegal(self):
         expected_tokens = [
             Token(TokenType.ILLEGAL, "~"),
             Token(TokenType.ILLEGAL, "`"),
@@ -85,7 +85,7 @@ class TestLexer(TestCase):
         ]
         self.compare_results(ILLEGAL, expected_tokens)
 
-    def test_lexer_operators(self):
+    def test_operators(self):
         expected_tokens = [
             Token(TokenType.PLUS, "+"),
             Token(TokenType.ASSIGN, "="),
@@ -107,7 +107,7 @@ class TestLexer(TestCase):
         ]
         self.compare_results(TWO_CHARACTER_SYMBOLS, expected_tokens)
 
-    def test_lexer_identifiers(self):
+    def test_identifiers(self):
         expected_tokens = [
             Token(TokenType.IDENT, "someone"),
             Token(TokenType.IDENT, "in"),
@@ -116,7 +116,7 @@ class TestLexer(TestCase):
         ]
         self.compare_results(IDENTIFIERS, expected_tokens)
 
-    def test_lexer_numbers(self):
+    def test_numbers(self):
         expected_tokens = [
             Token(TokenType.INT, "314"),
             Token(TokenType.INT, "217"),
@@ -124,7 +124,7 @@ class TestLexer(TestCase):
         ]
         self.compare_results(NUMBERS, expected_tokens)
 
-    def test_lexer_keywords(self):
+    def test_keywords(self):
         expected_tokens = [
             Token(TokenType.LET, "let"),
             Token(TokenType.FUNCTION, "fun"),

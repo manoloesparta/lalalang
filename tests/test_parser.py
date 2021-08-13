@@ -1,6 +1,8 @@
 from unittest import TestCase
-from lalalang.lexer import Lexer
-from lalalang.parser import *
+from lalalang.lexer.lexer import Lexer
+from lalalang.lexer.token import TokenType
+from lalalang.parser.parser import Parser
+from lalalang.parser.ast import *
 from tests.mocks.parser import *
 
 
@@ -25,7 +27,7 @@ class TestParserStatements(TestCase):
 
             self.assertEqual(str(statement.name), output[0])
             self.assertEqual(str(expression), output[1])
-    
+
     def test_return_statements(self):
         for rs in RETURN_STATEMENTS:
             source = rs.get("input")
@@ -124,7 +126,7 @@ class TestParserStatements(TestCase):
             self.assertIsInstance(statement, ExpressionStatement)
 
             expression = statement.expression
-            self.assertIsInstance(expression, Boolean)
+            self.assertIsInstance(expression, BooleanLiteral)
 
     def test_grouped_expressions(self):
         for ge in GROUPED_EXPRESSIONS:

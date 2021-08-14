@@ -16,10 +16,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-        env:
-          TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
-          TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
-
       - name: setup python 3.9
         uses: actions/setup-python@v2
         with:
@@ -43,6 +39,9 @@ jobs:
           python -m pytest
       
       - name: publish to pypi
+        env:
+          TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
         run: |
           pip install wheel
           python setup.py sdist bdist_wheel

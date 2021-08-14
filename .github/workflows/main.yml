@@ -21,7 +21,7 @@ jobs:
           TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
 
       - name: setup python 3.9
-        uses: actions/setyp-python@v2
+        uses: actions/setup-python@v2
         with:
           python-version: 3.9
 

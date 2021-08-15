@@ -32,7 +32,7 @@ $ make setup env=python # Here goes the path of your python 3.9 executable
 $ make install
 ```
 
-**Info**: If the terminal returns `command not found: 3lang` you should see where pip is installing your package and add that directory to PATH, sometimes using `sudo` with pip solves it, or adding the `--user` flag, if none of these options works can still use the interpreter with the command `python -m lalalang` and still be able to follow the usage section.
+**Info**: If the terminal returns `command not found: 3lang` you should see where pip is installing your package and add that directory to PATH, sometimes using `sudo` with pip solves it, or adding the `--user` flag, if none of these options works can still use the interpreter with the command `python -m lalalang`.
 
 ## Usage
 

@@ -2,9 +2,9 @@ from lalalang.parser.ast import *
 from lalalang.evaluator.object import Object, Integer, Boolean, Null
 
 # References
-TRUE = Boolean(True)
-FALSE = Boolean(False)
-NULL = Null()
+TRUE: Boolean = Boolean(True)
+FALSE: Boolean = Boolean(False)
+NULL: Null = Null()
 
 
 def eval_3lang(node: Node) -> Object:

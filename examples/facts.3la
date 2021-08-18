@@ -1,0 +1,17 @@
+let factorioal = fun(num) {
+    if (num < 0) {
+        return factorioal(-num);
+    }
+
+    if(num == 1) {
+        return 1; 
+    }
+
+    if(num == 1) {
+        return 1; 
+    }
+
+    return num * factorioal(num - 1);
+}
+
+factorioal(314);

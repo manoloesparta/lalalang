@@ -1,8 +1,10 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
+from dataclasses import dataclass
 from enum import Enum
 
 
+@dataclass
 class Object(ABC):
     """
     This is how we internally represent the objects in the

@@ -3,7 +3,7 @@
 # 3LANG ♪♪
 
 ![Python version](https://img.shields.io/badge/Python-3.9%2B-blue)
-![Project version](https://img.shields.io/badge/Version-0.3-blueviolet)
+![Project version](https://img.shields.io/badge/Version-0.3.3-blueviolet)
 ![Branch status](https://github.com/manoloesparta/lalalang/actions/workflows/main.yml/badge.svg)
 ![Coverage Status](https://coveralls.io/repos/github/manoloesparta/lalalang/badge.svg?t=xGQ81l)
 ![License](https://img.shields.io/badge/License-MIT-red)
@@ -62,7 +62,7 @@ This is the La La Lang Programming Languag v0.3!
 To read a file and execute it, type
 
 ```bash
-$ 3lang --src random_program.3lc
+$ 3lang --src random_program.3la
 ```
 
 You can enter other in the stages of lexing and parsing of the interpreter with the ```--mode``` flag.
@@ -70,6 +70,8 @@ You can enter other in the stages of lexing and parsing of the interpreter with 
 ## Syntax
 
 Coming soon...
+
+See the [examples](./examples) directory to get a wider idea.
 
 ## License
 

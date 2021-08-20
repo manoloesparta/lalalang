@@ -1,17 +1,17 @@
-let factorioal = fun(num) {
+let fact = fun(num) {
     if (num < 0) {
-        return factorioal(-num);
+        return fact(-num);
+    }
+
+    if(num == 0) {
+        return 1;
     }
 
     if(num == 1) {
         return 1; 
     }
 
-    if(num == 1) {
-        return 1; 
-    }
-
-    return num * factorioal(num - 1);
+    return num * fact(num - 1);
 }
 
-factorioal(314);
+fact(314);

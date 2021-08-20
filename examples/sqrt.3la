@@ -31,7 +31,7 @@ let sqrt = fun(number) {
         return number * number;
     }
 
-    return sqrt_iter(0, 1, x);
+    return sqrt_iter(0, 1, number);
 }
 
 sqrt(10000);

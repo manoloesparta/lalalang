@@ -11,35 +11,35 @@ class TestEvaluator(TestCase):
             source = io.get("input")
             internal = self.build_object(source)
             expected = io.get("expected")
-            self.assertEqual(internal.inspect(), expected) 
+            self.assertEqual(internal.inspect(), expected)
 
     def test_eval_boolean(self):
         for bo in BOOLEAN:
             source = bo.get("input")
             internal = self.build_object(source)
             expected = bo.get("expected")
-            self.assertEqual(internal.inspect(), expected) 
+            self.assertEqual(internal.inspect(), expected)
 
     def test_eval_prefix(self):
         for po in PREFIX:
             source = po.get("input")
             internal = self.build_object(source)
             expected = po.get("expected")
-            self.assertEqual(internal.inspect(), expected) 
+            self.assertEqual(internal.inspect(), expected)
 
     def test_eval_infix(self):
         for io in INFIX:
             source = io.get("input")
             internal = self.build_object(source)
             expected = io.get("expected")
-            self.assertEqual(internal.inspect(), expected) 
+            self.assertEqual(internal.inspect(), expected)
 
     def test_eval_conditionals(self):
         for co in CONDITIONALS:
             source = co.get("input")
             internal = self.build_object(source)
             expected = co.get("expected")
-            self.assertEqual(internal.inspect(), expected) 
+            self.assertEqual(internal.inspect(), expected)
 
     def build_object(self, source):
         lex = Lexer(source)

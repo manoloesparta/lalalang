@@ -23,7 +23,6 @@ class Lexer:
         """
         self._skip_whitespace()
         new_token: Token = Token.empty()
-        char: str = self.char
 
         # One character symbols
         if self.char == ";":
@@ -56,12 +55,14 @@ class Lexer:
         # Two characters symbols
         elif self.char == "=":
             if self._peek_char() == "=":
+                char = self.char
                 self._read_char()
                 new_token = Token(TokenType.EQ, char + self.char)
             else:
                 new_token = Token(TokenType.ASSIGN, self.char)
         elif self.char == "!":
             if self._peek_char() == "=":
+                char = self.char
                 self._read_char()
                 new_token = Token(TokenType.NOT_EQ, char + self.char)
             else:

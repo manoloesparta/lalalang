@@ -3,12 +3,12 @@
 # 3LANG ♪♪
 
 ![Python version](https://img.shields.io/badge/Python-3.9%2B-blue)
-![Project version](https://img.shields.io/badge/Version-0.3.3-blueviolet)
+![Project version](https://img.shields.io/badge/Version-0.3.4-blueviolet)
 ![Branch status](https://github.com/manoloesparta/lalalang/actions/workflows/main.yml/badge.svg)
 ![Coverage Status](https://coveralls.io/repos/github/manoloesparta/lalalang/badge.svg?t=xGQ81l)
 ![License](https://img.shields.io/badge/License-MIT-red)
 
-> Another programming language with a silly name 
+> A programming language with a silly name 
 
 I saw recently the **amazing** movie [La La Land](https://www.youtube.com/watch?v=xVVqlm8Fq3Y) and inspired by only the movie's name and my learning obsession I decided to learn how to make a programming language and give it a funny name 🙂. 
 

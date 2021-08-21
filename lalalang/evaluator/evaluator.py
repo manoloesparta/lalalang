@@ -1,5 +1,5 @@
 from lalalang.parser.ast import *
-from lalalang.evaluator.object import Object, Integer, Boolean, Null, ObjectType
+from lalalang.evaluator.object import *
 
 # References
 TRUE: Boolean = Boolean(True)
@@ -16,10 +16,15 @@ def eval_3lang(node: Node) -> Object:
     # Statements
     if isinstance(node, Program):
         return eval_statements(node.statements)
-
-    # Expressions
     elif isinstance(node, ExpressionStatement):
         return eval_3lang(node.expression)
+    elif isinstance(node, BlockStatement):
+        return eval_block_statement(node)
+    elif isinstance(node, ReturnStatement):
+        value = eval_3lang(node.return_value)
+        return ReturnValue(value)
+
+    # Expressions
     elif isinstance(node, PrefixExpression):
         right = eval_3lang(node.right)
         return eval_prefix_expression(node.operator, right)
@@ -27,8 +32,6 @@ def eval_3lang(node: Node) -> Object:
         left = eval_3lang(node.left)
         right = eval_3lang(node.right)
         return eval_infix_expression(node.operator, left, right)
-    elif isinstance(node, BlockStatement):
-        return eval_statements(node.statements)
     elif isinstance(node, IfExpression):
         return eval_if_expression(node)
 
@@ -48,6 +51,20 @@ def eval_statements(statements: list[Statement]) -> Object:
     """
     for statement in statements:
         result: Object = eval_3lang(statement)
+        if isinstance(result, ReturnValue):
+            return result.value
+    return result
+
+
+def eval_block_statement(block: BlockStatement) -> Object:
+    """
+    This is somewhat similar to eval_statements except that is
+    looking for any value to return and stop in the statement
+    """
+    for statement in block.statements:
+        result: Object = eval_3lang(statement)
+        if not result and isinstance(result, ReturnValue):
+            return result
     return result
 
 

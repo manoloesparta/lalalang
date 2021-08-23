@@ -5,7 +5,7 @@ let sqrt = fun(number) {
             return current;
         }
         let better = improve(current, number);
-        sqrt_iter(current, better, number);
+        return sqrt_iter(current, better, number);
     }
   
     let is_good_enough = fun(past, current) {

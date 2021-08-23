@@ -26,6 +26,7 @@ class ObjectType(Enum):
     BOOLEAN = "BOOLEAN"
     NULL = "NULL"
     RETURN_VALUE = "RETURN_VALUE"
+    ERROR = "ERROR"
 
 
 @dataclass
@@ -45,12 +46,12 @@ class Boolean(Object):
     def __init__(self, value: bool):
         self.value: bool = value
 
-    def __eq__(self, other: object):
+    def __eq__(self, other: object) -> bool:
         if isinstance(other, Boolean):
             return self.value == other.value
         return False
 
-    def __ne__(self, other: object):
+    def __ne__(self, other: object) -> bool:
         if isinstance(other, Boolean):
             return self.value != other.value
         return False
@@ -81,3 +82,15 @@ class ReturnValue(Object):
 
     def inspect(self) -> str:
         return self.value.inspect()
+
+
+@dataclass
+class Error(Object):
+    def __init__(self, message: str):
+        self.message: str = message
+
+    def object_type(self) -> ObjectType:
+        return ObjectType.ERROR
+
+    def inspect(self) -> str:
+        return "ERROR: %s" % self.message

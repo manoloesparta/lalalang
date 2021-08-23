@@ -1,9 +1,9 @@
-![La La Lang Logo](./logo.png)
+![La La Lang Logo](./docs/logo.png)
 
 # 3LANG ♪♪
 
 ![Python version](https://img.shields.io/badge/Python-3.9%2B-blue)
-![Project version](https://img.shields.io/badge/Version-0.3.4-blueviolet)
+![Project version](https://img.shields.io/badge/Version-0.3.5-blueviolet)
 ![Branch status](https://github.com/manoloesparta/lalalang/actions/workflows/main.yml/badge.svg)
 ![Coverage Status](https://coveralls.io/repos/github/manoloesparta/lalalang/badge.svg?t=xGQ81l)
 ![License](https://img.shields.io/badge/License-MIT-red)
@@ -69,7 +69,7 @@ You can enter other in the stages of lexing and parsing of the interpreter with 
 
 ## Syntax
 
-Coming soon...
+You can see the syntax of lalalang in [here](./docs).
 
 See the [examples](./examples) directory to get a wider idea.
 

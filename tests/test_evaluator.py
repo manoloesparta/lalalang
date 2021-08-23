@@ -6,39 +6,32 @@ from lalalang.evaluator.evaluator import eval_3lang
 
 
 class TestEvaluator(TestCase):
-    def test_eval_integer(self):
-        for io in INTEGER:
-            source = io.get("input")
-            internal = self.build_object(source)
-            expected = io.get("expected")
-            self.assertEqual(internal.inspect(), expected)
+    def test_integer(self):
+        self.check_evaluation(INTEGER)
 
-    def test_eval_boolean(self):
-        for bo in BOOLEAN:
-            source = bo.get("input")
-            internal = self.build_object(source)
-            expected = bo.get("expected")
-            self.assertEqual(internal.inspect(), expected)
+    def test_boolean(self):
+        self.check_evaluation(BOOLEAN)
 
-    def test_eval_prefix(self):
-        for po in PREFIX:
-            source = po.get("input")
-            internal = self.build_object(source)
-            expected = po.get("expected")
-            self.assertEqual(internal.inspect(), expected)
+    def test_prefix(self):
+        self.check_evaluation(PREFIX)
 
-    def test_eval_infix(self):
-        for io in INFIX:
-            source = io.get("input")
-            internal = self.build_object(source)
-            expected = io.get("expected")
-            self.assertEqual(internal.inspect(), expected)
+    def test_infix(self):
+        self.check_evaluation(INFIX)
 
-    def test_eval_conditionals(self):
-        for co in CONDITIONALS:
-            source = co.get("input")
+    def test_conditionals(self):
+        self.check_evaluation(CONDITIONALS)
+    
+    def test_return(self):
+        self.check_evaluation(RETURN)
+
+    def test_errors(self):
+        self.check_evaluation(ERRORS)
+    
+    def check_evaluation(self, cases):
+        for case in cases:
+            source = case.get("input")
             internal = self.build_object(source)
-            expected = co.get("expected")
+            expected = case.get("expected")
             self.assertEqual(internal.inspect(), expected)
 
     def build_object(self, source):

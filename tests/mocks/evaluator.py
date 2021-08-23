@@ -84,3 +84,33 @@ CONDITIONALS = [
         "expected": "null",
     },
 ]
+
+RETURN = [
+    {
+        "input": "let a = 5*8;return 10;",
+        "expected": "10",
+    },
+    {
+        "input": "return 2; return 3;",
+        "expected": "2",
+    },
+    {
+        "input": "if(1 == 1){ if(1 == 1) { return 1; } return 0; }",
+        "expected": "1",
+    },
+]
+
+ERRORS = [
+    {
+        "input": "-true",
+        "expected": "ERROR: Unknown operator -ObjectType.BOOLEAN",
+    },
+    {
+        "input": "10 + false",
+        "expected": "ERROR: Type missmatch ObjectType.INTEGER + ObjectType.BOOLEAN",
+    },
+    {
+        "input": "false + false",
+        "expected": "ERROR: Unknown operator ObjectType.BOOLEAN + ObjectType.BOOLEAN",
+    },   
+]

@@ -112,5 +112,5 @@ ERRORS = [
     {
         "input": "false + false",
         "expected": "ERROR: Unknown operator ObjectType.BOOLEAN + ObjectType.BOOLEAN",
-    },   
+    },
 ]

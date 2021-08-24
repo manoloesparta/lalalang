@@ -20,13 +20,13 @@ class TestEvaluator(TestCase):
 
     def test_conditionals(self):
         self.check_evaluation(CONDITIONALS)
-    
+
     def test_return(self):
         self.check_evaluation(RETURN)
 
     def test_errors(self):
         self.check_evaluation(ERRORS)
-    
+
     def check_evaluation(self, cases):
         for case in cases:
             source = case.get("input")

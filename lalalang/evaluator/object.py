@@ -1,7 +1,9 @@
 from __future__ import annotations
-from abc import ABC, abstractmethod
-from dataclasses import dataclass
 from enum import Enum
+from dataclasses import dataclass
+from abc import ABC, abstractmethod
+from lalalang.parser.ast import Identifier, BlockStatement
+# from lalalang.evaluator.environment import Environment # circular imports :P
 
 
 class Object(ABC):
@@ -27,6 +29,7 @@ class ObjectType(Enum):
     NULL = "NULL"
     RETURN_VALUE = "RETURN_VALUE"
     ERROR = "ERROR"
+    FUNCTION = "FUNCTION"
 
 
 @dataclass
@@ -94,3 +97,20 @@ class Error(Object):
 
     def inspect(self) -> str:
         return "ERROR: %s" % self.message
+
+
+@dataclass
+class Function(Object):
+    def __init__(
+        self, parameters: list[Identifier], body: BlockStatement, env: Environment
+    ):
+        self.env: Environment = env
+        self.body: BlockStatement = body
+        self.parameters: list[Identifier] = parameters
+
+    def object_type(self) -> ObjectType:
+        return ObjectType.FUNCTION
+
+    def inspect(self) -> str:
+        params: list[str] = [str(i) for i in self.parameters]
+        return "fun(%s){\n\t%s\n}" % ("".join(params), str(self.body))

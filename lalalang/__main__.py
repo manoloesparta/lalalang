@@ -5,6 +5,7 @@ from lalalang.parser.parser import Parser
 from lalalang.lexer.lexer import Lexer
 from lalalang.lexer.token import TokenType, Token
 from lalalang.evaluator.evaluator import eval_3lang
+from lalalang.evaluator.environment import Environment
 
 
 @click.command()
@@ -15,17 +16,33 @@ def cli(mode, src):
     code = None
     if not src:
         print("Welcome to the city of stars!🌟")
-        print("This is the La La Lang Programming Languag v0.3.6!")
+        print("This is the La La Lang Programming Language v0.3.7!")
     else:
         with open(src, "r") as f:
             code = f.read().replace("\n", "")
 
     if mode == "lex":
         repl(lexing, code)
+
     elif mode == "parse":
         repl(parsing, code)
+
     elif mode == "eval":
-        repl(evaluating, code)
+
+        env = Environment.empty()
+        while line := input("♪♪ > "):
+
+            lex = Lexer(line)
+            par = Parser(lex)
+            program = par.parse_program()
+
+            if len(par.errors) > 0:
+                [print(i) for i in par.errors]
+                return
+
+            evaluated = eval_3lang(program, env)
+            if evaluated:
+                print(evaluated.inspect())
 
 
 def lexing(code):

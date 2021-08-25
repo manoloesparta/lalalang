@@ -1,5 +1,6 @@
 from lalalang.parser.ast import *
 from lalalang.evaluator.object import *
+from lalalang.evaluator.environment import Environment
 
 # References
 TRUE: Boolean = Boolean(True)
@@ -7,7 +8,7 @@ FALSE: Boolean = Boolean(False)
 NULL: Null = Null()
 
 
-def eval_3lang(node: Node) -> Object:
+def eval_3lang(node: Node, env: Environment) -> Object:
     """
     This is executing a tree walk interpreter, doing a
     postorder traverse over the ast
@@ -15,43 +16,63 @@ def eval_3lang(node: Node) -> Object:
 
     # Statements
     if isinstance(node, Program):
-        return eval_program(node)
+        return eval_program(node, env)
 
     elif isinstance(node, ExpressionStatement):
-        return eval_3lang(node.expression)
+        return eval_3lang(node.expression, env)
 
     elif isinstance(node, BlockStatement):
-        return eval_block_statement(node)
+        return eval_block_statement(node, env)
 
     elif isinstance(node, ReturnStatement):
-        value = eval_3lang(node.return_value)
+        value = eval_3lang(node.return_value, env)
         if is_error(value):
             return value
         return ReturnValue(value)
 
+    elif isinstance(node, LetStatement):
+        value = eval_3lang(node.value, env)
+        if is_error(value):
+            return value
+        return env.set_local(node.name.value, value)
+
     # Expressions
     elif isinstance(node, PrefixExpression):
-        right = eval_3lang(node.right)
+        right = eval_3lang(node.right, env)
         if is_error(right):
             return right
         return eval_prefix_expression(node.operator, right)
 
     elif isinstance(node, InfixExpression):
-        left = eval_3lang(node.left)
+        left = eval_3lang(node.left, env)
         if is_error(left):
             return left
 
-        right = eval_3lang(node.right)
+        right = eval_3lang(node.right, env)
         if is_error(right):
             return right
 
         return eval_infix_expression(node.operator, left, right)
 
     elif isinstance(node, IfExpression):
-        condition = eval_3lang(node.condition)
+        condition = eval_3lang(node.condition, env)
         if is_error(condition):
             return condition
-        return eval_if_expression(node)
+        return eval_if_expression(node, env)
+
+    elif isinstance(node, Identifier):
+        return eval_identifier(node, env)
+
+    elif isinstance(node, CallExpression):
+        fun = eval_3lang(node.function, env)
+        if is_error(fun):
+            return fun
+
+        args: list[Object] = eval_expressions(node.arguments, env)
+        if len(args) == 1 and is_error(args[0]):
+            return args[0]
+
+        return apply_function(fun, args)
 
     # Internal objects
     elif isinstance(node, IntegerLiteral):
@@ -60,16 +81,21 @@ def eval_3lang(node: Node) -> Object:
     elif isinstance(node, BooleanLiteral):
         return boolean_reference(node.value)
 
+    elif isinstance(node, FunctionLiteral):
+        params: list[Identifier] = node.parameters
+        body: BlockStatement = node.body
+        return Function(params, body, env)
+
     return None
 
 
-def eval_program(root: Program) -> Object:
+def eval_program(root: Program, env: Environment) -> Object:
     """
     The root of every program is a list of statements, not
     the ast nodes, we need to start from the root
     """
     for statement in root.statements:
-        result: Object = eval_3lang(statement)
+        result: Object = eval_3lang(statement, env)
 
         if isinstance(result, ReturnValue):
             return result.value
@@ -80,14 +106,13 @@ def eval_program(root: Program) -> Object:
     return result
 
 
-def eval_block_statement(block: BlockStatement) -> Object:
+def eval_block_statement(block: BlockStatement, env: Environment) -> Object:
     """
     This is somewhat similar to eval_program except that is
     looking for any value to return and stop in the statement
     """
     for statement in block.statements:
-        result: Object = eval_3lang(statement)
-        if result:
+        if result := eval_3lang(statement, env):
             rt: ObjectType = result.object_type()
             if rt == ObjectType.RETURN_VALUE or rt == ObjectType.ERROR:
                 return result
@@ -178,17 +203,17 @@ def eval_integer_infix_expression(operator: str, left: Object, right: Object) ->
     )
 
 
-def eval_if_expression(expression: IfExpression) -> Object:
+def eval_if_expression(expression: IfExpression, env: Environment) -> Object:
     """
     Here we parse the condition and depending on the result we
     execute the consequence or alternative
     """
-    predicate: Object = eval_3lang(expression.condition)
+    predicate: Object = eval_3lang(expression.condition, env)
 
     if is_truthy(predicate):
-        return eval_3lang(expression.consequence)
+        return eval_3lang(expression.consequence, env)
     elif expression.alternative is not None:
-        return eval_3lang(expression.alternative)
+        return eval_3lang(expression.alternative, env)
 
     return NULL
 
@@ -198,6 +223,25 @@ def is_truthy(obj: Object) -> bool:
     if obj in [NULL, FALSE]:
         return False
     return True
+
+
+def eval_identifier(node: Identifier, env: Environment) -> Object:
+    """Check if the name has a value associated in the environment"""
+    value: Object = env.get_local(node.value)
+    if not value:
+        return Error("Identifier not found: %s" % node.value)
+    return value
+
+
+def eval_expressions(expressions: list[Expression], env: Environment) -> list[Object]:
+    """Here we evaluate a bunch of expressions and keep track of them"""
+    result: list[Object] = []
+    for exp in expressions:
+        evaluated = eval_3lang(exp, env)
+        if is_error(evaluated):
+            return [evaluated]
+        result.append(evaluated)
+    return result
 
 
 def boolean_reference(value: bool) -> Boolean:
@@ -212,3 +256,28 @@ def is_error(obj: Object) -> bool:
     if obj:
         return obj.object_type() == ObjectType.ERROR
     return False
+
+
+def apply_function(function: Object, args: list[Object]) -> Object:
+    """
+    We get the current environment and the outer one to run the
+    body of the function with its parameters
+    """
+    if not isinstance(function, Function):
+        return Error("Not a function: %s" % function.object_type())
+    
+    extended_env: Environment = extend_function_env(function, args)
+    evaluated: Object = eval_3lang(function.body, extended_env)
+
+    if isinstance(evaluated, ReturnValue):
+        return evaluated.value
+    return evaluated
+
+def extend_function_env(function: Function, args: list[Object]) -> Environment:
+    """Add the outer env to the local one"""
+    env: Environment = Environment(dict({}), function.env)
+    
+    for index, param in enumerate(function.parameters):
+        env.set_local(param.value, args[index])
+
+    return env

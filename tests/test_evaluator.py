@@ -38,4 +38,5 @@ class TestEvaluator(TestCase):
         lex = Lexer(source)
         par = Parser(lex)
         program = par.parse_program()
-        return eval_3lang(program)
+        env = Environment.empty()
+        return eval_3lang(program, env)

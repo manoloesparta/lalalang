@@ -16,7 +16,7 @@ def cli(mode, src):
     code = None
     if not src:
         print("Welcome to the city of stars!🌟")
-        print("This is the La La Lang Programming Language v0.3.7!")
+        print("This is the La La Lang Programming Language v0.3.8!")
     else:
         with open(src, "r") as f:
             code = f.read().replace("\n", "")

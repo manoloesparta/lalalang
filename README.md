@@ -3,7 +3,7 @@
 # 3LANG ♪♪
 
 ![Python version](https://img.shields.io/badge/Python-3.9%2B-blue)
-![Project version](https://img.shields.io/badge/Version-0.3.7-blueviolet)
+![Project version](https://img.shields.io/badge/Version-0.3.8-blueviolet)
 ![Branch status](https://github.com/manoloesparta/lalalang/actions/workflows/main.yml/badge.svg)
 ![Coverage Status](https://coveralls.io/repos/github/manoloesparta/lalalang/badge.svg?t=xGQ81l)
 ![License](https://img.shields.io/badge/License-MIT-red)

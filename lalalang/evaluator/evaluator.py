@@ -1,6 +1,7 @@
 from lalalang.parser.ast import *
 from lalalang.evaluator.object import *
 from lalalang.evaluator.environment import Environment
+from lalalang.evaluator.builtins import BUILTINS 
 
 # References
 TRUE: Boolean = Boolean(True)
@@ -228,9 +229,15 @@ def is_truthy(obj: Object) -> bool:
 def eval_identifier(node: Identifier, env: Environment) -> Object:
     """Check if the name has a value associated in the environment"""
     value: Object = env.get_local(node.value)
-    if not value:
-        return Error("Identifier not found: %s" % node.value)
-    return value
+    if value:
+        return value
+    
+    proc: Function = BUILTINS.get(node.value)
+    if proc:
+        return proc
+    
+    return Error("Identifier not found: %s" % node.value)
+    
 
 
 def eval_expressions(expressions: list[Expression], env: Environment) -> list[Object]:
@@ -251,33 +258,36 @@ def boolean_reference(value: bool) -> Boolean:
     return FALSE
 
 
-def is_error(obj: Object) -> bool:
-    """Helper method to check whenever an exception occurs"""
-    if obj:
-        return obj.object_type() == ObjectType.ERROR
-    return False
-
-
 def apply_function(function: Object, args: list[Object]) -> Object:
     """
     We get the current environment and the outer one to run the
     body of the function with its parameters
     """
-    if not isinstance(function, Function):
-        return Error("Not a function: %s" % function.object_type())
-    
-    extended_env: Environment = extend_function_env(function, args)
-    evaluated: Object = eval_3lang(function.body, extended_env)
+    if isinstance(function, Function):
+        extended_env: Environment = extend_function_env(function, args)
+        evaluated: Object = eval_3lang(function.body, extended_env)
 
-    if isinstance(evaluated, ReturnValue):
-        return evaluated.value
-    return evaluated
+        if isinstance(evaluated, ReturnValue):
+            return evaluated.value
+        return evaluated
+
+    elif isinstance(function, Builtin):
+        return function.fun(*args)
+
+    return Error("Not a function: %s" % function.object_type())
 
 def extend_function_env(function: Function, args: list[Object]) -> Environment:
     """Add the outer env to the local one"""
     env: Environment = Environment(dict({}), function.env)
-    
+
     for index, param in enumerate(function.parameters):
         env.set_local(param.value, args[index])
 
     return env
+
+
+def is_error(obj: Object) -> bool:
+    """Helper method to check whenever an exception occurs"""
+    if obj:
+        return obj.object_type() == ObjectType.ERROR
+    return False

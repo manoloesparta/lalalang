@@ -1,5 +1,6 @@
 from __future__ import annotations
 from enum import Enum
+from typing import Callable
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
 from lalalang.parser.ast import Identifier, BlockStatement
@@ -30,6 +31,7 @@ class ObjectType(Enum):
     RETURN_VALUE = "RETURN_VALUE"
     ERROR = "ERROR"
     FUNCTION = "FUNCTION"
+    BUILTIN = "BUILTIN"
 
 
 @dataclass
@@ -114,3 +116,15 @@ class Function(Object):
     def inspect(self) -> str:
         params: list[str] = [str(i) for i in self.parameters]
         return "fun(%s){\n\t%s\n}" % ("".join(params), str(self.body))
+
+
+@dataclass
+class Builtin(Object):
+    def __init__(self, fun: Callable):
+        self.fun: Callable = fun
+
+    def object_type(self) -> ObjectType:
+        return ObjectType.BUILTIN
+
+    def inspect(self) -> str:
+        return "Builtin function"

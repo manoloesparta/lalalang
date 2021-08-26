@@ -20,7 +20,7 @@ def cli(mode, src):
             code = f.read().replace("\n", "")
     else:
         print("Welcome to the city of stars!🌟")
-        print("This is the La La Lang Programming Language v1.0.0!")
+        print("This is the La La Lang Programming Language v1.0.1!")
 
     if mode == "lex":
         lexing(code)
@@ -36,7 +36,10 @@ def cli(mode, src):
 def read_eval_print_loop(func):
     def inner_function(code, **kwargs):
         if not code:
-            while line := input("♪♪ > "):
+            while True:
+                line = input("♪♪ > ")
+                if line == "":
+                    continue
                 func(line, **kwargs)
         func(code, **kwargs)
 
@@ -60,8 +63,8 @@ def parsing(code):
 
     if len(par.errors) == 0:
         print(program)
-    else:
-        [print("\t %s" % err) for err in par.errors]
+
+    [print("\t %s" % err) for err in par.errors]
 
 
 @read_eval_print_loop

@@ -1,17 +1,20 @@
 SOURCE_CODE = """
+    # comment
     let pi = 314;
-    fun area(ratio) {
+    fun area(ratio) { # comment
         pi * ratio * ratio + 0;
     }
 
     13 / 3 > 16;
-
+    # comment
     if(10 - 8 < 16) {
         return true;
+        # comment
     } else {
         return false;
     }
 
+    # comment
     10 == 10;
     10 != 9;
 """

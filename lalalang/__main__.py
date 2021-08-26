@@ -17,7 +17,7 @@ def cli(mode, src):
     code = None
     if src:
         with open(src, "r") as f:
-            code = f.read().replace("\n", "")
+            code = f.read()
     else:
         print("Welcome to the city of stars!🌟")
         print("This is the La La Lang Programming Language v1.0.1!")
@@ -64,7 +64,7 @@ def parsing(code):
     if len(par.errors) == 0:
         print(program)
 
-    [print("\t %s" % err) for err in par.errors]
+    [print(err) for err in par.errors]
 
 
 @read_eval_print_loop

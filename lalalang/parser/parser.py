@@ -160,7 +160,7 @@ class Parser:
             number: int = int(self.current_token.literal)
         except ValueError:
             self.errors.append(
-                "Could not parse %s as integer" % self.current_token.literal
+                "Could not parse %r as integer" % self.current_token.literal
             )
         literal.value = number
         return literal
@@ -322,7 +322,7 @@ class Parser:
 
     def _no_prefix_parsing_error(self, token_type: TokenType) -> None:
         """Add this error message whenever a prefix expression is unrecognized"""
-        message = "No prefix function to parse %s" % token_type
+        message = "No prefix function to parse %r" % token_type
         self.errors.append(message)
 
     def _current_precedence(self) -> ExpressionPrecedence:
@@ -344,7 +344,7 @@ class Parser:
 
     def _peek_error(self, token_type: TokenType) -> None:
         """Add error message of unexpected tokens"""
-        message: str = "Expected type %s, got %s" % (
+        message: str = "Expected type %r, got %r" % (
             token_type,
             self.peek_token.token_type,
         )

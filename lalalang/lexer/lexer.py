@@ -3,8 +3,8 @@ from lalalang.lexer.token import TokenType, Token, lookup_identifier
 
 class Lexer:
     """
-    This class recieves source code as input and returns
-    the tokens that represent it
+    This class recieves source code as input and returns the tokens
+    that represent it
     """
 
     def __init__(self, source: str):
@@ -17,15 +17,17 @@ class Lexer:
 
     def next_token(self) -> Token:
         """
-        This is the main method that is traversing the
-        source code and generating the tokens, this was
-        made for being used multiple times
+        This is the main method that is traversing the source code and generating
+        the tokens, this was made for being used multiple times
         """
+
         self._skip_whitespace()
         new_token: Token = Token.empty()
 
         # One character symbols
-        if self.char == ";":
+        if self.char == "#":
+            return self._skip_comment()
+        elif self.char == ";":
             new_token = Token(TokenType.SEMICOLON, self.char)
         elif self.char == "(":
             new_token = Token(TokenType.LPAREN, self.char)
@@ -33,12 +35,12 @@ class Lexer:
             new_token = Token(TokenType.RPAREN, self.char)
         elif self.char == ",":
             new_token = Token(TokenType.COMMA, self.char)
-        elif self.char == "+":
-            new_token = Token(TokenType.PLUS, self.char)
         elif self.char == "{":
             new_token = Token(TokenType.LBRACE, self.char)
         elif self.char == "}":
             new_token = Token(TokenType.RBRACE, self.char)
+        elif self.char == "+":
+            new_token = Token(TokenType.PLUS, self.char)
         elif self.char == "-":
             new_token = Token(TokenType.MINUS, self.char)
         elif self.char == "*":
@@ -84,10 +86,7 @@ class Lexer:
         return new_token
 
     def _read_char(self) -> None:
-        """
-        This method is for traversing the source code
-        character by character
-        """
+        """This method is for traversing the source code character by character"""
         if self.peek_position >= len(self.source):
             self.char = ""
         else:
@@ -97,8 +96,8 @@ class Lexer:
 
     def _read_identifier(self) -> str:
         """
-        This helper method extracts any indentifier from
-        the source code like variable or function names
+        This helper method extracts any indentifier from the source code like
+        variable or function names
         """
         position: int = self.position
         while self.char.isalpha():
@@ -106,10 +105,7 @@ class Lexer:
         return self.source[position : self.position]
 
     def _read_number(self) -> str:
-        """
-        This helper method extracts integers from the
-        source code
-        """
+        """This helper method extracts integers from the source code"""
         position: int = self.position
         while self.char.isdigit():
             self._read_char()
@@ -117,17 +113,22 @@ class Lexer:
 
     def _skip_whitespace(self) -> None:
         """
-        This helper method advances the position until
-        no whitespace is encountered
+        This helper method advances the position until no whitespace is
+        encountered
         """
         while self.char.isspace():
             self._read_char()
 
+    def _skip_comment(self) -> Token:
+        """Advances the position until it found an end of line"""
+        while self.char != "\n" and self.char != "":
+            self._read_char()
+        return self.next_token()
+
     def _peek_char(self) -> str:
         """
-        This helper method is somewhat like _read_char()
-        without the increment, it's for seeing what's next,
-        not to move around
+        This helper method is somewhat like _read_char() without the increment,
+        it's for seeing what's next, not to move around
         """
         if self.peek_position >= len(self.source):
             return ""

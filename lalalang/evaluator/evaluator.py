@@ -96,8 +96,10 @@ def eval_program(root: Program, env: Environment) -> Object:
     The root of every program is a list of statements, not
     the ast nodes, we need to start from the root
     """
+    result: Object = None
+
     for statement in root.statements:
-        result: Object = eval_3lang(statement, env)
+        result = eval_3lang(statement, env)
 
         if isinstance(result, ReturnValue):
             return result.value

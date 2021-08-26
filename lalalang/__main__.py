@@ -1,9 +1,11 @@
 import sys
 import click
 import signal
+from functools import wraps
 from lalalang.parser.parser import Parser
 from lalalang.lexer.lexer import Lexer
 from lalalang.lexer.token import TokenType, Token
+from lalalang.evaluator.object import Null
 from lalalang.evaluator.evaluator import eval_3lang
 from lalalang.evaluator.environment import Environment
 
@@ -12,39 +14,36 @@ from lalalang.evaluator.environment import Environment
 @click.option("--mode", default="eval", help="REPL mode (lex|parse|eval)")
 @click.option("--src", default=None, help="Input file with 3lang code")
 def cli(mode, src):
-
     code = None
-    if not src:
-        print("Welcome to the city of stars!🌟")
-        print("This is the La La Lang Programming Language v0.3.8!")
-    else:
+    if src:
         with open(src, "r") as f:
             code = f.read().replace("\n", "")
+    else:
+        print("Welcome to the city of stars!🌟")
+        print("This is the La La Lang Programming Language v1.0.0!")
 
     if mode == "lex":
-        repl(lexing, code)
+        lexing(code)
 
     elif mode == "parse":
-        repl(parsing, code)
+        parsing(code)
 
     elif mode == "eval":
-
         env = Environment.empty()
-        while line := input("♪♪ > "):
-
-            lex = Lexer(line)
-            par = Parser(lex)
-            program = par.parse_program()
-
-            if len(par.errors) > 0:
-                [print(i) for i in par.errors]
-                return
-
-            evaluated = eval_3lang(program, env)
-            if evaluated:
-                print(evaluated.inspect())
+        evaluating(code, env=env)
 
 
+def read_eval_print_loop(func):
+    def inner_function(code, **kwargs):
+        if not code:
+            while line := input("♪♪ > "):
+                func(line, **kwargs)
+        func(code, **kwargs)
+
+    return inner_function
+
+
+@read_eval_print_loop
 def lexing(code):
     lex = Lexer(code)
     token = Token.empty()
@@ -53,6 +52,7 @@ def lexing(code):
         print(repr(token))
 
 
+@read_eval_print_loop
 def parsing(code):
     lex = Lexer(code)
     par = Parser(lex)
@@ -64,7 +64,8 @@ def parsing(code):
         [print("\t %s" % err) for err in par.errors]
 
 
-def evaluating(code):
+@read_eval_print_loop
+def evaluating(code, env):
     lex = Lexer(code)
     par = Parser(lex)
     program = par.parse_program()
@@ -73,16 +74,9 @@ def evaluating(code):
         [print(i) for i in par.errors]
         return
 
-    evaluated = eval_3lang(program)
-    if evaluated:
+    evaluated = eval_3lang(program, env)
+    if evaluated and not isinstance(evaluated, Null):
         print(evaluated.inspect())
-
-
-def repl(fun, source):
-    if not source:
-        while line := input("♪♪ > "):
-            fun(line)
-    fun(source)
 
 
 def ctrlc_handler(sig, fram):

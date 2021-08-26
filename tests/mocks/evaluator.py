@@ -113,4 +113,53 @@ ERRORS = [
         "input": "false + false",
         "expected": "ERROR: Unknown operator ObjectType.BOOLEAN + ObjectType.BOOLEAN",
     },
+    {
+        "input": "a",
+        "expected": "ERROR: Identifier not found: a",
+    },
+    {
+        "input": "return x",
+        "expected": "ERROR: Identifier not found: x",
+    },
+]
+
+FUNCTION_CALLS = [
+    {
+        "input": "let a = fun(x) { x + 1 }; a(2)",
+        "expected": "3",
+    },
+    {
+        "input": "let b = fun() { false }; b()",
+        "expected": "false",
+    },
+    {
+        "input": "let c = fun(x) { if(x > 0) { return 1; } return 2; }; c(1)",
+        "expected": "1",
+    },
+]
+
+ENVIRONMENT = [
+    {
+        "input": "let a = 10; let b = 5; a + b;",
+        "expected": "15",
+    },
+    {
+        "input": "let a = 10; let f = fun() { return a; }; f()",
+        "expected": "10",
+    },
+    {
+        "input": "let x = 10; let f = fun() { let y = 3; return x + y; }; f()",
+        "expected": "13",
+    },
+]
+
+BUILTINS = [
+    {
+        "input": "print(10)",
+        "expected": "null",
+    },
+    {
+        "input": "println(10)",
+        "expected": "null",
+    },
 ]

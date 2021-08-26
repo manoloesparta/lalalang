@@ -4,7 +4,6 @@ from typing import Callable
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
 from lalalang.parser.ast import Identifier, BlockStatement
-# from lalalang.evaluator.environment import Environment # circular imports :P
 
 
 class Object(ABC):
@@ -20,6 +19,9 @@ class Object(ABC):
     @abstractmethod
     def inspect(self) -> str:
         pass
+
+
+from lalalang.evaluator.environment import Environment  # Avoiding circular import
 
 
 class ObjectType(Enum):

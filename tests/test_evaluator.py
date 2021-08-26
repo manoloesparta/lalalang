@@ -27,6 +27,15 @@ class TestEvaluator(TestCase):
     def test_errors(self):
         self.check_evaluation(ERRORS)
 
+    def test_function_calls(self):
+        self.check_evaluation(FUNCTION_CALLS)
+
+    def test_environments(self):
+        self.check_evaluation(ENVIRONMENT)
+
+    def test_builtins(self):
+        self.check_evaluation(BUILTINS)
+
     def check_evaluation(self, cases):
         for case in cases:
             source = case.get("input")

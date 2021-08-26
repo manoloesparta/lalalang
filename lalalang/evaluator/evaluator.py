@@ -1,12 +1,13 @@
 from lalalang.parser.ast import *
 from lalalang.evaluator.object import *
 from lalalang.evaluator.environment import Environment
-from lalalang.evaluator.builtins import BUILTINS 
 
 # References
 TRUE: Boolean = Boolean(True)
 FALSE: Boolean = Boolean(False)
 NULL: Null = Null()
+
+from lalalang.evaluator.builtins import BUILTINS
 
 
 def eval_3lang(node: Node, env: Environment) -> Object:
@@ -228,16 +229,13 @@ def is_truthy(obj: Object) -> bool:
 
 def eval_identifier(node: Identifier, env: Environment) -> Object:
     """Check if the name has a value associated in the environment"""
-    value: Object = env.get_local(node.value)
-    if value:
+    if value := env.get_local(node.value):
         return value
-    
-    proc: Function = BUILTINS.get(node.value)
-    if proc:
+
+    if proc := BUILTINS.get(node.value):
         return proc
-    
+
     return Error("Identifier not found: %s" % node.value)
-    
 
 
 def eval_expressions(expressions: list[Expression], env: Environment) -> list[Object]:
@@ -275,6 +273,7 @@ def apply_function(function: Object, args: list[Object]) -> Object:
         return function.fun(*args)
 
     return Error("Not a function: %s" % function.object_type())
+
 
 def extend_function_env(function: Function, args: list[Object]) -> Environment:
     """Add the outer env to the local one"""

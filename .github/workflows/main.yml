@@ -9,8 +9,9 @@ on:
 
 jobs:
 
-  upload-to-pypy: 
-    name: Uploads code to pypi if tests passed
+  upload-to-pypy:
+
+    name: Pypi pipeline
     runs-on: ubuntu-latest
 
     steps:
@@ -28,18 +29,18 @@ jobs:
 
       - name: Lint with black
         run: |
-          python -m black .
+          python -m black . --check
       
       - name: Static analyzer with mypy
         run: |
           python -m mypy lalalang --no-strict-optional 
 
-      - name: Run tests and user coveralls
+      - name: Run tests and register it in coveralls
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_TOKEN }}
         run: |
           python -m coverage run -m pytest
-          coveralls
+          python -m coveralls
       
       - name: Publish to pypi
         env:

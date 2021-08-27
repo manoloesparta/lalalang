@@ -1,37 +1,39 @@
 let sqrt = fun(number) {
 
-    let sqrt_iter = fun(past, current, number) {
-        if(is_good_enough(past, current)) {
-            return current;
+    let square = fun(x) {
+        return x * x;
+    }
+
+    let abs = fun(x) {
+        if(x < 0) {
+            return -x;
         }
-        let better = improve(current, number);
-        return sqrt_iter(current, better, number);
-    }
-  
-    let is_good_enough = fun(past, current) {
-        return abs(past - current) < 100;
+        return x;
     }
 
-    let improve = fun(guess, number) {
-        return average(guess, (x / guess));
+    let average = fun(x, y) {
+        return (x + y) / 2;
     }
 
-    let average = fun(ceiling, floor) {
-        return (ceiling + floor) / 2;
+    let isGoodEnough = fun(guess) {
+        let diff = square(guess) - number;
+        return abs(diff) < 100;
     }
 
-    let abs = fun(number) {
-        if(number < 0) {
-            return -number;
+    let improve = fun(guess) {
+        let ratio = number / guess;
+        return average(guess, ratio);
+    }
+
+    let sqrtIter = fun(guess) { 
+        if(isGoodEnough(guess)) {
+            return guess;
         }
-        return number;
+        let better = improve(guess)
+        return sqrtIter(better);
     }
 
-    let square = fun(number) {
-        return number * number;
-    }
-
-    return sqrt_iter(0, 1, number);
+    return sqrtIter(1);
 }
 
-sqrt(10000);
+println(sqrt(4096));

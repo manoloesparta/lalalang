@@ -1,0 +1,56 @@
+let null = if(false) {}
+
+let pair = fun(first, second) {
+    let dispatcher = fun(index) {
+        if(index == 0) {
+            return first;
+        } 
+        if(index == 1) {
+            return second;
+        }
+    }
+    return dispatcher;
+}
+ 
+let first = fun(somePair) {
+    return somePair(0);
+}
+
+let second = fun(somePair) {
+    return somePair(1);
+}
+
+let list = pair(1, pair(2, pair(3, pair(4, pair(5, null)))));
+
+let foreach = fun(proc, items) {
+    if(!items) {
+        return null;
+    }
+
+    let current = first(items);
+    let next = second(items);
+
+    proc(current);
+    foreach(proc,next);
+}
+
+let map = fun(proc, items) {
+    if(!items) {
+        return null;
+    }
+
+    let current = first(items);
+    let next = second(items);
+    
+    return pair(
+        proc(current), 
+        map(proc, next)
+    );
+}
+
+let square = fun(x) {
+    return x * x;
+}
+
+let newList = map(square, list);
+foreach(println, newList);

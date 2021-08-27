@@ -1,17 +1,11 @@
 let fact = fun(num) {
-    if (num < 0) {
-        return fact(-num);
+    let factIter = fun(actual, acc) {
+        if(actual == 1) {
+            return acc;
+        }
+        return factIter(actual - 1, actual * acc);
     }
-
-    if(num == 0) {
-        return 1;
-    }
-
-    if(num == 1) {
-        return 1; 
-    }
-
-    return num * fact(num - 1);
+    return factIter(num, 1)
 }
 
-fact(314);
+println(fact(4));

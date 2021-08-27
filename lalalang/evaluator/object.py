@@ -117,7 +117,7 @@ class Function(Object):
 
     def inspect(self) -> str:
         params: list[str] = [str(i) for i in self.parameters]
-        return "fun(%s){\n\t%s\n}" % ("".join(params), str(self.body))
+        return "fun(%s){\n\t%s\n}" % (",".join(params), str(self.body))
 
 
 @dataclass

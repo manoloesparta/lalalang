@@ -20,6 +20,7 @@ class TokenType(Enum):
     # Identifiers and literals
     IDENT = "IDENT"
     INT = "INT"
+    STRING = "STRING"
 
     # Operators
     ASSIGN = "="

@@ -255,3 +255,18 @@ NULL_VALUE = [
         "expected": "null",
     },
 ]
+
+STRING_LITERALS = [
+    {
+        "input": '"City of stars"',
+        "expected": "City of stars",
+    },
+    {
+        "input": '"Lorem ipsum"',
+        "expected": "Lorem ipsum",
+    },
+    {
+        "input": '"Mia and Sebastian"',
+        "expected": "Mia and Sebastian",
+    },
+]

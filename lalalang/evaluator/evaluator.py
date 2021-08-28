@@ -83,6 +83,9 @@ def eval_3lang(node: Node, env: Environment) -> Object:
     elif isinstance(node, BooleanLiteral):
         return boolean_reference(node.value)
 
+    elif isinstance(node, StringLiteral):
+        return String(node.value)
+
     elif isinstance(node, NullLiteral):
         return NULL
 

@@ -12,7 +12,7 @@ println("Hello City of Stars!!");
 
 ## Variables and Data Types
 
-Currently the language supports integers and booleans, you can declare them like this. (Strings are on their way)
+Currently the language supports integers, strings, and booleans, you can declare them like this. 
 
 ```lalalang
 let director = "Damien Chazelle";

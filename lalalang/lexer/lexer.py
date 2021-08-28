@@ -26,7 +26,7 @@ class Lexer:
 
         # One character symbols
         if self.char == "#":
-            return self._skip_comment()
+            return self._after_comment()
         elif self.char == ";":
             new_token = Token(TokenType.SEMICOLON, self.char)
         elif self.char == "(":
@@ -51,6 +51,9 @@ class Lexer:
             new_token = Token(TokenType.LT, self.char)
         elif self.char == ">":
             new_token = Token(TokenType.GT, self.char)
+        elif self.char == '"':
+            string: str = self._read_string()
+            new_token = Token(TokenType.STRING, string)
         elif self.char == "":
             new_token = Token(TokenType.EOF, "")
 
@@ -109,17 +112,25 @@ class Lexer:
         This helper method extracts any indentifier from the source code like
         variable or function names
         """
-        position: int = self.position
+        start: int = self.position
         while self.char.isalpha():
             self._read_char()
-        return self.source[position : self.position]
+        return self.source[start : self.position]
 
     def _read_number(self) -> str:
         """This helper method extracts integers from the source code"""
-        position: int = self.position
+        start: int = self.position
         while self.char.isdigit():
             self._read_char()
-        return self.source[position : self.position]
+        return self.source[start : self.position]
+
+    def _read_string(self) -> str:
+        """This helper method is for extracting strings from the source code"""
+        start: int = self.position + 1
+        self._read_char()
+        while not self.char in ['"', ""]:
+            self._read_char()
+        return self.source[start : self.position]
 
     def _skip_whitespace(self) -> None:
         """
@@ -129,9 +140,9 @@ class Lexer:
         while self.char.isspace():
             self._read_char()
 
-    def _skip_comment(self) -> Token:
+    def _after_comment(self) -> Token:
         """Advances the position until it found an end of line"""
-        while self.char != "\n" and self.char != "":
+        while not self.char in ["\n", ""]:
             self._read_char()
         return self.next_token()
 

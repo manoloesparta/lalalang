@@ -181,6 +181,33 @@ class IntegerLiteral(Expression):
         pass
 
 
+class StringLiteral(Expression):
+    """
+    This is how we represent strins, the same as integers, to return
+    itself it is needed to be an expression
+    """
+
+    @staticmethod
+    def empty():
+        return StringLiteral(None, None)
+
+    def __init__(self, token: Token, value: str):
+        self.token: Token = token
+        self.value: str = value
+
+    def __repr__(self):
+        return "StringLiteral(%r,%s)" % (self.token, self.value)
+
+    def __str__(self):
+        return self.value
+
+    def token_literal(self) -> str:
+        return self.token.literal
+
+    def expression_node(self):
+        pass
+
+
 class PrefixExpression(Expression):
     """
     This is any expression that has an operator before the

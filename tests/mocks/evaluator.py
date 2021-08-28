@@ -197,3 +197,18 @@ NULLS = [
         "expected": "null",
     },
 ]
+
+STRINGS = [
+    {
+        "input": '"Feliz jueves!"',
+        "expected": "Feliz jueves!",
+    },
+    {
+        "input": 'let a = "b"; a;',
+        "expected": "b",
+    },
+    {
+        "input": 'let b = fun() { return "b"; }; b()',
+        "expected": "b",
+    },
+]

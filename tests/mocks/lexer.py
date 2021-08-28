@@ -33,3 +33,5 @@ IDENTIFIERS = "someone in the crowd"
 NUMBERS = "314 217 161"
 
 KEYWORDS = "let fun true false null if else return"
+
+STRINGS = '"hello world" "good morning" "happy jueves"'

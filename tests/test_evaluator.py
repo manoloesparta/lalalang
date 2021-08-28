@@ -42,6 +42,9 @@ class TestEvaluator(TestCase):
     def test_null(self):
         self.check_evaluation(NULLS)
 
+    def test_strings(self):
+        self.check_evaluation(STRINGS)
+
     def check_evaluation(self, cases):
         for case in cases:
             source = case.get("input")

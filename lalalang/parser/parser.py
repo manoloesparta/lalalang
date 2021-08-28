@@ -51,6 +51,7 @@ class Parser:
         self._register_prefix_fun(TokenType.LPAREN, self._parse_grouped_expression)
         self._register_prefix_fun(TokenType.IF, self._parse_if_expression)
         self._register_prefix_fun(TokenType.FUNCTION, self._parse_function_literal)
+        self._register_prefix_fun(TokenType.STRING, self._parse_string_literal)
 
         self._register_infix_fun(TokenType.AND, self._parse_infix_expression)
         self._register_infix_fun(TokenType.OR, self._parse_infix_expression)
@@ -176,6 +177,10 @@ class Parser:
     def _parse_null(self) -> NullLiteral:
         """Parse a null literal"""
         return NullLiteral(self.current_token)
+
+    def _parse_string_literal(self) -> StringLiteral:
+        """Parse a string literal"""
+        return StringLiteral(self.current_token, self.current_token.literal)
 
     def _parse_grouped_expression(self) -> Expression:
         """Parse any grouped expression (any expression with more than one operator)"""

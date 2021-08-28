@@ -227,6 +227,22 @@ class TestParserStatements(TestCase):
 
             self.assertEqual(str(expression), expected)
 
+    def test_string_literal(self):
+        for sl in STRING_LITERALS:
+            source = sl.get("input")
+            program = self.create_program(source)
+
+            expected = sl.get("expected")
+            self.assertEqual(len(program.statements), 1)
+
+            statement = program.statements[0]
+            self.assertIsInstance(statement, ExpressionStatement)
+
+            expression = statement.expression
+            self.assertIsInstance(expression, StringLiteral)
+
+            self.assertEqual(str(expression), expected)
+
     def create_program(self, source_code):
         lex = Lexer(source_code)
         par = Parser(lex)

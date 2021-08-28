@@ -34,6 +34,7 @@ class ObjectType(Enum):
     ERROR = "ERROR"
     FUNCTION = "FUNCTION"
     BUILTIN = "BUILTIN"
+    STRING = "STRING"
 
 
 @dataclass
@@ -46,6 +47,17 @@ class Integer(Object):
 
     def inspect(self) -> str:
         return str(self.value)
+
+
+class String(Object):
+    def __init__(self, value: str):
+        self.value: str = value
+
+    def object_type(self) -> ObjectType:
+        return ObjectType.STRING
+
+    def inspect(self) -> str:
+        return self.value
 
 
 @dataclass

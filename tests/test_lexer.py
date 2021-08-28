@@ -97,6 +97,7 @@ class TestLexer(TestCase):
             Token(TokenType.SLASH, "/"),
             Token(TokenType.LT, "<"),
             Token(TokenType.GT, ">"),
+            Token(TokenType.EOF, ""),
         ]
         self.compare_results(OPERATORS, expected_tokens)
 
@@ -108,6 +109,7 @@ class TestLexer(TestCase):
             Token(TokenType.EQ, "=="),
             Token(TokenType.NOT_EQ, "!="),
             Token(TokenType.ASSIGN, "="),
+            Token(TokenType.EOF, ""),
         ]
         self.compare_results(TWO_CHARACTER_SYMBOLS, expected_tokens)
 
@@ -117,6 +119,7 @@ class TestLexer(TestCase):
             Token(TokenType.IDENT, "in"),
             Token(TokenType.IDENT, "the"),
             Token(TokenType.IDENT, "crowd"),
+            Token(TokenType.EOF, ""),
         ]
         self.compare_results(IDENTIFIERS, expected_tokens)
 
@@ -125,6 +128,7 @@ class TestLexer(TestCase):
             Token(TokenType.INT, "314"),
             Token(TokenType.INT, "217"),
             Token(TokenType.INT, "161"),
+            Token(TokenType.EOF, ""),
         ]
         self.compare_results(NUMBERS, expected_tokens)
 
@@ -138,8 +142,18 @@ class TestLexer(TestCase):
             Token(TokenType.IF, "if"),
             Token(TokenType.ELSE, "else"),
             Token(TokenType.RETURN, "return"),
+            Token(TokenType.EOF, ""),
         ]
         self.compare_results(KEYWORDS, expected_tokens)
+
+    def test_strings(self):
+        expected_tokens = [
+            Token(TokenType.STRING, "hello world"),
+            Token(TokenType.STRING, "good morning"),
+            Token(TokenType.STRING, "happy jueves"),
+            Token(TokenType.EOF, ""),
+        ]
+        self.compare_results(STRINGS, expected_tokens)
 
     def compare_results(self, source_code, expected_tokens):
         lex = Lexer(source_code)

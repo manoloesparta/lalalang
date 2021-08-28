@@ -47,6 +47,7 @@ class Parser:
         self._register_prefix_fun(TokenType.MINUS, self._parse_prefix_expression)
         self._register_prefix_fun(TokenType.TRUE, self._parse_boolean)
         self._register_prefix_fun(TokenType.FALSE, self._parse_boolean)
+        self._register_prefix_fun(TokenType.NULL, self._parse_null)
         self._register_prefix_fun(TokenType.LPAREN, self._parse_grouped_expression)
         self._register_prefix_fun(TokenType.IF, self._parse_if_expression)
         self._register_prefix_fun(TokenType.FUNCTION, self._parse_function_literal)
@@ -77,8 +78,7 @@ class Parser:
             return self._parse_let_statement()
         elif self._current_token_is(TokenType.RETURN):
             return self._parse_return_statement()
-        else:
-            return self._parse_expression_statement()
+        return self._parse_expression_statement()
 
     def _parse_let_statement(self) -> LetStatement:
         """Parse the let statement"""
@@ -172,6 +172,10 @@ class Parser:
         return BooleanLiteral(
             self.current_token, self._current_token_is(TokenType.TRUE)
         )
+
+    def _parse_null(self) -> NullLiteral:
+        """Parse a null literal"""
+        return NullLiteral(self.current_token)
 
     def _parse_grouped_expression(self) -> Expression:
         """Parse any grouped expression (any expression with more than one operator)"""

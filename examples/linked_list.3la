@@ -1,5 +1,3 @@
-let null = if(false) {}
-
 let pair = fun(first, second) {
     let dispatcher = fun(index) {
         if(index == 0) {

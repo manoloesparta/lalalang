@@ -211,6 +211,22 @@ class TestParserStatements(TestCase):
             self.assertEqual(str(expression.function), expected[0])
             self.assertEqual(str(expression), expected[1])
 
+    def test_null_value(self):
+        for nv in NULL_VALUE:
+            source = nv.get("input")
+            program = self.create_program(source)
+
+            expected = nv.get("expected")
+            self.assertEqual(len(program.statements), 1)
+
+            statement = program.statements[0]
+            self.assertIsInstance(statement, ExpressionStatement)
+
+            expression = statement.expression
+            self.assertIsInstance(expression, NullLiteral)
+
+            self.assertEqual(str(expression), expected)
+
     def create_program(self, source_code):
         lex = Lexer(source_code)
         par = Parser(lex)

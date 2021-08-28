@@ -5,7 +5,7 @@ let fact = fun(num) {
         }
         return factIter(actual - 1, actual * acc);
     }
-    return factIter(num, 1)
+    return factIter(num, 1);
 }
 
 println(fact(4));

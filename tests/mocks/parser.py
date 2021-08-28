@@ -248,3 +248,10 @@ CALL_EXPRESSIONS = [
         "expected": ["planet", "planet(1, 2)"],
     },
 ]
+
+NULL_VALUE = [
+    {
+        "input": "null",
+        "expected": "null",
+    },
+]

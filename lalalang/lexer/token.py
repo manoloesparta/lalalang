@@ -48,6 +48,7 @@ class TokenType(Enum):
     LET = "LET"
     TRUE = "TRUE"
     FALSE = "FALSE"
+    NULL = "NULL"
     IF = "IF"
     ELSE = "ELSE"
     RETURN = "RETURN"
@@ -68,7 +69,7 @@ class Token:
         self.literal: str = literal
 
     def __repr__(self):
-        return "Token(%s, %s)" % (repr(self.token_type), self.literal)
+        return "Token(%r, %s)" % (self.token_type, self.literal)
 
     def __str__(self):
         return "Token(%s, %s)" % (self.token_type, self.literal)
@@ -79,6 +80,7 @@ KEYWORDS: dict[str, TokenType] = {
     "let": TokenType.LET,
     "true": TokenType.TRUE,
     "false": TokenType.FALSE,
+    "null": TokenType.NULL,
     "if": TokenType.IF,
     "else": TokenType.ELSE,
     "return": TokenType.RETURN,
@@ -90,6 +92,4 @@ def lookup_identifier(key: str) -> TokenType:
     This function is for getting the token type of an letters-name,
     so we can't confuse between keywords and identifiers
     """
-    if key in KEYWORDS:
-        return KEYWORDS[key]
-    return TokenType.IDENT
+    return KEYWORDS.get(key, TokenType.IDENT)

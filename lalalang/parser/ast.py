@@ -50,7 +50,7 @@ class Identifier(Expression):
         self.value: str = value
 
     def __repr__(self):
-        return "Identifier(%s, %s)" % (repr(self.token), self.value)
+        return "Identifier(%r, %s)" % (self.token, self.value)
 
     def __str__(self):
         return self.value
@@ -78,16 +78,16 @@ class LetStatement(Statement):
         self.value: Expression = value
 
     def __repr__(self):
-        return "LetStatement(%s, %s, %s)" % (
-            repr(self.token),
-            repr(self.name),
-            repr(self.value),
+        return "LetStatement(%r, %r, %r)" % (
+            self.token,
+            self.name,
+            self.value,
         )
 
     def __str__(self):
         if not self.value:
-            return "%s %s = ;" % (self.token_literal(), str(self.name))
-        return "%s %s = %s;" % (self.token_literal(), str(self.name), str(self.value))
+            return "%s %s = ;" % (self.token_literal(), self.name)
+        return "%s %s = %s;" % (self.token_literal(), self.name, self.value)
 
     def token_literal(self) -> str:
         return self.token.literal
@@ -111,10 +111,10 @@ class ReturnStatement(Statement):
         self.return_value: Expression = return_value
 
     def __repr__(self):
-        return "ReturnStatement(%s, %s)" % (repr(self.token), repr(self.return_value))
+        return "ReturnStatement(%r, %r)" % (self.token, self.return_value)
 
     def __str__(self):
-        return "%s %s;" % (self.token_literal(), str(self.return_value))
+        return "%s %s;" % (self.token_literal(), self.return_value)
 
     def token_literal(self) -> str:
         return self.token.literal
@@ -139,7 +139,7 @@ class ExpressionStatement(Statement):
         self.expression: Expression = expression
 
     def __repr__(self):
-        return "ExpressionStatement(%s, %s)" % (repr(self.token), repr(self.expression))
+        return "ExpressionStatement(%r, %s)" % (self.token, self.expression)
 
     def __str__(self):
         if not self.expression:
@@ -169,7 +169,7 @@ class IntegerLiteral(Expression):
         self.value: int = value
 
     def __repr__(self):
-        return "IntegerLiteral(%s,%s)" % (repr(self.token), self.value)
+        return "IntegerLiteral(%r,%s)" % (self.token, self.value)
 
     def __str__(self):
         return str(self.value)
@@ -197,14 +197,14 @@ class PrefixExpression(Expression):
         self.right: Expression = right
 
     def __repr__(self):
-        return "PrefixExpression(%s,%s,%s)" % (
-            repr(self.token),
+        return "PrefixExpression(%r,%s,%r)" % (
+            self.token,
             self.operator,
-            repr(self.right),
+            self.right,
         )
 
     def __str__(self):
-        return "(%s %s)" % (self.operator, str(self.right))
+        return "(%s %s)" % (self.operator, self.right)
 
     def token_literal(self) -> str:
         return self.token.literal
@@ -232,15 +232,15 @@ class InfixExpression(Expression):
         self.right: Expression = right
 
     def __repr__(self):
-        return "InfixExpression(%s,%s,%s,%s)" % (
-            repr(self.token),
-            repr(self.left),
-            repr(self.operator),
-            repr(self.right),
+        return "InfixExpression(%r,%r,%r,%r)" % (
+            self.token,
+            self.left,
+            self.operator,
+            self.right,
         )
 
     def __str__(self):
-        return "(%s %s %s)" % (str(self.left), self.operator, str(self.right))
+        return "(%s %s %s)" % (self.left, self.operator, self.right)
 
     def token_literal(self) -> str:
         return self.token.literal
@@ -260,12 +260,34 @@ class BooleanLiteral(Expression):
         self.value: bool = value
 
     def __repr__(self):
-        return "BooleanLiteral(%s, %s)" % (repr(self.token), self.value)
+        return "BooleanLiteral(%r, %s)" % (self.token, self.value)
 
     def __str__(self):
         return str(self.token.literal)
 
-    def token_literal(self):
+    def token_literal(self) -> str:
+        return self.token.literal
+
+    def expression_node(self):
+        pass
+
+
+class NullLiteral(Expression):
+    """
+    Here we store only values that don't actually store any value, it
+    represents absence of one
+    """
+
+    def __init__(self, token: Token):
+        self.token: Token = token
+
+    def __repr__(self):
+        return "NullLiteral(%r)" % self.token
+
+    def __str__(self):
+        return str(self.token.literal)
+
+    def token_literal(self) -> str:
         return self.token.literal
 
     def expression_node(self):
@@ -296,21 +318,21 @@ class IfExpression(Expression):
         self.alternative: BlockStatement = alternative
 
     def __repr__(self):
-        return "IfExpression(%s, %s, %s, %s)" % (
-            repr(self.token),
-            repr(self.condition),
-            repr(self.consequence),
-            repr(self.alternative),
+        return "IfExpression(%r, %r, %r, %r)" % (
+            self.token,
+            self.condition,
+            self.consequence,
+            self.alternative,
         )
 
     def __str__(self):
         if self.alternative:
             return "if %s %s else %s" % (
-                str(self.condition),
-                str(self.consequence),
-                str(self.alternative),
+                self.condition,
+                self.consequence,
+                self.alternative,
             )
-        return "if %s %s" % (str(self.condition), str(self.consequence))
+        return "if %s %s" % (self.condition, self.consequence)
 
     def token_literal(self) -> str:
         return self.token.literal
@@ -335,7 +357,7 @@ class BlockStatement(Statement):
 
     def __repr__(self):
         conv_stmnts = [repr(i) for i in self.statements]
-        return "BlockStatement(%s, %s)" % (str(self.token), "".join(conv_stmnts))
+        return "BlockStatement(%r, %s)" % (self.token, "".join(conv_stmnts))
 
     def __str__(self):
         conv_stmnts = [str(i) for i in self.statements]
@@ -367,10 +389,10 @@ class FunctionLiteral(Expression):
 
     def __repr__(self):
         convs_params = [repr(i) for i in self.parameters]
-        return "FunctionLiteral(%s, %s, %s)" % (
-            repr(self.token),
+        return "FunctionLiteral(%r, %r, %r)" % (
+            self.token,
             "".join(convs_params),
-            repr(self.body),
+            self.body,
         )
 
     def __str__(self):
@@ -378,7 +400,7 @@ class FunctionLiteral(Expression):
         return "%s(%s) %s" % (
             self.token_literal(),
             ",".join(convs_params),
-            str(self.body),
+            self.body,
         )
 
     def token_literal(self) -> str:
@@ -405,15 +427,15 @@ class CallExpression(Expression):
 
     def __repr__(self):
         convs_args = [repr(i) for i in self.arguments]
-        return "CallExpression(%s, %s, %s)" % (
-            repr(self.token),
-            repr(self.function),
+        return "CallExpression(%r, %r, %r)" % (
+            self.token,
+            self.function,
             ", ".join(convs_args),
         )
 
     def __str__(self):
         convs_args = [str(i) for i in self.arguments]
-        return "%s(%s)" % (str(self.function), ", ".join(convs_args))
+        return "%s(%s)" % (self.function, ", ".join(convs_args))
 
     def token_literal(self) -> str:
         return self.token.literal

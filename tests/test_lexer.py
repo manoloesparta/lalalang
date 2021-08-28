@@ -134,6 +134,7 @@ class TestLexer(TestCase):
             Token(TokenType.FUNCTION, "fun"),
             Token(TokenType.TRUE, "true"),
             Token(TokenType.FALSE, "false"),
+            Token(TokenType.NULL, "null"),
             Token(TokenType.IF, "if"),
             Token(TokenType.ELSE, "else"),
             Token(TokenType.RETURN, "return"),

@@ -51,7 +51,7 @@ println(cityOfStars > aLovelyNight);
 println(startAFire < someoneInTheCrowd);
 ```
 
-And one logical. (&& and || on its way)
+And the classic logical ones.
 
 ```lalalang
 let shouldMiaGoToParis = false;

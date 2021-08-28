@@ -182,3 +182,18 @@ BUILTINS = [
         "expected": "null",
     },
 ]
+
+NULLS = [
+    {
+        "input": "null",
+        "expected": "null",
+    },
+    {
+        "input": "let a = null; a;",
+        "expected": "null",
+    },
+    {
+        "input": "let a = if(false) { 1 }; a;",
+        "expected": "null",
+    },
+]

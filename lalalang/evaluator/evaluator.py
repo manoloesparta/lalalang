@@ -12,7 +12,7 @@ from lalalang.evaluator.builtins import BUILTINS
 
 def eval_3lang(node: Node, env: Environment) -> Object:
     """
-    This is executing a tree walk interpreter, doing a
+    This is executing a tree walk interpreter, doing a kind of
     postorder traverse over the ast
     """
 
@@ -83,10 +83,11 @@ def eval_3lang(node: Node, env: Environment) -> Object:
     elif isinstance(node, BooleanLiteral):
         return boolean_reference(node.value)
 
+    elif isinstance(node, NullLiteral):
+        return NULL
+
     elif isinstance(node, FunctionLiteral):
-        params: list[Identifier] = node.parameters
-        body: BlockStatement = node.body
-        return Function(params, body, env)
+        return Function(node.parameters, node.body, env)
 
     return None
 
@@ -115,11 +116,16 @@ def eval_block_statement(block: BlockStatement, env: Environment) -> Object:
     This is somewhat similar to eval_program except that is
     looking for any value to return and stop in the statement
     """
+    result: Object = None
+
     for statement in block.statements:
+
         if result := eval_3lang(statement, env):
             rt: ObjectType = result.object_type()
+
             if rt == ObjectType.RETURN_VALUE or rt == ObjectType.ERROR:
                 return result
+
     return result
 
 
@@ -168,7 +174,9 @@ def eval_infix_expression(operator: str, left: Object, right: Object) -> Object:
     )
 
 
-def eval_integer_infix_expression(operator: str, left: Integer, right: Integer) -> Object:
+def eval_integer_infix_expression(
+    operator: str, left: Integer, right: Integer
+) -> Object:
     """
     Here we evaulate relational and arithmetic operations
     with integers
@@ -201,7 +209,6 @@ def eval_integer_infix_expression(operator: str, left: Integer, right: Integer) 
 
 def eval_boolean_infix_expression(operator, left, right) -> Object:
     """Here we evaluate logical expressions with booleans"""
-
     if operator == "&&":
         return boolean_reference(left.value and right.value)
     elif operator == "||":

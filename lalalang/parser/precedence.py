@@ -20,16 +20,20 @@ class ExpressionPrecedence(Enum):
 
     LOWEST = 0
     EQUALS = 1
-    LESS_GREATER = 2
-    SUM = 3
-    PRODUCT = 4
-    PREFIX = 5
-    CALL = 6
+    LOGICAL = 2
+    LESS_GREATER = 3
+    SUM = 4
+    PRODUCT = 5
+    PREFIX = 6
+    CALL = 7
 
 
 PRECEDENCES: dict[TokenType, ExpressionPrecedence] = {
     TokenType.EQ: ExpressionPrecedence.EQUALS,
     TokenType.NOT_EQ: ExpressionPrecedence.EQUALS,
+    TokenType.AND: ExpressionPrecedence.LOGICAL,
+    TokenType.OR: ExpressionPrecedence.LOGICAL,
+    TokenType.NOT: ExpressionPrecedence.LOGICAL,
     TokenType.LT: ExpressionPrecedence.LESS_GREATER,
     TokenType.GT: ExpressionPrecedence.LESS_GREATER,
     TokenType.PLUS: ExpressionPrecedence.SUM,

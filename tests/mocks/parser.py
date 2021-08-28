@@ -89,7 +89,7 @@ PREFIX_EXPRESSIONS = [
     },
 ]
 
-INFIX_EXPRESSIONS = [
+INFIX_INTEGER_EXPRESSIONS = [
     {
         "input": "5 + 5;",
         "expected": [5, "+", 5],
@@ -121,6 +121,17 @@ INFIX_EXPRESSIONS = [
     {
         "input": "5 != 5;",
         "expected": [5, "!=", 5],
+    },
+]
+
+INFIX_BOOLEAN_EXPRESSIONS = [
+    {
+        "input": "true && false",
+        "expected": ["true", "&&", "false"],
+    },
+    {
+        "input": "false || true",
+        "expected": ["false", "||", "true"],
     },
 ]
 

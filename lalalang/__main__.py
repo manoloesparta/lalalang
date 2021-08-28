@@ -20,7 +20,7 @@ def cli(mode, src):
             code = f.read()
     else:
         print("Welcome to the city of stars!🌟")
-        print("This is the La La Lang Programming Language v1.0.2!")
+        print("This is the La La Lang Programming Language v1.0.3!")
 
     if mode == "lex":
         lexing(code)

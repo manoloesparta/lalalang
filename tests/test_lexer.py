@@ -7,6 +7,8 @@ from tests.mocks.lexer import *
 class TestLexer(TestCase):
     def test_lexer_with_source_code(self):
         expected_tokens = [
+            Token(TokenType.AND, "&&"),
+            Token(TokenType.OR, "||"),
             Token(TokenType.LET, "let"),
             Token(TokenType.IDENT, "pi"),
             Token(TokenType.ASSIGN, "="),
@@ -90,7 +92,7 @@ class TestLexer(TestCase):
             Token(TokenType.PLUS, "+"),
             Token(TokenType.ASSIGN, "="),
             Token(TokenType.MINUS, "-"),
-            Token(TokenType.BANG, "!"),
+            Token(TokenType.NOT, "!"),
             Token(TokenType.ASTERISK, "*"),
             Token(TokenType.SLASH, "/"),
             Token(TokenType.LT, "<"),
@@ -100,7 +102,9 @@ class TestLexer(TestCase):
 
     def test_two_character_symbols(self):
         expected_tokens = [
-            Token(TokenType.BANG, "!"),
+            Token(TokenType.AND, "&&"),
+            Token(TokenType.OR, "||"),
+            Token(TokenType.NOT, "!"),
             Token(TokenType.EQ, "=="),
             Token(TokenType.NOT_EQ, "!="),
             Token(TokenType.ASSIGN, "="),

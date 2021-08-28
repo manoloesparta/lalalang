@@ -43,7 +43,7 @@ class Parser:
         """Some stuff that needs to be ready at the construction of this class"""
         self._register_prefix_fun(TokenType.IDENT, self._parse_identifier)
         self._register_prefix_fun(TokenType.INT, self._parse_integer_literal)
-        self._register_prefix_fun(TokenType.BANG, self._parse_prefix_expression)
+        self._register_prefix_fun(TokenType.NOT, self._parse_prefix_expression)
         self._register_prefix_fun(TokenType.MINUS, self._parse_prefix_expression)
         self._register_prefix_fun(TokenType.TRUE, self._parse_boolean)
         self._register_prefix_fun(TokenType.FALSE, self._parse_boolean)
@@ -51,6 +51,8 @@ class Parser:
         self._register_prefix_fun(TokenType.IF, self._parse_if_expression)
         self._register_prefix_fun(TokenType.FUNCTION, self._parse_function_literal)
 
+        self._register_infix_fun(TokenType.AND, self._parse_infix_expression)
+        self._register_infix_fun(TokenType.OR, self._parse_infix_expression)
         self._register_infix_fun(TokenType.PLUS, self._parse_infix_expression)
         self._register_infix_fun(TokenType.MINUS, self._parse_infix_expression)
         self._register_infix_fun(TokenType.SLASH, self._parse_infix_expression)

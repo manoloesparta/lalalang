@@ -1,4 +1,5 @@
 SOURCE_CODE = """
+    && ||
     # comment
     let pi = 314;
     fun area(ratio) { # comment
@@ -25,7 +26,7 @@ ILLEGAL = "~`^"
 
 OPERATORS = "+=-!*/<>"
 
-TWO_CHARACTER_SYMBOLS = "! == != ="
+TWO_CHARACTER_SYMBOLS = "&& || ! == != ="
 
 IDENTIFIERS = "someone in the crowd"
 

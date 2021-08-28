@@ -54,7 +54,7 @@ class Lexer:
         elif self.char == "":
             new_token = Token(TokenType.EOF, "")
 
-        # Two characters symbols
+        # Two different characters symbols
         elif self.char == "=":
             if self._peek_char() == "=":
                 char = self.char
@@ -68,7 +68,17 @@ class Lexer:
                 self._read_char()
                 new_token = Token(TokenType.NOT_EQ, char + self.char)
             else:
-                new_token = Token(TokenType.BANG, self.char)
+                new_token = Token(TokenType.NOT, self.char)
+
+        # Two equal characters symbols
+        elif self.char == "&" and self._peek_char() == "&":
+            char = self.char
+            self._read_char()
+            new_token = Token(TokenType.AND, char + self.char)
+        elif self.char == "|" and self._peek_char() == "|":
+            char = self.char
+            self._read_char()
+            new_token = Token(TokenType.OR, self.char + self.char)
 
         # Numbers and identifiers
         else:

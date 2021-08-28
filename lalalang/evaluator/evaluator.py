@@ -160,47 +160,52 @@ def eval_infix_expression(operator: str, left: Object, right: Object) -> Object:
 
     if isinstance(left, Integer) and isinstance(right, Integer):
         return eval_integer_infix_expression(operator, left, right)
-    elif operator == "==":
-        return boolean_reference(left == right)
-    elif operator == "!=":
-        return boolean_reference(left != right)
+    elif isinstance(left, Boolean) and isinstance(right, Boolean):
+        return eval_boolean_infix_expression(operator, left, right)
 
     return Error(
-        "Unknown operator %s %s %s"
-        % (left.object_type(), operator, right.object_type())
+        "Unkown operator %s %s %s" % (left.object_type(), operator, right.object_type())
     )
 
 
-def eval_integer_infix_expression(operator: str, left: Object, right: Object) -> Object:
+def eval_integer_infix_expression(operator: str, left: Integer, right: Integer) -> Object:
     """
     Here we evaulate relational and arithmetic operations
     with integers
     """
-    if not (isinstance(left, Integer) and isinstance(right, Integer)):
-        return NULL
-
-    left_value: int = left.value
-    right_value: int = right.value
 
     # Arithmetic
     if operator == "+":
-        return Integer(left_value + right_value)
+        return Integer(left.value + right.value)
     elif operator == "-":
-        return Integer(left_value - right_value)
+        return Integer(left.value - right.value)
     elif operator == "*":
-        return Integer(left_value * right_value)
+        return Integer(left.value * right.value)
     elif operator == "/":
-        return Integer(left_value // right_value)
+        return Integer(left.value // right.value)
 
     # Relational
     elif operator == "<":
-        return boolean_reference(left_value < right_value)
+        return boolean_reference(left.value < right.value)
     elif operator == ">":
-        return boolean_reference(left_value > right_value)
+        return boolean_reference(left.value > right.value)
     elif operator == "==":
-        return boolean_reference(left_value == right_value)
+        return boolean_reference(left.value == right.value)
     elif operator == "!=":
-        return boolean_reference(left_value != right_value)
+        return boolean_reference(left.value != right.value)
+
+    return Error(
+        "Unkown operator %s %s %s" % (left.object_type(), operator, right.object_type())
+    )
+
+
+def eval_boolean_infix_expression(operator, left, right) -> Object:
+    """Here we evaluate logical expressions with booleans"""
+
+    if operator == "&&":
+        return boolean_reference(left.value and right.value)
+    elif operator == "||":
+        return boolean_reference(left.value or left.value)
 
     return Error(
         "Unkown operator %s %s %s" % (left.object_type(), operator, right.object_type())

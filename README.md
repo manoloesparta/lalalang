@@ -3,7 +3,7 @@
 # 3LANG ♪♪
 
 ![Python version](https://img.shields.io/badge/Python-3.9%2B-blue)
-![Project version](https://img.shields.io/badge/Version-1.0.2-blueviolet)
+![Project version](https://img.shields.io/badge/Version-1.0.3-blueviolet)
 ![Branch status](https://github.com/manoloesparta/lalalang/actions/workflows/main.yml/badge.svg)
 ![Coverage Status](https://coveralls.io/repos/github/manoloesparta/lalalang/badge.svg?t=xGQ81l)
 ![License](https://img.shields.io/badge/License-MIT-red)
@@ -55,7 +55,7 @@ To enter the interpreter and run code on the fly, type
 $ 3lang
 
 Welcome to the city of stars!🌟
-This is the La La Lang Programming Languag v0.3!
+This is the La La Lang Programming Languag v1.0!
 ♪♪ > 
 ```
 

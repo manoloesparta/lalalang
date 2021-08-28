@@ -36,6 +36,9 @@ class TestEvaluator(TestCase):
     def test_builtins(self):
         self.check_evaluation(BUILTINS)
 
+    def test_logical(self):
+        self.check_evaluation(LOGICAL)
+
     def check_evaluation(self, cases):
         for case in cases:
             source = case.get("input")

@@ -70,6 +70,25 @@ INFIX = [
     },
 ]
 
+LOGICAL = [
+    {
+        "input": "true || false",
+        "expected": "true",
+    },
+    {
+        "input": "false || false",
+        "expected": "false",
+    },
+    {
+        "input": "false && true",
+        "expected": "false",
+    },
+    {
+        "input": "true && true",
+        "expected": "true",
+    },
+]
+
 CONDITIONALS = [
     {
         "input": "if(5 == 5) { 3 }",
@@ -111,7 +130,7 @@ ERRORS = [
     },
     {
         "input": "false + false",
-        "expected": "ERROR: Unknown operator ObjectType.BOOLEAN + ObjectType.BOOLEAN",
+        "expected": "ERROR: Unkown operator ObjectType.BOOLEAN + ObjectType.BOOLEAN",
     },
     {
         "input": "a",

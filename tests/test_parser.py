@@ -87,8 +87,8 @@ class TestParserStatements(TestCase):
             self.assertEqual(expression.operator, output[0])
             self.assertTrue(self.validate_integer_literal(expression.right, output[1]))
 
-    def test_infix_expressions(self):
-        for ie in INFIX_EXPRESSIONS:
+    def test_infix_integer_expressions(self):
+        for ie in INFIX_INTEGER_EXPRESSIONS:
             source = ie.get("input")
             program = self.create_program(source)
 
@@ -100,11 +100,28 @@ class TestParserStatements(TestCase):
 
             expression = statement.expression
             self.assertIsInstance(expression, InfixExpression)
-            self.assertEqual(expression.operator, output[1])
 
             self.assertTrue(self.validate_integer_literal(expression.left, output[0]))
             self.assertEqual(expression.operator, output[1])
             self.assertTrue(self.validate_integer_literal(expression.right, output[2]))
+
+    def test_infix_boolean_expressions(self):
+        for ib in INFIX_BOOLEAN_EXPRESSIONS:
+            source = ib.get("input")
+            program = self.create_program(source)
+
+            output = ib.get("expected")
+            self.assertEqual(len(program.statements), 1)
+
+            statement = program.statements[0]
+            self.assertIsInstance(statement, ExpressionStatement)
+
+            expression = statement.expression
+            self.assertIsInstance(expression, InfixExpression)
+
+            self.assertEqual(str(expression.left), output[0])
+            self.assertEqual(expression.operator, output[1])
+            self.assertEqual(str(expression.right), output[2])
 
     def test_precedence(self):
         for pe in PRECEDENCE_EXPRESSIONS:

@@ -27,6 +27,7 @@ class TokenType(Enum):
     PLUS = "+"
     MINUS = "-"
     NOT = "!"
+    MOD = "%"
     AND = "&&"
     OR = "||"
     ASTERISK = "*"

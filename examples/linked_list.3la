@@ -71,10 +71,7 @@ let printInline = fun(x) {
 }
 
 let even = fun(x) {
-    if(x > 3) {
-        return true;
-    }
-    return false;
+    return x % 2 == 0;
 }
 
 let list = generateList(10, even);

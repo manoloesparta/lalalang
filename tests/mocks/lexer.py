@@ -24,7 +24,7 @@ DELIMETERS = "(){},;"
 
 ILLEGAL = "~`^"
 
-OPERATORS = "+=-!*/<>"
+OPERATORS = "+=-!*/<>%"
 
 TWO_CHARACTER_SYMBOLS = "&& || ! == != ="
 

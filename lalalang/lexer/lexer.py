@@ -47,6 +47,8 @@ class Lexer:
             new_token = Token(TokenType.ASTERISK, self.char)
         elif self.char == "/":
             new_token = Token(TokenType.SLASH, self.char)
+        elif self.char == "%":
+            new_token = Token(TokenType.MOD, self.char)
         elif self.char == "<":
             new_token = Token(TokenType.LT, self.char)
         elif self.char == ">":

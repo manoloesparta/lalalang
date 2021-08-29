@@ -22,10 +22,11 @@ class ExpressionPrecedence(Enum):
     EQUALS = 1
     LOGICAL = 2
     LESS_GREATER = 3
-    SUM = 4
-    PRODUCT = 5
-    PREFIX = 6
-    CALL = 7
+    MOD = 4
+    SUM = 5
+    PRODUCT = 6
+    PREFIX = 7
+    CALL = 8
 
 
 PRECEDENCES: dict[TokenType, ExpressionPrecedence] = {
@@ -40,5 +41,6 @@ PRECEDENCES: dict[TokenType, ExpressionPrecedence] = {
     TokenType.MINUS: ExpressionPrecedence.SUM,
     TokenType.SLASH: ExpressionPrecedence.PRODUCT,
     TokenType.ASTERISK: ExpressionPrecedence.PRODUCT,
+    TokenType.MOD: ExpressionPrecedence.MOD,
     TokenType.LPAREN: ExpressionPrecedence.CALL,
 }

@@ -68,6 +68,10 @@ INFIX = [
         "input": "10 - 20",
         "expected": "-10",
     },
+    {
+        "input": "10 % 2",
+        "expected": "0",
+    },
 ]
 
 LOGICAL = [

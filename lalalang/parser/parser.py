@@ -59,6 +59,7 @@ class Parser:
         self._register_infix_fun(TokenType.MINUS, self._parse_infix_expression)
         self._register_infix_fun(TokenType.SLASH, self._parse_infix_expression)
         self._register_infix_fun(TokenType.ASTERISK, self._parse_infix_expression)
+        self._register_infix_fun(TokenType.MOD, self._parse_infix_expression)
         self._register_infix_fun(TokenType.EQ, self._parse_infix_expression)
         self._register_infix_fun(TokenType.NOT_EQ, self._parse_infix_expression)
         self._register_infix_fun(TokenType.LT, self._parse_infix_expression)

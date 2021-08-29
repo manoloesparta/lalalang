@@ -202,6 +202,8 @@ def eval_integer_infix_expression(
         return Integer(left.value * right.value)
     elif operator == "/":
         return Integer(left.value // right.value)
+    elif operator == "%":
+        return Integer(left.value % right.value)
 
     # Relational
     elif operator == "<":

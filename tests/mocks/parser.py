@@ -176,6 +176,14 @@ PRECEDENCE_EXPRESSIONS = [
         "input": "5 < 4 != 3 > 4",
         "expected": "((5 < 4) != (3 > 4))",
     },
+    {
+        "input": "5 % 2",
+        "expected": "(5 % 2)",
+    },
+    {
+        "input": "5 % 2 * 3",
+        "expected": "(5 % (2 * 3))",
+    },
 ]
 
 BOOLEAN_EXPRESSION = [

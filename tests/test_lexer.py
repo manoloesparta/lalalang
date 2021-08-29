@@ -97,6 +97,7 @@ class TestLexer(TestCase):
             Token(TokenType.SLASH, "/"),
             Token(TokenType.LT, "<"),
             Token(TokenType.GT, ">"),
+            Token(TokenType.MOD, "%"),
             Token(TokenType.EOF, ""),
         ]
         self.compare_results(OPERATORS, expected_tokens)

@@ -24,10 +24,13 @@ class Lexer:
         self._skip_whitespace()
         new_token: Token = Token.empty()
 
-        # One character symbols
+        # Comments
         if self.char == "#":
-            return self._after_comment()
-        elif self.char == ";":
+            self._skip_comment()
+            return self.next_token()
+
+        # One character symbols
+        if self.char == ";":
             new_token = Token(TokenType.SEMICOLON, self.char)
         elif self.char == "(":
             new_token = Token(TokenType.LPAREN, self.char)
@@ -142,11 +145,10 @@ class Lexer:
         while self.char.isspace():
             self._read_char()
 
-    def _after_comment(self) -> Token:
+    def _skip_comment(self):
         """Advances the position until it found an end of line"""
         while not self.char in ["\n", ""]:
             self._read_char()
-        return self.next_token()
 
     def _peek_char(self) -> str:
         """

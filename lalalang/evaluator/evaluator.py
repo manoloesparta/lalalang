@@ -70,7 +70,7 @@ def eval_3lang(node: Node, env: Environment) -> Object:
         if is_error(fun):
             return fun
 
-        args: list[Object] = eval_expressions(node.arguments, env)
+        args = eval_expressions(node.arguments, env)
         if len(args) == 1 and is_error(args[0]):
             return args[0]
 

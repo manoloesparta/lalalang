@@ -3,8 +3,8 @@ from abc import ABC, abstractmethod
 
 class Node(ABC):
     """
-    This class represents every node that is
-    part of the abstract syntax tree
+    This class represents every node that is part of the
+    abstract syntax tree
     """
 
     @abstractmethod
@@ -18,10 +18,9 @@ class Node(ABC):
 
 class Statement(Node):
     """
-    These nodes are reserved only for the
-    statements, meaning it won't produce any value.
-    In la la lang there there are only two staments
-    return and let.
+    These nodes are reserved only for the statements, meaning
+    it won't produce any value. In la la lang there there are
+    only two staments return and let.
     """
 
     @abstractmethod
@@ -31,9 +30,9 @@ class Statement(Node):
 
 class Expression(Node):
     """
-    These nodes are reserved only for the
-    expression, meaning it will produce a value. Aside
-    from let and return everything is a expression.
+    These nodes are reserved only for the expression, meaning it
+    will produce a value. Aside from let and return everything is
+    a expression.
     """
 
     @abstractmethod

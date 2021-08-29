@@ -1,3 +1,5 @@
+# Pair structure 
+
 let pair = fun(first, second) {
     let dispatcher = fun(index) {
         if(index == 0) {
@@ -9,7 +11,7 @@ let pair = fun(first, second) {
     }
     return dispatcher;
 }
- 
+
 let first = fun(somePair) {
     return somePair(0);
 }
@@ -18,9 +20,21 @@ let second = fun(somePair) {
     return somePair(1);
 }
 
-let list = pair(1, pair(2, pair(3, pair(4, pair(5, null)))));
+let randomList = pair(1, pair(2, pair(3, pair(4, pair(5, null)))));
 
-let foreach = fun(proc, items) {
+# Pair methods
+
+let generateList = fun(x, cond) {
+    if(x == 0) {
+        return null;
+    }
+    if(cond(x)) {
+        return pair(x, generateList(x - 1, cond));
+    }
+    return generateList(x - 1, cond);
+}
+
+let forEach = fun(proc, items) {
     if(!items) {
         return null;
     }
@@ -29,7 +43,7 @@ let foreach = fun(proc, items) {
     let next = second(items);
 
     proc(current);
-    foreach(proc,next);
+    forEach(proc,next);
 }
 
 let map = fun(proc, items) {
@@ -46,9 +60,23 @@ let map = fun(proc, items) {
     );
 }
 
+# Pair example
+
 let square = fun(x) {
     return x * x;
 }
 
-let newList = map(square, list);
-foreach(println, newList);
+let printInline = fun(x) {
+    print(toString(x) + " ")
+}
+
+let even = fun(x) {
+    if(x > 3) {
+        return true;
+    }
+    return false;
+}
+
+let list = generateList(10, even);
+let squareList = map(square, list);
+forEach(printInline, squareList);

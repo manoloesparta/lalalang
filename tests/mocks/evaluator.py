@@ -181,6 +181,10 @@ BUILTINS = [
         "input": "println(10)",
         "expected": "null",
     },
+    {
+        "input": '"Universe: " + toString(10)',
+        "expected": "Universe: 10",
+    },
 ]
 
 NULLS = [
@@ -210,5 +214,17 @@ STRINGS = [
     {
         "input": 'let b = fun() { return "b"; }; b()',
         "expected": "b",
+    },
+    {
+        "input": '"a" + "b"',
+        "expected": "ab",
+    },
+    {
+        "input": '"a" + "b" + "c"',
+        "expected": "abc",
+    },
+    {
+        "input": '"feliz" + " " + "jueves"',
+        "expected": "feliz jueves",
     },
 ]

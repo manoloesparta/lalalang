@@ -110,7 +110,8 @@ let startAFire = fun(heat) {
 
 There only exists two builtin functions:
 
-* **println**: It prints whatever is passed to him with a break line at the end
-* **print**: Same as println but without the ending break line
+* **println**: It prints whatever is passed to him with a break line at the end.
+* **print**: Same as println but without the ending break line.
+* **toString**: Convert an integers to an string in order to concatenate.
 
 See the [example](../examples) section to check out how this is used.

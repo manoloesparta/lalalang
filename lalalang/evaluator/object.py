@@ -60,7 +60,6 @@ class String(Object):
         return self.value
 
 
-@dataclass
 class Boolean(Object):
     def __init__(self, value: bool):
         self.value: bool = value
@@ -82,7 +81,6 @@ class Boolean(Object):
         return str(self.value).lower()
 
 
-@dataclass
 class Null(Object):
     def object_type(self) -> ObjectType:
         return ObjectType.NULL
@@ -91,7 +89,6 @@ class Null(Object):
         return "null"
 
 
-@dataclass
 class ReturnValue(Object):
     def __init__(self, value: Object):
         self.value: Object = value
@@ -103,7 +100,6 @@ class ReturnValue(Object):
         return self.value.inspect()
 
 
-@dataclass
 class Error(Object):
     def __init__(self, message: str):
         self.message: str = message
@@ -115,7 +111,6 @@ class Error(Object):
         return "ERROR: %s" % self.message
 
 
-@dataclass
 class Function(Object):
     def __init__(
         self, parameters: list[Identifier], body: BlockStatement, env: Environment
@@ -132,7 +127,6 @@ class Function(Object):
         return "fun(%s){\n\t%s\n}" % (",".join(params), self.body)
 
 
-@dataclass
 class Builtin(Object):
     def __init__(self, fun: Callable):
         self.fun: Callable = fun

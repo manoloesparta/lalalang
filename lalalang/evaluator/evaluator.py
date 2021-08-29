@@ -167,14 +167,22 @@ def eval_infix_expression(operator: str, left: Object, right: Object) -> Object:
             % (left.object_type(), operator, right.object_type())
         )
 
-    if isinstance(left, Integer) and isinstance(right, Integer):
-        return eval_integer_infix_expression(operator, left, right)
-    elif isinstance(left, Boolean) and isinstance(right, Boolean):
-        return eval_boolean_infix_expression(operator, left, right)
+    result: Object = None
 
-    return Error(
-        "Unkown operator %s %s %s" % (left.object_type(), operator, right.object_type())
-    )
+    if isinstance(left, Integer) and isinstance(right, Integer):
+        result = eval_integer_infix_expression(operator, left, right)
+    elif isinstance(left, Boolean) and isinstance(right, Boolean):
+        result = eval_boolean_infix_expression(operator, left, right)
+    elif isinstance(left, String) and isinstance(right, String):
+        result = eval_string_infix_expression(operator, left, right)
+
+    if not result:
+        return Error(
+            "Unkown operator %s %s %s"
+            % (left.object_type(), operator, right.object_type())
+        )
+
+    return result
 
 
 def eval_integer_infix_expression(
@@ -205,21 +213,25 @@ def eval_integer_infix_expression(
     elif operator == "!=":
         return boolean_reference(left.value != right.value)
 
-    return Error(
-        "Unkown operator %s %s %s" % (left.object_type(), operator, right.object_type())
-    )
+    return None
 
 
-def eval_boolean_infix_expression(operator, left, right) -> Object:
+def eval_boolean_infix_expression(
+    operator: str, left: Boolean, right: Boolean
+) -> Object:
     """Here we evaluate logical expressions with booleans"""
     if operator == "&&":
         return boolean_reference(left.value and right.value)
     elif operator == "||":
         return boolean_reference(left.value or left.value)
+    return None
 
-    return Error(
-        "Unkown operator %s %s %s" % (left.object_type(), operator, right.object_type())
-    )
+
+def eval_string_infix_expression(operator: str, left: String, right: String) -> Object:
+    """Here we are adding a way for concatenating strings"""
+    if operator == "+":
+        return String(left.value + right.value)
+    return None
 
 
 def eval_if_expression(expression: IfExpression, env: Environment) -> Object:

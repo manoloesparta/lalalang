@@ -24,27 +24,13 @@ let randomList = pair(1, pair(2, pair(3, pair(4, pair(5, null)))));
 
 # Pair methods
 
-let generateList = fun(x, cond) {
+let generateList = fun(x) {
     if(x == 0) {
         return null;
     }
-    if(cond(x)) {
-        return pair(x, generateList(x - 1, cond));
-    }
-    return generateList(x - 1, cond);
+    return pair(x, generateList(x - 1));
 }
 
-let forEach = fun(proc, items) {
-    if(!items) {
-        return null;
-    }
-
-    let current = first(items);
-    let next = second(items);
-
-    proc(current);
-    forEach(proc,next);
-}
 
 let map = fun(proc, items) {
     if(!items) {
@@ -60,6 +46,36 @@ let map = fun(proc, items) {
     );
 }
 
+let filter = fun(cond, items) {
+    if(!items) {
+        return null;
+    }
+    
+    let current = first(items);
+    let next = second(items);
+
+    if(cond(current)) {
+        return pair(
+            current, 
+            filter(cond, next)
+        );
+    }
+
+    return filter(cond, next);
+}
+
+let forEach = fun(proc, items) {
+    if(!items) {
+        return null;
+    }
+
+    let current = first(items);
+    let next = second(items);
+
+    proc(current);
+    forEach(proc,next);
+}
+
 # Pair example
 
 let square = fun(x) {
@@ -67,13 +83,14 @@ let square = fun(x) {
 }
 
 let printInline = fun(x) {
-    print(toString(x) + " ")
+    print(toString(x) + " ");
 }
 
 let even = fun(x) {
     return x % 2 == 0;
 }
 
-let list = generateList(10, even);
+let list = generateList(100);
 let squareList = map(square, list);
-forEach(printInline, squareList);
+let evenList = filter(even, squareList);
+forEach(printInline, evenList);

@@ -15,7 +15,16 @@ class Lexer:
 
         self._read_char()
 
-    def next_token(self) -> Token:
+    def create_tokens(self) -> list[Token]:
+        """This is for returning the tokens identified in the source code"""
+        all_tokens: list[Token] = []
+
+        while not self.position >= len(self.source) + 1:
+            all_tokens.append(self._next_token())
+
+        return all_tokens
+
+    def _next_token(self) -> Token:
         """
         This is the main method that is traversing the source code and generating
         the tokens, this was made for being used multiple times
@@ -27,7 +36,7 @@ class Lexer:
         # Comments
         if self.char == "#":
             self._skip_comment()
-            return self.next_token()
+            return self._next_token()
 
         # One character symbols
         if self.char == ";":

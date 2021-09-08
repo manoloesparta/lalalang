@@ -50,16 +50,15 @@ def read_eval_print_loop(func):
 @read_eval_print_loop
 def lexing(code):
     lex = Lexer(code)
-    token = Token.empty()
-    while token.token_type != TokenType.EOF:
-        token = lex.next_token()
-        print(repr(token))
+    tokens = lex.create_tokens()
+    [print(repr(token)) for token in tokens]
 
 
 @read_eval_print_loop
 def parsing(code):
     lex = Lexer(code)
-    par = Parser(lex)
+    tokens = lex.create_tokens()
+    par = Parser(tokens)
     program = par.parse_program()
 
     if len(par.errors) == 0:
@@ -71,7 +70,8 @@ def parsing(code):
 @read_eval_print_loop
 def evaluating(code, env):
     lex = Lexer(code)
-    par = Parser(lex)
+    tokens = lex.create_tokens()
+    par = Parser(tokens)
     program = par.parse_program()
 
     if len(par.errors) > 0:

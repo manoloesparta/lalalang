@@ -8,8 +8,9 @@ from lalalang.parser.ast import *
 
 
 class Parser:
-    def __init__(self, lexer: Lexer):
-        self.lexer: Lexer = lexer
+    def __init__(self, all_tokens: list[Token]):
+        self.all_tokens: list[Token] = all_tokens
+        self.token_index: int = 0
         self.current_token: Token = Token.empty()
         self.peek_token: Token = Token.empty()
         self.statements: list[Statement] = []
@@ -71,8 +72,13 @@ class Parser:
 
     def _next_token(self) -> None:
         """This helps us moving arround the lexer to watch one token ahead"""
+        if not self.token_index < len(self.all_tokens):
+            self.current_token = Token(TokenType.EOF, "")
+            return None
+
         self.current_token = self.peek_token
-        self.peek_token = self.lexer.next_token()
+        self.peek_token = self.all_tokens[self.token_index]
+        self.token_index += 1
 
     def _parse_statement(self) -> Statement:
         """Here are the conditionals to handle any statements defined by us"""

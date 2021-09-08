@@ -158,7 +158,7 @@ class TestLexer(TestCase):
 
     def compare_results(self, source_code, expected_tokens):
         lex = Lexer(source_code)
-        for token in expected_tokens:
-            current = lex.next_token()
-            self.assertEqual(token.token_type, current.token_type)
-            self.assertEqual(token.literal, current.literal)
+        generated_tokens = lex.create_tokens()
+        for et, gt in zip(expected_tokens, generated_tokens):
+            self.assertEqual(et.token_type, gt.token_type)
+            self.assertEqual(et.literal, gt.literal)

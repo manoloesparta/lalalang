@@ -245,7 +245,8 @@ class TestParserStatements(TestCase):
 
     def create_program(self, source_code):
         lex = Lexer(source_code)
-        par = Parser(lex)
+        toks = lex.create_tokens()
+        par = Parser(toks)
         return par.parse_program()
 
     def validate_integer_literal(self, integer, value):

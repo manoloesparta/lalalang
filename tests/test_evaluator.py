@@ -54,7 +54,8 @@ class TestEvaluator(TestCase):
 
     def build_object(self, source):
         lex = Lexer(source)
-        par = Parser(lex)
+        toks = lex.create_tokens()
+        par = Parser(toks)
         program = par.parse_program()
         env = Environment.empty()
         return eval_3lang(program, env)

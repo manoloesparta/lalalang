@@ -2,9 +2,15 @@ name: Deployment
 
 on:
   push:
-    branches: [ main ]
+    paths:
+    - 'lalalang/**'
+    branches: 
+    - main
   pull_request:
-    branches: [ main ]
+    paths:
+    - 'lalalang/**'
+    branches:
+    - main
   workflow_dispatch:
 
 jobs:

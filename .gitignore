@@ -21,3 +21,7 @@ venv/
 dist/
 build/
 *.egg-info/
+
+# App specific
+.aws-sam
+node_modules/

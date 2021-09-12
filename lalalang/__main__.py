@@ -2,11 +2,10 @@ import sys
 import click
 import signal
 from functools import wraps
-from lalalang.parser.parser import Parser
-from lalalang.lexer.lexer import Lexer
-from lalalang.lexer.token import TokenType, Token
+from lalalang.lexer import Lexer
+from lalalang.parser import Parser
+from lalalang.evaluator import eval_3lang
 from lalalang.evaluator.object import Null
-from lalalang.evaluator.evaluator import eval_3lang
 from lalalang.evaluator.environment import Environment
 
 

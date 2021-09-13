@@ -20,6 +20,10 @@ jobs:
     name: Lambda Pipeline
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: app/lalalambda
+
     steps:
       - uses: actions/checkout@v2
 
@@ -34,6 +38,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
 
       - run: sam build
 

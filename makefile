@@ -34,4 +34,4 @@ format:
 .PHONY: clean 
 clean:
 	find . -name __pycache__ | xargs rm -rf
-	rm -rf build dist *.egg-info .eggs .coverage .mypy_cache .pytest_cache
+	rm -rf build dist *.egg-info .eggs .coverage .mypy_cache .pytest_cache app/lalalambda/.aws-sam

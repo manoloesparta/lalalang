@@ -3,7 +3,7 @@ name: Pypi
 on:
   push:
     paths:
-    - 'lalalang/**'
+    - 'setup.cfg'
     branches: 
     - main
   pull_request:

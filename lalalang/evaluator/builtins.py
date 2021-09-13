@@ -1,4 +1,3 @@
-from lalalang.evaluator.evaluator import NULL
 from lalalang.evaluator.object import *
 
 
@@ -8,7 +7,7 @@ def _print_line(*args: Object) -> Object:
         return Error("It must recieve one parameter")
 
     print(args[0].inspect())
-    return NULL
+    return args[0]
 
 
 def _print(*args: Object) -> Object:
@@ -17,7 +16,7 @@ def _print(*args: Object) -> Object:
         return Error("It must recieve one parameter")
 
     print(args[0].inspect(), end="")
-    return NULL
+    return args[0]
 
 
 def _to_string(*args: Object) -> Object:

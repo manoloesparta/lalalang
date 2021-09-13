@@ -15,6 +15,7 @@ def run(code):
     if len(par.errors) > 0:
         [print(i) for i in par.errors]
         return
+
     env = Environment.empty()
     evaluated = eval_3lang(program, env)
     if evaluated and not isinstance(evaluated, Null):

@@ -179,11 +179,11 @@ ENVIRONMENT = [
 BUILTINS = [
     {
         "input": "print(10)",
-        "expected": "null",
+        "expected": "10",
     },
     {
         "input": "println(10)",
-        "expected": "null",
+        "expected": "10",
     },
     {
         "input": '"Universe: " + toString(10)',

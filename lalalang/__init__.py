@@ -18,4 +18,4 @@ def run(code):
     env = Environment.empty()
     evaluated = eval_3lang(program, env)
     if evaluated and not isinstance(evaluated, Null):
-        print(evaluated.inspect())
+        return evaluated.inspect()

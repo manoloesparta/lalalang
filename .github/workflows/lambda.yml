@@ -27,3 +27,14 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
+      
+      - uses: aws-actions/setup-sam@v1
+
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - run: sam build
+
+      - run: sam deploy --stack-name lalalambda --region us-east-1 --resolve-s3 --capabilities CAPABILITY_IAM

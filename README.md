@@ -4,7 +4,8 @@
 
 ![Python version](https://img.shields.io/badge/Python-3.9%2B-blue)
 ![Project version](https://img.shields.io/badge/Version-1.2-blueviolet)
-![Branch status](https://github.com/manoloesparta/lalalang/actions/workflows/main.yml/badge.svg)
+![Pypi status](https://github.com/manoloesparta/lalalang/actions/workflows/pypi.yml/badge.svg)
+![Lambda status](https://github.com/manoloesparta/lalalang/actions/workflows/lambda.yml/badge.svg)
 ![Coverage Status](https://coveralls.io/repos/github/manoloesparta/lalalang/badge.svg?t=xGQ81l)
 ![License](https://img.shields.io/badge/License-MIT-red)
 

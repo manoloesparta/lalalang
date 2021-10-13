@@ -1,11 +1,12 @@
 ![La La Lang Logo](./docs/logo.png)
 
-# 3LANG ♪♪
+<hr>
 
 ![Python version](https://img.shields.io/badge/Python-3.9%2B-blue)
 ![Project version](https://img.shields.io/badge/Version-1.2-blueviolet)
 ![Pypi status](https://github.com/manoloesparta/lalalang/actions/workflows/pypi.yml/badge.svg)
 ![Lambda status](https://github.com/manoloesparta/lalalang/actions/workflows/lambda.yml/badge.svg)
+![Client status](https://github.com/manoloesparta/lalalang/actions/workflows/client.yml/badge.svg)
 ![Coverage Status](https://coveralls.io/repos/github/manoloesparta/lalalang/badge.svg?t=xGQ81l)
 ![License](https://img.shields.io/badge/License-MIT-red)
 

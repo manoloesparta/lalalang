@@ -1,13 +1,14 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: This is an API for making an online compiler of La La Lang
+Description: API for making an online compiler of lalalang
 
 Globals:
   Function:
-    Timeout: 3
+    Timeout: 10
 
 Resources:
-  CompileLaLaLangFunction:
+
+  CompileLaLaLang:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: compile/
@@ -17,16 +18,13 @@ Resources:
         Compile:
           Type: Api 
           Properties:
-            Path: /compile
-            Method: post 
+            Path: /
+            Method: post
 
 Outputs:
   LaLaLangApi:
-    Description: "API Gateway endpoint URL for Prod stage for Compile La La Lang function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/compile/"
-  CompileLaLaLangFunction:
-    Description: "Hello World Lambda Function ARN"
-    Value: !GetAtt CompileLaLaLangFunction.Arn
-  CompileLaLaLangFunctionIamRole:
-    Description: "Implicit IAM Role created for Hello World function"
-    Value: !GetAtt CompileLaLaLangFunctionRole.Arn
+    Description: "API Gateway endpoint for compiling lalalang"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
+  CompileLaLaLang:
+    Description: "Compile Function Arn"
+    Value: !GetAtt CompileLaLaLang.Arn

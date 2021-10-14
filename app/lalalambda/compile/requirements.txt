@@ -1,1 +1,1 @@
-lalalang==1.2.12 
+lalalang

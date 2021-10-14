@@ -48,15 +48,13 @@ module.exports = {
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: 'src/index.html',
-      favicon: null,
+      favicon: 'src/img/favicon.png',
       inject: true
     }),
-
     new MiniCssExtractPlugin({
       filename: '[name].css',
       chunkFilename: '[id].css'
     }),
-
     new CleanWebpackPlugin()
   ]
 }

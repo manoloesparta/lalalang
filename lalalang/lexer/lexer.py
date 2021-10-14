@@ -95,7 +95,7 @@ class Lexer:
         elif self.char == "|" and self._peek_char() == "|":
             char = self.char
             self._read_char()
-            new_token = Token(TokenType.OR, self.char + self.char)
+            new_token = Token(TokenType.OR, char + self.char)
 
         # Numbers and identifiers
         else:
@@ -142,7 +142,7 @@ class Lexer:
         """This helper method is for extracting strings from the source code"""
         start: int = self.position + 1
         self._read_char()
-        while not self.char in ['"', ""]:
+        while self.char not in ['"', ""]:
             self._read_char()
         return self.source[start : self.position]
 
@@ -156,7 +156,7 @@ class Lexer:
 
     def _skip_comment(self):
         """Advances the position until it found an end of line"""
-        while not self.char in ["\n", ""]:
+        while self.char not in ["\n", ""]:
             self._read_char()
 
     def _peek_char(self) -> str:

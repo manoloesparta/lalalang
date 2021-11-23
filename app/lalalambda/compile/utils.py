@@ -19,9 +19,5 @@ def build_response(status, message):
     """Create the format for the lambda response"""
     return {
         "statusCode": status,
-        "body": json.dumps(
-            {
-                "output": str(message),
-            }
-        ),
+        "body": json.dumps({"output": str(message)}),
     }

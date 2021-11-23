@@ -1,6 +1,6 @@
 ![La La Lang Logo](./docs/logo.png)
 
-<hr>
+#
 
 ![Python version](https://img.shields.io/badge/Python-3.9%2B-blue)
 ![Project version](https://img.shields.io/badge/Version-1.2-blueviolet)

@@ -1,0 +1,31 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: La La Lang API compiler
+  description: A La La Lang compiler for consuming via HTTP
+paths:
+  /compile:
+    post:
+      description: Returns the result of your compiled
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompileSchema'
+      responses:
+        200:
+          description: Ok
+        400:
+          description: Bad request
+        500:
+          description: Internal server error
+components:
+  schemas:
+    CompileSchema:
+      title: Compile
+      type: object
+      properties:
+        source:
+          type: string
+          description: Lalalang source code to compile
+          example: let a = fun(x, y) { return x + y };

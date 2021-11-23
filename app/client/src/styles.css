@@ -1,0 +1,17 @@
+html {
+    background-color: #f8f8f8;
+}
+
+#source {
+    resize: none;
+    height: 600px;
+    font-family: monospace;
+}
+
+::placeholder {
+    font-family: monospace;
+}
+
+button {
+    margin-top: 20px;
+}

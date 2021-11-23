@@ -1,5 +1,3 @@
 {
-  "headers": {
-    "source": "1+1"
-  }
+  "body": "{\"source\":\"1+1\"}"
 }

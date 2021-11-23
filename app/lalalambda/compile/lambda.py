@@ -1,7 +1,7 @@
 import logging
 import lalalang
 from utils import (
-    get_key_from_headers,
+    get_key_from_body,
     build_response,
     BadRequestException,
 )
@@ -23,7 +23,7 @@ def handler(event, context):
     API Gateway Lambda Proxy Output Format: dict
     """
     try:
-        source = get_key_from_headers(event, "source")
+        source = get_key_from_body(event, "source")
         result = lalalang.run(source)
         return build_response(200, result)
     except BadRequestException as e:

@@ -7,9 +7,9 @@ class BadRequestException(Exception):
     status = 400
 
 
-def get_key_from_headers(event, key):
+def get_key_from_body(event, key):
     """Retieve specific key from the headers of a request event"""
-    value = event.get("headers", {}).get(key)
+    value = event.get("body", {}).get(key)
     if not value:
         raise BadRequestException("Headers don't contain key: %s" % key)
     return value
@@ -20,7 +20,7 @@ def build_response(status, message):
     return {
         "statusCode": status,
         "headers": {
-            "Access-Control-Allow-Headers": "*",
+            "Access-Control-Allow-Headers": "Content-Type",
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Methods": "*",
         },

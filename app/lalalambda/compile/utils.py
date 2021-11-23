@@ -20,5 +20,8 @@ def build_response(status, message):
     """Create the format for the lambda response"""
     return {
         "statusCode": status,
+        "headers": {
+            "Access-Control-Allow-Origin": "*",
+        },
         "body": json.dumps({"output": str(message)}),
     }

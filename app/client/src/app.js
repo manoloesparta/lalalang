@@ -1,6 +1,6 @@
 import './styles.css'
 
-const API = "https://compile.manoloesparta.com"
+const API = 'https://compile.manoloesparta.com'
 
 const SAMPLE_CODE = `let fact = fun(num) {
   let factIter = fun(actual, acc) {
@@ -27,10 +27,23 @@ sourceCode.addEventListener('keydown', (e) => {
   }
 })
 
+const result = document.getElementById('result')
+const time = document.getElementById('time')
 const compileButton = document.getElementById('compile')
+
 compileButton.addEventListener('click', async () => {
-  const config = { 'headers': { 'source': sourceCode.value } }
-  const response = await fetch(API, config)
-  const json = await response.json()
-  console.log(json)
+  try {
+    const config = { 
+      'method': 'POST',
+      'body': JSON.stringify({'source': sourceCode.value})
+    }
+    const response = await fetch(API, config)
+    const json = await response.json()
+    console.log(json)
+    result.innerHTML = json.output
+  } catch {
+    result.innerHTML = 'Invalid input (or error found)'
+  }
+  const today = new Date()
+  time.innerHTML = today.toISOString()
 })

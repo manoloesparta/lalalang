@@ -1,6 +1,6 @@
 import './styles.css'
 
-const API = 'https://compile.manoloesparta.com'
+const API = 'https://1ak8gy9914.execute-api.us-east-1.amazonaws.com/Prod/'
 
 const SAMPLE_CODE = `let fact = fun(num) {
   let factIter = fun(actual, acc) {
@@ -39,7 +39,6 @@ compileButton.addEventListener('click', async () => {
     }
     const response = await fetch(API, config)
     const json = await response.json()
-    console.log(json)
     result.innerHTML = json.output
   } catch {
     result.innerHTML = 'Invalid input (or error found)'

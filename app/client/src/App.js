@@ -6,6 +6,7 @@ import 'bulma/css/bulma.css'
 import Banner from './components/Banner';
 import Editor from './components/Editor';
 import Result from './components/Result';
+import Footer from './components/Footer';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Editor/> 
         <Result/>
       </div>
+      <Footer/>
     </div>
   );
 }

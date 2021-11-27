@@ -16,8 +16,8 @@ Currently the language supports integers, strings, and booleans, you can declare
 
 ```lalalang
 let director = "Damien Chazelle";
-let great_movie = true;
-let ibd_score = 8; # They know nothing >:(
+let greatMovie = true;
+let ibdScore = 8; # They know nothing >:(
 ```
 
 You can only name variables with characters from the alphabet, so use *camelCase*.

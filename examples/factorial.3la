@@ -8,4 +8,4 @@ let fact = fun(num) {
     return factIter(num, 1);
 }
 
-println(fact(4));
+fact(4);

@@ -6,4 +6,4 @@ let fib = fun(num) {
     return fib(num - 1) + fib(num - 2);
 }
 
-println(fib(8));
+fib(8);

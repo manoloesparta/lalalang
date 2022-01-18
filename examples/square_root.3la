@@ -36,4 +36,4 @@ let sqrt = fun(number) {
     return sqrtIter(1);
 }
 
-println(sqrt(4096));
+sqrt(4096);

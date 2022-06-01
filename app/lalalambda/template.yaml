@@ -3,13 +3,14 @@ Transform: AWS::Serverless-2016-10-31
 Description: API for making an online compiler of lalalang
 
 Globals:
+  Function:
+    Timeout: 10
   Api:
     Cors:
       AllowOrigin: "'*'"
-  Function:
-    Timeout: 10
 
 Resources:
+
   CompileLaLaLang:
     Type: AWS::Serverless::Function
     Properties:

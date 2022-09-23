@@ -1,0 +1,93 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Template for lalalang
+
+Parameters:
+
+  Repository:
+    Type: String
+    Description: GitHub repository URL
+    Default: https://github.com/manoloesparta/lalalang
+
+  OauthToken:
+    Type: String
+    Description: GitHub access token
+    NoEcho: true
+
+  Domain:
+    Type: String
+    Description: Domain name for application
+    Default: mano.lol
+
+Resources:
+
+  AmplifyRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - amplify.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: Amplify
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action: "amplify:*"
+                Resource: "*"
+
+  AmplifyApp:
+    Type: AWS::Amplify::App
+    Properties:
+      Name: manolol lalalang
+      Repository: !Ref Repository
+      Description: Frontend for the dothidden project
+      OauthToken: !Ref OauthToken
+      BuildSpec: |-
+        version: 1
+        frontend:
+          phases:
+            build:
+              commands:
+                - cd app/client
+                - npm i
+                - npm run build
+          artifacts:
+            baseDirectory: app/client/dist
+            files:
+              - "**/*"
+          cache:
+            paths:
+              - node_modules/**/*
+      IAMServiceRole: !GetAtt AmplifyRole.Arn
+
+  MainBranch:
+    Type: AWS::Amplify::Branch
+    Properties:
+      BranchName: main 
+      AppId: !GetAtt AmplifyApp.AppId
+      Description: Main Branch
+      EnableAutoBuild: true
+
+  AmplifyDomain:
+    Type: AWS::Amplify::Domain
+    Properties:
+      DomainName: !Ref Domain
+      AppId: !GetAtt AmplifyApp.AppId
+      SubDomainSettings:
+        - Prefix: lalalang
+          BranchName: !GetAtt MainBranch.BranchName
+
+Outputs:
+
+  DefaultDomain:
+    Value: !GetAtt AmplifyApp.DefaultDomain
+
+  MainBranchUrl:
+    Value: !Join [ ".", [ !GetAtt MainBranch.BranchName, !GetAtt AmplifyDomain.DomainName ]]
+

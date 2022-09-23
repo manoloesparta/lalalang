@@ -90,4 +90,3 @@ Outputs:
 
   MainBranchUrl:
     Value: !Join [ ".", [ !GetAtt MainBranch.BranchName, !GetAtt AmplifyDomain.DomainName ]]
-

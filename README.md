@@ -9,9 +9,9 @@
 ![Coverage Status](https://coveralls.io/repos/github/manoloesparta/lalalang/badge.svg?t=xGQ81l)
 ![License](https://img.shields.io/badge/License-MIT-red)
 
-> A programming language with a silly name 
+> A programming language with a silly name
 
-I saw recently the **amazing** movie [La La Land](https://www.youtube.com/watch?v=xVVqlm8Fq3Y) and inspired by only the movie's name and my learning obsession I decided to learn how to make a programming language and give it a funny name 🙂. 
+I saw recently the **amazing** movie [La La Land](https://www.youtube.com/watch?v=xVVqlm8Fq3Y) and inspired by only the movie's name and my learning obsession I decided to learn how to make a programming language and give it a funny name 🙂.
 
 **Warning**: This shouldn't be used in any production enviroment, it is very slow and poorly designed, it was made with educational purposes only.
 
@@ -57,7 +57,7 @@ $ 3lang
 
 Welcome to the city of stars!🌟
 This is the La La Lang Programming Languag v1.2!
-♪♪ > 
+♪♪ >
 ```
 
 To read a file and execute it, type
@@ -66,7 +66,7 @@ To read a file and execute it, type
 $ 3lang --src random_program.3la
 ```
 
-You can enter other in the stages of lexing and parsing of the interpreter with the ```--mode``` flag.
+You can enter other in the stages of lexing and parsing of the interpreter with the `--mode` flag.
 
 ## Syntax
 

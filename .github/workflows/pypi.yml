@@ -1,22 +1,20 @@
-name: Pypi 
+name: Pypi
 
 on:
   push:
     paths:
-    - 'setup.cfg'
-    branches: 
-    - main
+      - "setup.cfg"
+    branches:
+      - main
   pull_request:
     paths:
-    - 'setup.cfg'
+      - "setup.cfg"
     branches:
-    - main
+      - main
   workflow_dispatch:
 
 jobs:
-
   upload-to-pypy:
-
     name: Pypi pipeline
     runs-on: ubuntu-latest
 
@@ -36,10 +34,10 @@ jobs:
       - name: Lint with black
         run: |
           python -m black . --check
-      
+
       - name: Static analyzer with mypy
         run: |
-          python -m mypy lalalang --no-strict-optional 
+          python -m mypy lalalang --no-strict-optional
 
       - name: Run tests and register it in coveralls
         env:
@@ -47,7 +45,7 @@ jobs:
         run: |
           python -m coverage run -m pytest
           python -m coveralls
-      
+
       - name: Publish to pypi
         env:
           TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}

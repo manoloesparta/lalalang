@@ -1,4 +1,4 @@
-AWSTemplateFormatVersion: '2010-09-09'
+AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
 Description: API for making an online compiler of lalalang
 
@@ -10,7 +10,6 @@ Globals:
       AllowOrigin: "'*'"
 
 Resources:
-
   CompileLaLaLang:
     Type: AWS::Serverless::Function
     Properties:
@@ -19,7 +18,7 @@ Resources:
       Runtime: python3.9
       Events:
         Compile:
-          Type: Api 
+          Type: Api
           Properties:
             Path: /
             Method: post

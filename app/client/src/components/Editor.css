@@ -1,9 +1,9 @@
 #source {
-    resize: none;
-    height: 600px;
-    font-family: monospace;
+  resize: none;
+  height: 600px;
+  font-family: monospace;
 }
 
 ::placeholder {
-    font-family: monospace;
+  font-family: monospace;
 }

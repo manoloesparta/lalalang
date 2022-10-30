@@ -1,22 +1,22 @@
 // Styles
-import './App.css';
-import 'bulma/css/bulma.css'
+import "./App.css";
+import "bulma/css/bulma.css";
 
 // Components
-import Banner from './components/Banner';
-import Editor from './components/Editor';
-import Result from './components/Result';
-import Footer from './components/Footer';
+import Banner from "./components/Banner";
+import Editor from "./components/Editor";
+import Result from "./components/Result";
+import Footer from "./components/Footer";
 
 function App() {
   return (
     <div className="App container">
-      <Banner/>
+      <Banner />
       <div className="columns">
-        <Editor/> 
-        <Result/>
+        <Editor />
+        <Result />
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 }

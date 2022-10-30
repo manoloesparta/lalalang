@@ -11,7 +11,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CompileSchema'
+              $ref: "#/components/schemas/CompileSchema"
       responses:
         200:
           description: Ok

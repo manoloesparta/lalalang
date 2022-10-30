@@ -1,22 +1,20 @@
-name: Lambda 
+name: Lambda
 
 on:
   push:
     paths:
-    - 'app/lalalambda/**'
-    branches: 
-    - main
+      - "app/lalalambda/**"
+    branches:
+      - main
   pull_request:
     paths:
-    - 'app/lalalambda/**'
+      - "app/lalalambda/**"
     branches:
-    - main
+      - main
   workflow_dispatch:
 
 jobs:
-
   send-to-lambda:
-
     name: Lambda Pipeline
     runs-on: ubuntu-latest
 
@@ -31,7 +29,7 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
-      
+
       - uses: aws-actions/setup-sam@v1
 
       - uses: aws-actions/configure-aws-credentials@v1
